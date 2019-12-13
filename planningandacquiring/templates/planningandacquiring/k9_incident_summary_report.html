@@ -39,16 +39,18 @@
 
     <table class="ui small celled column table">
         <thead class="center aligned">
+            <th>Date</th>
             <th>K9</th>
             <th>Title</th>
             <th>Incident</th>
-            <th class="five wide">Description</th>
+            <th>Description</th>
             <th>Reported by</th>
         </thead>
         <tbody>
             {% for data in data%}
             <tr>
-                <td>{{data.k9}}</td>
+                <td class="two wide">{{data.date|date:'Y-m-d'}}</td>
+                <td class="three wide">{{data.k9}}</td>
                 <td>{{data.title}}</td>
                 <td>{{data.incident}}</td>
                 <td>{{data.description}}</td>

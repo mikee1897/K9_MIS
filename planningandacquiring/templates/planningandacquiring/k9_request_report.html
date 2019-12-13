@@ -17,11 +17,12 @@
     <table class="ui small celled structured column table">
         <thead class="center aligned">
           <tr>
-                <th class="three wide">Event</th>
-                <th class="one wide">Type</th>
+                <th class="two wide">Date</th>
+                <th >Event</th>
+                <th class="two wide">Type</th>
                 <th class="three wide">Location</th>
                 <th class="two wide">Requester</th>
-                <th class="three wide">Requester Contact</th>
+                <th >Requester Contact</th>
                 <th class="two wide">Team Leader</th>
                 <th class="one wide">K9 Requested</th>
                 <th class="one wide">K9 Deployed</th>
@@ -31,6 +32,7 @@
             {% for data in data %}
             
                 <tr class="right aligned">
+                    <td class="left aligned">{{data.start_date|date:'Y-m-d'}}</td>
                     <td class="left aligned">{{data.event_name}}</td>
                     <td class="left aligned">{{data.sector_type}}</td>
                     <td class="left aligned">{{data.location}}</td>

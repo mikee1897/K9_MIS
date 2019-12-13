@@ -1583,6 +1583,8 @@ def ajax_k9_performance_report(request):
                     k9 = K9.objects.get(id=value)
                     dt = [k9,k9.capability,pf,pp,bf,bp,vf,vp,bgf,bgp,of,op,round(r,2)]
                     data.append(dt)
+
+        data.sort(key=lambda x:x[12],reverse=True)
     except:
         pass
     user = user_session(request)
@@ -1693,6 +1695,8 @@ def ajax_training_report(request):
             a = [th.k9, th.k9.breed, th.handler, date_all, date_mon, t.grade]
             data.append(a)
             # print(a)
+
+        data.sort(key=lambda x:x[5],reverse=True)
                    
                                 
     except:
@@ -2170,7 +2174,7 @@ def ajax_fou_acc_report(request):
         to_date = request.GET.get('date_to')
         from_date = request.GET.get('date_from')
 
-        data_arr = Handler_Incident.objects.filter(date__range=[from_date, to_date]).filter(status='Done').order_by('handler__fullname')
+        data_arr = Handler_Incident.objects.filter(date__range=[from_date, to_date]).filter(status='Done').order_by('date')
         
     except:
         pass
@@ -2209,7 +2213,7 @@ def ajax_k9_incident_summary_report(request):
         to_date = request.GET.get('date_to')
         from_date = request.GET.get('date_from')
 
-        data_arr = K9_Incident.objects.filter(date__range=[from_date, to_date]).order_by('k9__name')
+        data_arr = K9_Incident.objects.filter(date__range=[from_date, to_date]).order_by('date')
 
         b = K9_Incident.objects.filter(date__range=[from_date, to_date]).filter(incident='Sick').count()
         c = K9_Incident.objects.filter(date__range=[from_date, to_date]).filter(incident='Accident').count()
