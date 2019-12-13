@@ -120,3 +120,28 @@ class DateForm(forms.Form):
     # format='%Y/%m/%d'),
     #                                   input_formats=('%Y/%m/%d',
 
+class adoption_K9_form(forms.ModelForm):
+    file_adopt = forms.FileField()
+    k9 = forms.ModelChoiceField(queryset = K9.objects.filter(training_status='For-Adoption'))
+    breed = forms.CharField(max_length=200)
+    color = forms.CharField(max_length=200)
+    sex = forms.CharField(max_length=200)
+    age = forms.CharField(max_length=200)
+    
+    class Meta:
+        model = K9_Adopted_Owner
+        fields = ('k9','file_adopt')
+
+    def __init__(self, *args, **kwargs):
+        super(adoption_K9_form, self).__init__(*args, **kwargs)
+        self.fields['file_adopt'].required = False
+        self.fields['k9'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['k9'].widget.attrs['class'] = 'k9_name'
+        self.fields['breed'].widget.attrs['class'] = 'breed'
+        self.fields['color'].widget.attrs['class'] = 'color'
+        self.fields['sex'].widget.attrs['class'] = 'sex'
+        self.fields['age'].widget.attrs['class'] = 'age'
+        self.fields['breed'].widget.attrs['readonly'] = True
+        self.fields['color'].widget.attrs['readonly'] = True
+        self.fields['sex'].widget.attrs['readonly'] = True
+        self.fields['age'].widget.attrs['readonly'] = True

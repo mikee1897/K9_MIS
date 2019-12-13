@@ -19,63 +19,100 @@
     </div>
   </div>
 </div>
+{% if messages %}
+<div class="ui inverted segment">
+    {% for message in messages %}
+        <div class="{{ style }} row"> {{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
 
 <div class="ui inverted segment">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="{{ style }} row"> {{ message }}</div>
-        {% endfor %}
-    {% endif %}
-<form class = "ui inverted form" action="" method="post">
-    {% csrf_token %}
-    <div class="field">
+    <form class = "ui inverted form" id="myForm" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="field">
             <label>Adoption Files</label>
             {{form.file_adopt}}
         </div>
-    <div class="fields">
-        <div class="six wide field">
-            <label>First Name</label>
-            {{form.first_name}}
+        <div class="fields">
+            <div class="six wide field">
+                <label>First Name</label>
+                {{form.first_name}}
+            </div>
+            <div class="four wide field">
+                <label>Middle Name</label>
+                {{form.middle_name}}
+            </div>
+            <div class="six wide field">
+                <label>Last Name</label>
+                {{form.last_name}}
+            </div>
         </div>
-        <div class="four wide field">
-            <label>Middle Name</label>
-            {{form.middle_name}}
-        </div>
-        <div class="six wide field">
-            <label>Last Name</label>
-            {{form.last_name}}
-        </div>
-    </div>
 
-    <div class="four fields">
-        <div class="field">
-            <label>Birthday</label>
-            {{form.birth_date}}
+        <div class="four fields">
+            <div class="field">
+                <label>Birthday</label>
+                {{form.birth_date}}
+            </div>
+            <div class="field">
+                <label>Sex</label>
+                {{form.sex}}
+            </div>
+            <div class="field">
+                <label>Email</label>
+                {{form.email}}
+            </div>
+            <div class="field">
+                <label>Contact Number</label>
+                {{form.contact_no}}
+            </div>
         </div>
-        <div class="field">
-            <label>Sex</label>
-            {{form.sex}}
-        </div>
-        <div class="field">
-            <label>Email</label>
-            {{form.email}}
-        </div>
-        <div class="field">
-            <label>Contact Number</label>
-            {{form.contact_no}}
-        </div>
-    </div>
 
-    <div class="field">
-        <label>Address</label>
-        {{form.address}}
-    </div>
+        <div class="field">
+            <label>Address</label>
+            {{form.address}}
+        </div>
 
-    <div class="ui inverted right aligned segment" style="padding: 0px;">
-        <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Next Step</button>
-    </div>
-</form>
+        <div>
+            <div class="three fields">
+                <div class="field">
+                    <label>How Many K9's up for Adoption?</label>
+                    <input type="number" name='adopt_number'>
+                </div>
+                <div class="field"></div>
+                <div class="field"></div>
+            </div>
+        </div>
+        
+        <div id="id_form_data"></div>
 
+        <div class="ui inverted center aligned segment" style="padding: 0px;">
+            <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+        </div>
+
+        
+        {{formset.management_form}}
+    </form>
 </div>
 
+<script>
+    $(document).ready(function() {
+  
+      $("input[name='adopt_number']").change(function () {
+          var url = 'adoption-form/ajax_load_form';  
+          var adopt_number = $("input[name='adopt_number']").val();
+          
+          $.ajax({                       
+          url: url,                    
+          data: {
+              'num': adopt_number      
+          },
+          success: function (data) {   
+              $("#id_form_data").html(data);  
+          }
+          });
+      });
+  
+    });
+</script>
 {% endblock %}

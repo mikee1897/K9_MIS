@@ -1,0 +1,67 @@
+
+{% load static %}
+{% block content %}
+
+{% for form in formset %}
+<div class="formset_class" id="{{ form.prefix }}-row">
+    <div class="six fields">
+        <div class="field">
+            <label>K9</label>
+            {{form.k9}}
+        </div>    
+        <div class="field">
+            <label>Breed</label>
+            {{form.breed}}
+        </div>
+        <div class="field">
+            <label>Color</label>
+            {{form.color}}
+        </div>
+        <div class="field">
+            <label>Sex</label>
+            {{form.sex}}
+        </div>
+        <div class="field">
+            <label>Age(yrs & mos)</label>
+            {{form.age}}
+        </div>
+        <div class="field">
+            <label>Adoption Files</label>
+            {{form.file_adopt}}
+        </div> 
+    </div>
+</div>
+
+{{formset.management_form}}
+
+{% endfor %}
+
+
+<script>
+    $(".k9_name" ).bind('change', function() {
+        var id = $(this).val();
+        var id_val = $(this).attr('id');
+
+        var res = id_val.split("-");
+        var id = $('#id_form-'+res[1]+'-k9').val();
+
+        var url = 'adoption-form/ajax_load_k9_details';
+        $.ajax({
+            url: url,
+            type : 'GET',
+            dataType : 'json',
+            data: {
+                'id': id,
+            },
+            success: function (data) {
+                var res = id_val.split("-");
+                $('#id_form-'+res[1]+'-breed').val(data.breed);
+                $('#id_form-'+res[1]+'-color').val(data.color);
+                $('#id_form-'+res[1]+'-sex').val(data.sex);
+                $('#id_form-'+res[1]+'-age').val(data.age);
+            }
+        });
+
+    });
+</script>
+{% endblock %}

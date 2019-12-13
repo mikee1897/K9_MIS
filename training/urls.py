@@ -28,7 +28,9 @@ urlpatterns = [
     path('training/list-k9', views.k9_training_list, name='k9_training_list'),
 
     path('addoption/adoption-list', views.adoption_list, name='adoption_list'),
-    path('addoption/adoption-form/<int:id>', views.adoption_form, name='adoption_form'),
+    path('addoption/adoption-form', views.adoption_form, name='adoption_form'),
+    path('addoption/adoption-form/ajax_load_form', views.load_form, name='ajax_load_form'),
+    path('addoption/adoption-form/ajax_load_k9_details', views.load_k9_details, name='ajax_load_k9_details'),
     path('addoption/confirm-adoption/<int:id>', views.confirm_adoption, name='confirm_adoption'),
     path('addoption/adoption-confirmed', views.adoption_confirmed, name='adoption_confirmed'),
     path('addoption/adoption-details/<int:id>', views.adoption_details, name='adoption_details'),

@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.forms import formset_factory, inlineformset_factory
 from django.db.models import aggregates
 from django.contrib import messages
+from django.http import JsonResponse
 
 from planningandacquiring.models import K9, K9_Parent, K9_Quantity, Dog_Breed
-
 from profiles.models import User, Account, Personal_Info
 from unitmanagement.models import Notification
 from .models import K9_Genealogy, K9_Handler
@@ -14,6 +14,7 @@ from unitmanagement.models import Handler_K9_History
 from training.models import Training, K9_Adopted_Owner, Training_Schedule
 from .forms import TestForm, add_handler_form, assign_handler_form
 from planningandacquiring.forms import add_donator_form
+from training.forms import adoption_K9_form
 from training.forms import TrainingUpdateForm, SerialNumberForm, AdoptionForms, ClassifySkillForm, RecordForm, DateForm
 import datetime
 from deployment.models import Team_Assignment, Daily_Refresher
@@ -57,34 +58,25 @@ def user_session(request):
 def index(request):
     return render (request, 'training/index.html')
 
-def adoption_form(request, id):
-    data = K9.objects.get(id=id) # get k9
+#TODO :: SAVE FORM and FORMSET
+def adoption_form(request):
     form = AdoptionForms(request.POST or None)
     form.fields['email'].initial = ''
     form.fields['contact_no'].initial = ''
-    #form.fields['k9'].initial = data
-    #form.fields['k9'].initial = form.cleaned_data['data']
-    #print(form.fields['k9'])
-
+   
     if request.method == "POST":
-        print(form.errors)
-        form.k9 = data
         if form.is_valid():
             print('valid')
-            form.save()
-            no_id = form.save()
-            no_id.k9 = data
-            no_id.save()
-            #print(no_id.k9)
-            request.session['no_id'] = no_id.id
-            return redirect('training:confirm_adoption', id = data.id)
+            # form.save()
+    
+            return redirect('training:confirm_adoption', id = 1)
 
     #NOTIF SHOW
     notif_data = notif(request)
     count = notif_data.filter(viewed=False).count()
     user = user_session(request)
     context = {
-        'title': data,
+        'title': "Adoption Form",
         'form': form,
         'notif_data':notif_data,
         'count':count,
@@ -2068,3 +2060,43 @@ def load_handler(request):
     }
 
     return render(request, 'training/handler_data.html', context)
+
+def load_form(request):
+    formset = None
+    k9_formset = None
+    try:
+        num = request.GET.get('num')
+        k9_formset = formset_factory(adoption_K9_form, extra=int(num), can_delete=False)
+        formset = k9_formset(request.POST, request.FILES)
+    except:
+        pass
+
+    context = {
+        'formset': k9_formset(),
+    }
+
+    return render(request, 'training/load_adoption.html', context)
+
+def load_k9_details(request):
+    breed = None
+    sex = None
+    color = None
+    age = None
+    try:
+        id_val = request.GET.get('id')
+        k9 = K9.objects.get(id=id_val)
+        breed= k9.breed
+        sex= k9.sex
+        color= k9.color
+        age= str(k9.age) + " yrs & " + str(k9.month_remainder()) + "mos"
+
+    except:
+        pass
+
+    data = {
+        'breed':breed,
+        'sex':sex,
+        'color':color,
+        'age':age,
+    }
+    return JsonResponse(data)

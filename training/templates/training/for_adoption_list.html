@@ -9,6 +9,7 @@
         {% endfor %}
     {% endif %}
 </div>
+<a href="{% url 'training:adoption_form'%}" class="ui green button">K9 Adoption Form</a>
 <div class="ui top attached tabular menu">
     <a class="item active" data-tab="first">For Adoption</a>
     <a class="item" data-tab="second">Adopted</a>
@@ -27,9 +28,7 @@
         <tbody>
             {% for data in for_adoption %}
             <tr>
-                <td>
-                    <a href="{% url 'training:adoption_form' data.id %}">{{data.name}}</a>
-                </td>
+                <td>{{data.name}}</td>
                 <td>{{data.breed}}</td>
                 <td>{{data.sex}}</td>
                 <td>{{data.age}} years and {{data.month_remainder}} months</td>

@@ -3066,9 +3066,10 @@ def load_health(request):
 
 def load_form(request):
     formset = None
+    k9_formset = None
     try:
         num = request.GET.get('num')
-        # print(num)
+        num = int(num)
         k9_formset = formset_factory(add_offspring_K9_form, extra=int(num), can_delete=False)
         formset = k9_formset(request.POST, request.FILES)
     except:
