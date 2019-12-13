@@ -1,0 +1,11 @@
+# ignore generated .pyc files,
+    *.pyc
+# ignore migrations
+planningandacquiring\migrations\
+profiles\migrations\
+training\migrations\
+deployment\migrations\
+unitmanagement\migrations\
+inventory\migrations\
+# ignore settings.py
+K9_insys\settings.py
