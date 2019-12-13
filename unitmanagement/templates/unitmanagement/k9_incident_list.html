@@ -1,0 +1,144 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load static %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="{{style}}" > {{ message }}</div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% if user.position == 'Team Leader' %}
+<div class="ui segment" data-tab="first">
+    <table id="tabledata1" class="ui celled table">
+        <thead>
+            <tr>
+                <th>Date Reported</th>
+                <th>Incident</th>
+                <th>K9</th>
+                <th>Reported By:</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data %}
+            <tr data-variation="wide" data-content="{{data.description}}" class="pop">
+                <td>{{data.date}}</td>
+                <td>{{data.incident}}</td>
+                <td>{{data.k9}}</td>
+                <td class="four wide">{{data.reported_by}}</td>
+                <td class="center aligned two wide">
+                    <a href="{% url 'unitmanagement:k9_retreived' data.id %}" class="ui blue button">Retrieved</a>
+                </td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% elif user.position == 'Administrator' %}
+<div class="ui segment" data-tab="first">
+        <table id="tabledata2" class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Date Reported</th>
+                    <th>Incident</th>
+                    <th>K9</th>
+                    <th>Reported By</th>
+                    <th>Port/Area</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in data %}
+                <tr data-variation="wide" data-content="{{data.description}}" class="pop">
+                    <td>{{data.date|date:'Y-m-d'}}</td>
+                    <td>{{data.incident}}</td>
+                    <td>{{data.k9}}</td>
+                    <td>{{data.reported_by}}</td>
+                    {% if data.k9.assignment == 'None' %}
+                        <td class="four wide">PCGK9 Taguig</td>
+                    {%else%}
+                        <td class="four wide">{{data.k9.assignment}}</td>
+                    {%endif%}
+                    <td class="center aligned two wide">
+                        <a href="{% url 'unitmanagement:k9_retreived' data.id %}" class="ui blue button">Retrieved</a>
+                    </td>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+<div class="ui segment" data-tab="first">
+        <table id="tabledata3" class="ui five column celled table">
+            <thead>
+                <tr>
+                    <th>Date Reported</th>
+                    <th>K9</th>
+                    <th>Reported By</th>
+                    <th>Port/Area</th>
+                    <th>Clinic</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in data %}
+                <tr>
+                    <td>{{data.date|date:'Y-m-d'}}</td>
+                    <td>{{data.k9}}</td>
+                    <td>{{data.reported_by}}</td>
+                    {% if data.k9.assignment == 'None' %}
+                        <td class="four wide">PCGK9 Taguig</td>
+                    {%else%}
+                        <td class="four wide">{{data.k9.assignment}}</td>
+                    {%endif%}
+                    <td>{{data.clinic}}</td>
+                    <td class="center aligned two wide">
+                        <button class="ui tiny blue button flip" id = "{{data.id}}" type="button">Select</button>
+                    </td>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="ui modal" id = 'id_data'></div>
+{% endif %}
+
+<script type="text/javascript">
+
+  
+    $('#tabledata1').DataTable({
+        "order": [[ 0, "desc" ],[ 1, "asc" ]]
+    });
+    $('#tabledata2').DataTable({
+        "order": [[ 0, "desc" ],[ 1, "asc" ]]
+    });
+    $('#tabledata3').DataTable({
+        "order": [[ 0, "desc" ],[ 1, "asc" ]]
+    });
+    $('.menu .item').tab();
+    
+    $( ".flip" ).bind('click', function() {
+        var url = 'k9-incident-list/ajax_load_incident';  
+        var id = $(this).attr('id')
+        $('.ui.modal').modal('show');
+        $.ajax({                         
+            url: url,                  
+            data: {
+            'id': id       
+            },
+            success: function (data) {  
+                $("#id_data").html(data);
+            }
+        });
+        
+    });
+  
+
+</script>
+ {% endblock %}

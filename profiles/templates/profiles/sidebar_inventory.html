@@ -1,0 +1,59 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %}  
+
+{% block sidebar_module %}
+<div class="ui fluid container">
+        <div class="ui basic segment">
+                <div class="ui grid">
+                        <div class="three wide column">
+                                <div class="ui pointing vertical menu">
+                                        <a class="item"> <b>Inventory Menu</b></a>
+                                        {% if request.session.session_user_position == "Veterinarian" %}
+                                        <a href="{% url 'inventory:medicine_add'%}" class="item">
+                                                <i class="plus circle icon"></i>Add Medicine
+                                        </a>
+                                        <a href="{% url 'inventory:medicine_inventory_list'%}" class="item">
+                                                <i class="clipboard list icon"></i>Medicine Inventory List
+                                        </a>
+                                        <a href="{% url 'inventory:food_inventory_list'%}" class="item">
+                                                <i class="clipboard list icon"></i>Dog Food Inventory List
+                                        </a>
+                                        <a href="{% url 'inventory:miscellaneous_inventory_list'%}" class="item">
+                                                <i class="clipboard list icon"></i>Miscellaneous Inventory List
+                                        </a>
+                                        {% endif %}
+
+                                        {% if request.session.session_user_position == "Administrator" %}
+                                        <a href="{% url 'inventory:food_add'%}" class="item">
+                                                <i class="plus circle icon"></i>Add Dog Food
+                                        </a> 
+                                        <a href="{% url 'inventory:miscellaneous_add'%}" class="item">
+                                                <i class="plus circle icon"></i>Add Miscellaneous Item
+                                        </a>  
+                                        <a href="{% url 'inventory:medicine_inventory_list'%}" class="item">
+                                                <i class="clipboard list icon"></i>Medicine Inventory List
+                                        </a>  
+                                        <a href="{% url 'inventory:food_inventory_list'%}" class="item">
+                                                <i class="clipboard list icon"></i>Dog Food Inventory List
+                                        </a>  
+                                        <a href="{% url 'inventory:miscellaneous_inventory_list'%}" class="item">
+                                                <i class="clipboard list icon"></i>Miscellaneous Inventory List
+                                        </a>
+                                        {% endif %}
+
+                                    {% if request.session.session_user_position == "Handler" %}
+                                    <a href="{% url 'unitmanagement:request_form'%}" class="item">
+                                        <i class="exclamation icon"></i>Damaged Equipment
+                                    </a>
+                                    {% endif %}
+                                </div>
+                        </div>
+                        <!>
+                        <div class="thirteen wide column">
+                            {% block content %}
+                            {% endblock %}
+                        </div>
+                </div>
+        </div>
+</div>
+
+{% endblock%}

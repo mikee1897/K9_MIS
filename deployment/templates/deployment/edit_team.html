@@ -1,0 +1,56 @@
+{% extends "profiles/sidebar_deployment.html" %}
+
+{% block content %}
+<div class="ui fluid container">
+  <div class="ui two column centered grid">
+    <div class="twelve wide column">
+      <h1 class="ui header">{{ title }}
+          <div class="sub header" id = 'texthelp'>{{ texthelp }}</div>
+      </h1>
+    </div>
+  </div>
+  <div class="ui two column centered grid">
+    <div class="twelve wide column">
+      <div class="ui inverted segment">
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="{{ style }} row"> {{ message }}</div>
+              {% endfor %}
+          {% endif %}
+          <form class = "ui inverted form" method="POST">
+             {% csrf_token %}
+             <div class="two fields">
+               <div class="field">
+                   <label>Team</label>
+                       <input type="text" name="team" value="{{data.team}}" readonly>
+               </div>
+               <div class="field">
+                   <label>Location</label>
+                   <input type="text" name="location" value="{{data.location}}" readonly>
+               </div>
+             </div>
+             <div class="three fields">
+                  <div class="field">
+                      <label>Number of Explosives needed</label>
+                      {{form.EDD_demand}}
+                  </div>
+                  <div class="field">
+                      <label>Number of Narcotics needed</label>
+                      {{form.NDD_demand}}
+                  </div>
+                  <div class="field">
+                      <label>Number of Search and Rescue needed</label>
+                      {{form.SAR_demand}}
+                  </div>
+            </div>
+
+              <div class="ui inverted right aligned segment" style="padding: 0px;">
+                  <button class = "ui button green" type="submit" >{{actiontype}}</button>
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock%}

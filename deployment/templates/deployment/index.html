@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load fullcalendar_tags %}
+
+<head>
+
+    <title>FULLCALENDAR</title>
+
+    {% fullcalendar_css %}
+    {% fullcalendar_print_css %}
+    {% fullcalendar_jquery %}
+    {% fullcalendar_jquery_ui %}
+    {% fullcalendar_javascript %}
+
+</head>
+
+<div id = "calendar">
+
+    <button id = "prev">Previous Year</button>
+    <button id = "next">Next Year</button>
+
+    <label>Go to</label>
+    {{date_form.date}}
+    {{myr_form}}
+
+{% calendar %}
+
+    <output id = "out_date"></output>
+
+</div>
+
+
+<script>
+    $(document).ready(function() {
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+
+            defaultView: 'month',
+            weekNumbers: 'true',
+            editable: true,
+            selectable: true,
+            eventLimit: true,
+            showNonCurrentDates: true,
+
+            eventBorderColor: "gray",
+            eventBackgroundColor: "black",
+            eventTextColor: "white",
+
+                }); // end #calendar
+
+
+
+        $('#prev').click(function() {
+        $('#calendar').fullCalendar('prevYear');
+        });
+
+        $('#next').click(function() {
+        $('#calendar').fullCalendar('nextYear');
+        });
+
+
+
+    }); // end #document
+
+
+</script>
+
+<style>
+       #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+    }
+</style>
+
+</html>

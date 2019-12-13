@@ -1,0 +1,87 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+       
+    </h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui segment">
+<form action="" method="POST" class="ui form">
+{% csrf_token %}
+<div class="three fields">
+    <div class="field">
+        <label>Handler</label>
+        <input type="text" value="{{data.handler}}" readonly>
+    </div>
+    <div class="field">
+        <label>Duration</label>
+        <input type="text" value="{{data.date_from}} - {{data.date_to}}" readonly>
+    </div>    
+    <div class="field">
+        <label>No. of Days</label>
+        <input type="text" value="{{days.days}}" readonly>
+    </div>    
+</div>
+<div class="field">
+    <label>Reason</label>
+    <textarea rows="4" readonly>{{data.description}}</textarea>
+</div>  
+{% if k9 != None and data.status == 'Pending' %}
+<div class="ui negative message">
+    <i class="close icon"></i>
+    <div class="header">
+      Handler has a K9!
+    </div>
+    <p>This handler has a K9 partner! If you choose to approve this leave, you will have the option
+        of reallocating the K9 to a different handler in the "Reallocate Assets". Please dont forget 
+        the checkbox below! If checked, the K9 will return to handler regardless if it's reallocated. 
+    </p>
+</div>
+<div class="two inline fields">
+    <div class="nine wide field">
+        <label>K9</label>
+        <input type="text" value="{{k9}}" readonly>
+    </div>
+    <div class='seven wide field'>
+        <div class="ui checkbox">
+            <input type="checkbox" tabindex="0" class="hidden" name='return_k9'>
+            <label>Return K9 to handler once leave is over?</label>
+        </div>
+    </div>
+</div>  
+
+{%endif%}
+{% if k9 != None and data.status != 'Pending' %}
+<div class="two fields">
+    <div class="field">
+        <label>K9</label>
+        <input type="text" value="{{k9}}" readonly>
+    </div>
+</div>  
+
+{%endif%}
+{% if data.status == 'Pending' %}
+<center>
+    <div class="ui buttons">
+        <button class="negative ui button" name="deny" onclick="return confirm('Are you sure?')">Deny</button>
+        <div class="or"></div>
+        <button class="ui positive button" name="approve" onclick="return confirm('Are you sure?')">Approve</button>
+    </div></center>
+</form>
+</div>
+{%endif%}
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('.ui.checkbox').checkbox();
+    });
+    
+</script>
+ {% endblock %}

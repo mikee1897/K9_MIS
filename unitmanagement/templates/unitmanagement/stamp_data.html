@@ -1,0 +1,19 @@
+{% if stamp %}
+
+{% load static %}
+{% block content %}
+    <center>
+        <img src="{{stamp.image.url}}" alt="" style="position:
+        relative; width: 600px;height: 400px;" >
+    </center>
+
+    <div class="actions">
+        <center>
+            <br>
+            <h3>{{stamp.disease}}</h3>
+        </center>
+    </div>
+
+   {% endblock %}
+
+{% endif %}

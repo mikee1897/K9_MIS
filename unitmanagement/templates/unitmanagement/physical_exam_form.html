@@ -1,0 +1,147 @@
+{% extends "profiles/sidebar_um.html" %}  
+{% load static %}
+
+{% block content %}
+<div class="ui basic segment"  style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Input data of Physical Exam Here</div>
+    </h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui inverted segment">
+    <form class="ui inverted form" method="POST">
+        {% csrf_token %}
+        <div class="three fields">
+            <div class="six wide field">
+                <label>Dog Name : Serial Number</label>
+                {{form.dog}}
+            </div>
+            <div class="three wide field">
+                <label>Cage Number</label>
+                {{form.cage_number}}
+            </div>
+            <div class="field"></div>
+        </div>
+        <div class="four fields">
+            <div class="four wide field">
+                <label>Temperature</label>
+                {{form.temperature}}
+            </div>
+            <div class="four wide field">
+                <label>Heart Rate / min</label>
+                {{form.heart_rate}}
+            </div>
+            <div class="field">
+                <label>Respiratory Rate / min</label>
+                {{form.respiratory_rate}}
+            </div>
+            <div class="field">
+                <label>Weight (Kg)</label>
+                {{form.weight}}
+            </div>
+        </div>
+        <div class="four fields">
+            <div class="four wide field">
+                <label>General Appearance</label>
+                {{form.general_appearance}}
+            </div>
+            <div class="four wide field">
+                <label>Integumentary</label>
+                {{form.integumentary}}
+            </div>
+            <div class="field">
+                <label>Musculo Skeletal</label>
+                {{form.musculo_skeletal}}
+            </div>
+            <div class="field">
+                <label>Respiratory</label>
+                {{form.respiratory}}
+            </div>
+        </div>
+        <div class="four fields">
+            <div class="field">
+                <label>Genito Urinarye</label>
+                {{form.genito_urinary}}
+            </div>
+            <div class="field">
+                <label>Nervous</label>
+                {{form.nervous}}
+            </div>
+            <div class="field">
+                <label>Circulatory</label>
+                {{form.circulatory}}
+            </div>
+            <div class="field">
+                <label>Digestive</label>
+                {{form.digestive}}
+            </div>
+        </div>
+        <div class="four fields">
+            <div class="field">
+                <label>Mucous Membrances</label>
+                {{form.mucous_membrances}}
+            </div>
+            <div class="field">
+                <label>Lymph Nodes</label>
+                {{form.lymph_nodes}}
+            </div>
+            <div class="field">
+                <label>Eyes</label>
+                {{form.eyes}}
+            </div>
+            <div class="field">
+                <label>Ears</label>
+                {{form.ears}}
+            </div>
+        </div>
+        <center>
+            <img src="{% static 'images/body_score.png' %}" alt="" style="position:relative; width: 70%;height:30%;" >
+            <table class="ui five column inverted orange center aligned table" style="width: 70%;">
+                <tr>
+                    <td> <input type="radio" name="radio_select" value=1> </td>
+                    <td> <input type="radio" name="radio_select" value=2> </td>
+                    <td> <input type="radio" name="radio_select" value=3> </td>
+                    <td> <input type="radio" name="radio_select" value=4> </td>
+                    <td> <input type="radio" name="radio_select" value=5> </td>
+                </tr>
+              
+            </table>
+
+        </center>
+  
+    <div class="field">
+        <label>Diagnosis</label>
+        {{form.remarks}}
+    </div>
+   
+    <div class="inline fields">
+        <div class="field">
+            {{form.cleared}}
+        </div>
+        <label><h3>Please click the Checkbox if the K9 is cleared for Physical
+        Examination.</h3></label>
+    </div>
+        <div class="ui inverted right aligned segment" style="padding: 0px;">
+            <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >{{ actiontype }}</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+
+        $("#dogname").on("change paste keyup", function() {
+            res = 100;
+            $('#serialnumber').val(res);
+        });
+    
+    });
+    
+</script>
+ {% endblock %}

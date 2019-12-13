@@ -1,0 +1,187 @@
+{% extends "profiles/sidebar_um.html" %}
+{% block content %}
+{% load static %}
+
+
+<div class="ui inverted segment" style="padding:20px;">
+    {% if data %}
+    <h3 class="ui header">{{ title }}{{ name }}</h3>
+    {% else %}
+    <h3 class="ui header">K9 Health Record</h3>
+    {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+
+{% if data %}
+
+<div class="ui top attached tabular menu">
+    <a class="item{{active_1}}" data-tab="first">Preventive Health Program</a>
+    <a class="item{{active_2}}" data-tab="second">Physical Exam</a>
+    <a class="item{{active_3}}" data-tab="third">Health</a>
+</div>
+<div class="ui tab segment{{active_1}}" data-tab="first">
+        {%if data.source == 'Procurement' %}
+        <div class="ui info message">
+            <ul class="list">
+                <li>This K9 was Procured, all vaccinations are intially Done.</li>
+            </ul>
+        </div>
+        {%else%}
+        
+        <div class="ui info message">
+            <i class="close icon"></i>
+            <ul class="list">
+                <li>Unclickable fields means K9 is not yet of Age.</li>
+            </ul>
+        </div>
+        <form action="" method="POST" class="ui form" enctype="multipart/form-data" id='myForm'> 
+            {% csrf_token %}
+                <table class="ui celled table">
+                    <thead>
+                        <th class="two wide">Age</th>
+                        <th class="three wide">Preventive Measure</th>
+                        <th class="three wide">Vaccine/Prevention</th>
+                        <th class="two wide">Date</th>
+                        <th class="three wide">Stamp Image</th>
+                        <th class="three wide">Veterinarian</th>
+                    </thead>
+                    <tbody>
+                        {% for form in formset %}
+                        <tr>
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+        
+                            {%if form.initial.vaccine != None %}
+                                {% for vu in vu %}
+                                    {%if form.initial.disease == vu.disease %}
+                                    <td>{{vu.age}}{{form.age.as_hidden}}</td>
+                                    <td>{{vu.disease}}{{form.disease.as_hidden}}</td>
+                                    <td>{{vu.vaccine}}{{form.vaccine.as_hidden}}</td>
+                                    <td>{{vu.date_vaccinated}}{{form.date_vaccinated.as_hidden}}</td>
+                                    {%if vu.image %}
+                                    <td class='center aligned'>
+                                        <a href="#" class = 'modal_here' id ='{{vu.order}}' data_id='{{vu.id}}'><img src="{{vu.image.url}}" alt=""
+                                        width="60"></a>
+                                        {{form.image.as_hidden}}
+                                    </td>
+                                    {% else %}
+                                    <td>{{form.image}}</td>
+                                    {% endif %}
+                                    <td>{{vu.veterinary}}{{form.done.as_hidden}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <td>{{form.age.value}}{{form.age.as_hidden}}</td>
+                                <td>{{form.disease.value}}{{form.disease.as_hidden}}</td>
+                                <td>{{form.vaccine}}</td>
+                                <td>{{form.date_vaccinated}}</td>
+                                <td>{{form.image}}</td>
+                                <td>{{form.veterinary.as_hidden}}{{form.done.as_hidden}}</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {{formset.management_form}}
+                <center>
+                    <button class="ui green button" onclick="return confirm('Are you sure?')" type="submit">Update</button>
+                </center>
+            </form>
+        {%endif%}   
+</div>
+<div class="ui tab segment{{active_2}}" data-tab="second">
+    <table id="tabledata2" class="ui three column celled table">
+        <thead>
+            <tr>
+                <th>Exam Date</th>
+                <th>Next Exam Date</th>
+                <th>Veterinarian</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for phyexam_data in phyexam_data %}
+              {%if phyexam_data.date < dtoday %}
+              <tr class="negative">
+                  <td>
+                      <a href="{% url 'unitmanagement:physical_exam_details' phyexam_data.id %}">{{phyexam_data.date}}</a>
+                  </td>
+                  <td >{{phyexam_data.date_next_exam}}</td>
+                  <td >{{phyexam_data.veterinary}}</td>
+              </tr>
+              {%else%}
+              <tr>
+                  <td>
+                      <a href="{% url 'unitmanagement:physical_exam_details' phyexam_data.id %}">{{phyexam_data.date}}</a>
+                  </td>
+                  <td >{{phyexam_data.date_next_exam}}</td>
+                  <td >{{phyexam_data.veterinary}}</td>
+              </tr>
+              {%endif%}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment{{active_3}}" data-tab="third">
+    <table id="tabledata1" class="ui three column celled table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Duration</th>
+                <th class="center aligned">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for health_data in health_data %}
+            <tr>
+                <td>
+                    <a href="{% url 'unitmanagement:health_details' health_data.id %}">{{health_data.date}}</a>
+                </td>
+                <td>{{health_data.duration}}</td>
+                {% if health_data.status == "Approved" %}
+                <td class="center aligned positive three column wide">
+                    <i class="icon checkmark"></i>{{health_data.status}}
+                </td>
+                {% else %}
+                    <td class="center aligned warning three column wide">
+                        <i class="hourglass half icon"></i>{{health_data.status}}
+                    </td>
+                {% endif%}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="ui modal">
+        <i class="close icon"></i>
+        <div class="header">
+          Stamp Image
+        </div>
+        <div class='content' id = 'id_stamp_data'>
+          
+        </div>
+      
+</div>
+
+{% else %}
+<div class="ui icon message">
+  <i class="hand paper outline icon"></i>
+  <div class="content">
+    <div class="header">
+      You don't have a K9
+    </div>
+    <p>You cannot access this view because you don't have a k9.</p>
+  </div>
+</div>
+{% endif %}
+
+<input type="hidden" value="{{age}}" id = 'age'>
+<input type="hidden" value="{{user.position}}" id = 'handler'>
+<script src="{% static 'js/health_history.js' %}"></script>
+{% endblock %}

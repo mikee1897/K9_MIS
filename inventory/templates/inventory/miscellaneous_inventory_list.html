@@ -1,0 +1,58 @@
+{% extends "profiles/sidebar_inventory.html" %}  
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<table id="tabledata" class="ui five column celled table responsive nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>Miscellaneous</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for data in data %}
+            <tr>
+                <td>
+                    <a href="{% url 'inventory:miscellaneous_inventory_details' data.id %}">{{ data.miscellaneous }} {{ data.uom }}</a>
+                </td>
+                <td>{{ data.misc_type }}</td>
+                <td>{{ data.quantity }}</td>
+                <td>{{data.price}}</td>   
+                <td class="two wide center aligned">
+                    <a href="{% url 'inventory:miscellaneous_count_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal list ol icon"></i>
+                    </a>
+                    <a href="{% url 'inventory:miscellaneous_receive_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal dolly flatbed icon"></i>
+                    </a>
+                    <a href="{% url 'inventory:miscellaneous_subtract_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal truck icon"></i>
+                    </a>
+                </td>    
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript">
+               
+        $(document).ready(function() {
+	        $('#tabledata').DataTable();
+            // $(function() {
+            //     $( ".message" ).slideUp( 4000, function() {
+                   
+            //     });
+            // });
+        } );
+    </script>
+ {% endblock %}

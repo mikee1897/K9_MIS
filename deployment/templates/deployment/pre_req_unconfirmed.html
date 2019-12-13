@@ -1,0 +1,74 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load index %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h2 class="ui header">Pre-Req Items</h2>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="ui green message"> {{ message }}</div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<div class = "ui segment">
+		<table id="tabledata" class="ui three column celled table">
+        	<thead class="center aligned">
+                <th>Item</th>
+                <th>Quantity Needed</th>
+                <th></th>
+    		</thead>
+    		<tbody>
+				{% for data in item_list %}
+    				<tr>
+                        <td class="center aligned">{{ data.0 }}</td>
+                        <td class="center aligned">{{ data.1 }}</td>
+                        <td class="center aligned">
+                            <button class="ui tiny basic blue button btn_modal" data-type='{{ data.0 }}'>Select</button>
+                        </td>
+    				</tr>
+				{% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="ui modal" id='id_modal_data'>
+
+</div>
+<script>
+
+        $( ".btn_modal" ).bind('click', function() {
+               var url = 'pre_req_unconfirmed/ajax_load_pre_req';
+               item_type = $(this).data("type");
+               
+               $.ajax({
+                   url: url,
+                   data: {
+                   'item_type': item_type,
+                   },
+                   success: function (data) {
+                   $("#id_modal_data").html(data);
+                   }
+               });
+               $('#id_modal_data').modal('show');
+           });
+   </script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+
+        $('.menu .item').tab();
+    });
+
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+</script>
+{% endblock %}

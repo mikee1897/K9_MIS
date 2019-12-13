@@ -1,0 +1,70 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<table id="tabledata" class="ui six column celled table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Serial Number</th>
+            <th>Breed</th>
+            <th>Sex</th>
+            <th>Age</th>
+            <th>Source</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if request.session.session_user_position == "Handler" %}
+        <tr>
+            <td>
+                <a href="{% url 'unitmanagement:health_history' data.id %}">{{ data.name }}</a>
+            </td>
+            <td>
+            {{ data.serial_number }}
+            </td>
+
+            <td>{{ data.breed }}</td>
+            <td>{{ data.sex }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.source }}</td>
+
+        </tr>
+        {% endif %}
+
+        {% if request.session.session_user_position == "Veterinarian" %}
+        {% for data in data %}
+        <tr>
+            <td>
+                <a href="{% url 'unitmanagement:health_history' data.id %}">{{ data.name }}</a>
+            </td>
+            <td>
+            {{ data.serial_number }}
+            </td>
+
+            <td>{{ data.breed }}</td>
+            <td>{{ data.sex }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.source }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('#tabledata').DataTable({
+        "order": [[ 0, "asc" ]]
+        });
+    } );
+    
+</script>
+ {% endblock %}

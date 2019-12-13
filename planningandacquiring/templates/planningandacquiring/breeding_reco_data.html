@@ -1,0 +1,79 @@
+{% load static %}
+{% block content %}
+<center>
+    <h4 class='ui horizontal divider header'>Sire (Father)</h4>
+  </center>
+<table id="tabledata2" class="ui eight column inverted blue celled collapsing
+small table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Breed</th>
+            <th>Capability</th>
+            <th>Birth Success</th>
+            <th>Litter</th>
+            <th>Sick Record</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for f, s, b in flist %}
+        <tr>
+            <td class="center aligned"> 
+                <input type="radio" id="radiof" name="radiof" value="{{f.id}}">
+            </td>
+            <td>
+                <a href="#" class="show_modal" id='{{f.id}}' style="color:powderblue;">{{f.name}}</a>
+            </td>
+            <td>{{f.age}}</td>
+            <td>{{f.breed}}</td>
+            <td>{{f.capability}}</td>
+            <td>{{b}}%</td>
+            <td>{{f.litter_no}}</td>
+            <td>{{s}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="ui modal" id = 'id_health_data'>
+   
+</div>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+        $('#tabledata2').DataTable({
+            "order": [[ 5, "desc" ],[ 6, "desc" ],[ 7, "asc" ]]
+        });
+
+        $("input[name='radiof']").change(function () {
+            var id = $("input[name='radiof']:checked"). val();
+        });
+
+        $( ".show_modal" ).bind('click', function() {
+            var id = $(this).attr('id')
+            var k9 = $(this).text();
+            $('#id_health_data').modal('show');
+            
+            var url = 'ajax_load_health';  
+            $('#id_health_data').modal('show');
+
+            $.ajax({                      
+                url: url,                    
+                data: {
+                'id': id,
+                'k9': k9,      
+                },
+                success: function (data) {   
+                $("#id_health_data").html(data); 
+                }
+            });
+
+        });
+	});
+
+</script>
+{% endblock %}

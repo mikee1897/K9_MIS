@@ -1,0 +1,92 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+
+<h2 class="ui header">
+ {{Title}}
+  <div class="sub header">Input K9 data here</div>
+</h2>
+<div class="ui segment">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ style }} row"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+<form class = "ui form" enctype="multipart/form-data" method="POST" id="myForm"  data-url="">
+    {% csrf_token %}
+    <div class="field">
+        <label>Supplier</label>
+        {{form.supplier}}
+    </div>
+    
+    <div id = "id_supplier_data"></div>
+
+    <h4 class="ui horizontal divider header">
+        <i class="teal paw icon"></i>
+    </h4>
+
+    <div class="inline three fields">
+        <div class="field">
+          <label>How many K9's?</label>
+          <input type="number" name="count" id="count">
+        </div>
+        <div class="field"></div>
+        <div class="field"></div>
+    </div>
+
+    <div id="id_form_data"></div>
+
+    <div class="ui right aligned basic segment" style="padding: 0px;">
+        <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Next</button>
+    </div>
+    {{formset.management_form}}
+</form>
+</div>
+
+<script>
+
+    $(document).ready(function() {
+        $(function() {
+            $('#myForm .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });            
+        });
+
+        $("#id_supplier").change(function () {
+        var url = 'ajax_load_supplier';  // get the url of the `load_handler` view
+        var supplierId = $(this).val();  // get the selected handler ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-handler/)
+        data: {
+            'supplier': supplierId       // add the handler id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_handler` view function
+            $("#id_supplier_data").html(data);  // replace the contents of the #id_handler_data input with the data that came from the server
+        }
+        });
+
+        });
+
+        $("input[name='count']").change(function () {
+            var url = 'ajax_load_form_procured';  
+            var number = $("input[name='count']").val();
+            if(number==null){
+                number = 0
+            }
+
+            var num = number
+            
+            $.ajax({                       
+            url: url,                    
+            data: {
+                'num': num      
+            },
+            success: function (data) {   
+                $("#id_form_data").html(data);  
+            }
+            });
+        });
+
+    });
+</script>
+
+{% endblock %}

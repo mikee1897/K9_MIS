@@ -1,0 +1,93 @@
+<div class = "ui segment" >
+
+<table id="tabledata1" class="ui celled table">
+        	<thead>
+          	<tr>
+				<th>K9</th>
+                <th>Handler</th>
+
+          	</tr>
+
+    		</thead>
+    		<tbody>
+
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{appointment.k9}}</td>
+                <td>{{appointment.k9.handler}}</td>
+            </tr>
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+
+</div>
+
+
+
+<script>
+     $('#tabledata1').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+
+        $('.menu .item').tab();
+
+</script>
+
+
+<script>
+         function getCheckboxesValues(){
+            return [].slice.apply(document.querySelectorAll("input[type=checkbox]"))
+           .filter(function(c){ return c.checked; })
+           .map(function(c){ return c.value; });
+            }
+
+        function toObject(arr) {
+         var rv = {};
+        for (var i = 0; i < arr.length; ++i)
+        rv[i] = arr[i];
+        return rv;
+        }
+
+
+         $("input[name='k9']").change(function() {
+         var stringified = "";
+         var date = $("input[name='date']").val();
+
+         try {
+            var k9 = getCheckboxesValues();
+            var json = toObject(k9);
+            var stringified = JSON.stringify(json);
+            }
+            catch(err) {
+            alert(err);
+            }
+
+         if (date != ""){
+
+         $.ajax({
+        url: 'ajax_load_checkups',
+        data: {
+          'fullstring': stringified,
+          'date': date
+        },
+        success: function (data) {
+         $("#id_scheduled_data").html(data);
+
+        },
+        error:function(msg)
+                {
+                alert(msg);
+                }
+
+      });
+
+                           }
+
+
+      });
+
+
+</script>
+

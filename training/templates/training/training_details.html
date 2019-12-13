@@ -1,0 +1,266 @@
+{% extends "profiles/sidebar_training.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui two column grid">
+    <div class="column">
+        <center>
+            <img src="{{data.image.url}}" alt="" width="400">
+        </center>
+    </div>
+    <div class="column">
+        <table class="ui small celled table">
+            <thead>
+                <tr>
+                    <th class="six wide">Name</th>
+                    <td>{{data.name}}</td>
+                </tr>
+                <tr>
+                    <th class="six wide">Serial Number</th>
+                    <td>{{data.serial_number}}</td>
+                </tr>
+                <tr>
+                    <th class="six wide">Training Level</th>
+                    <td>{{data.training_level}}</td>
+                </tr>
+                <tr>
+                    <th class="six wide">Capability</th>
+                    <td>{{data.capability}}</td>
+                </tr>
+                <tr>
+                    <th class="six wide">Breed</th>
+                    <td>{{data.breed}}</td>
+                </tr>
+                <tr>
+                    <th class="six wide">Age</th>
+                    <td>{{data.age}}</td>
+                </tr>
+                <tr>
+                    <th class="six wide">Source</th>
+                    <td>{{data.source}}</td>
+                </tr>
+                {% if data.training_status == 'Retired' %}
+                <tr>
+                    <th class="six wide">Retired Year</th>
+                    <td>{{data.year_retired}}</td>
+                </tr>
+                {% endif %}
+                {% if data.death_date %}
+                <tr>
+                    <th class="six wide">Date Died</th>
+                    <td>{{data.death_date}}</td>
+                </tr>
+                {% endif %}
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="ui info message">
+    <i class="close icon"></i>
+    <div class="header">
+        Clarrifications
+    </div>
+    <ul class="list">
+        <li>A pending status indicates that the K9 has yet to complete the stage.</li>
+    </ul>
+</div>
+
+{% if train == None%}
+<div class="ui info message">
+    <ul class="list">
+        <li>This K9 has yet to be trained.</li>
+    </ul>
+</div>
+{% else %}
+    <div class="ui segment">
+        <div class="ui raised segment ">
+            <div class="paragraph">
+                <div class="medium line">
+                   <h4>Grade:
+                       {% if train.grade == '0' %}
+                       <label class="ui big red circular label">{{train.grade}}</label>
+                       {% elif train.grade == 'No Grade Yet' or train.grade == '' %}
+                       <label class="ui big orange circular label">No Grade Yet</label>
+                       {%else%}
+                       <label class="ui big green circular label">{{train.grade}}</label>
+                       {% endif %}
+                   </h4>
+                </div>
+            </div>
+        </div>
+        <table class="ui three column celled table">
+            <thead>
+                <tr>
+                    <th>Stage 1.1: Basic Handling</th>
+                    <th><b>Topic:</b>
+                        <br>- Orientation / K9 History
+                        <br>- Bonding
+                        <br>- K9 Language
+                        <br>- Familiarization
+                        <br>- Socialization
+                        <br>- Acclimatization
+                    </th>
+                    {% if train.stage1_1 != '0' %}
+                    <td>Passed</td>
+                    {%elif train.stage1_1 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Stage 1.2: Drive Development</th>
+                    <th><b>Topic:</b>
+                        <br>- Timing
+                        <br>- Voice Tones and Effects
+                        <br>- Praise and Reward
+                        <br>- Introduction to Training Equipments/Aides
+                        <br>- K9 Training Areas
+                    </th>
+                    {% if train.stage1_2 != '0' %}
+                    <td>Passed</td>
+                    {%elif  train.stage1_2 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Stage 1.3: Introduction to Search</th>
+                    <th><b>Topic:</b>
+                        <br>- Hide and Seek
+                        <br>- Basic Search Works
+                        <br>- Search Pattern and Pattern of Behavior
+                        <br>- Reinforcement
+                        <br>- Handling of Training Equipments/Aides
+                        <br>- Alert Signs
+                        <br>- Handling Skills Development
+                    </th>
+                    {% if train.stage1_3 != '0' %}
+                    <td>Passed</td>
+                    {%elif train.stage1_3 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                   <th>Stage 2.1: Indication / Printing Introduction</th>
+                    <th><b>Topic:</b>
+                        <br>- Indiciation/Intensity Sit
+                        <br>- Substance/Printing Process
+                        <br>- Proper Use of Training Substances/Aides
+                        <br>- Contamination and decontamination
+                    </th>
+                    {% if train.stage2_1 != '0' %}
+                    <td>Passed</td>
+                    {%elif train.stage2_1 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                   <th>Stage 2.2: Scent Discrimination / Distraction</th>
+                    <th><b>Topic:</b>
+                        <br>- Introduction to New Odor and Mixed Odors
+                        <br>- Wind Direction
+                        <br>- Mind Focus
+                        <br>- Stress Level
+                    </th>
+                    {% if train.stage2_2 != '0' %}
+                    <td>Passed</td>
+                    {%elif train.stage2_2 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Stage 2.3: Volume Odor Discrimination / Safety Measure</th>
+                    <th><b>Topic:</b>
+                        <br>- Minor Odor Discrimination
+                        <br>- Residue Control
+                        <br>- Passive Indication
+                        <br>- Mind Control on Safety Measure
+                        <br>- Leash Handling/Control
+                        <br>- Finds (Low, Medium, High)
+                        <br>- Difficulty of Finds (Easy, Medium, Hard)
+                    </th>
+                    {% if train.stage2_3 != '0' %}
+                    <td>Passed</td>
+                    {%elif train.stage2_3 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Stage 3.1: Field Search Introduction</th>
+                    <th><b>Topic:</b>
+                        <br>- Field Searches
+                        <br>- Area Assessment
+                        <br>- Target Assessment
+                        <br>- Indoor/Outdoor Searches
+                    </th>
+                    {% if train.stage3_1 != '0' %}
+                    <td>Passed</td>
+                    {%elif train.stage3_1 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Stage 3.2: Field Proofing</th>
+                    <td></td>
+                    {% if train.stage3_2 != '0' %}
+                    <td>Passed</td>
+                    {%elif train.stage3_2 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Stage 3.3: On-The-Job Training/Field</th>
+                    <td></td>
+                    {% if train.stage3_3 != '0' %}
+                    <td>Passed</td>
+                    {%elif train.stage3_3 == '0' and train.grade == '0' and train.remarks is not None%}
+                    <td>Failed</td>
+                    {%else%}
+                    <td>Pending</td>
+                    {% endif %}
+                </tr>
+            </thead>
+        </table>
+        <label class="ui large teal circular label">Remarks</label>
+        <div class="ui basic segment" style="padding:5px;margin-top: 0px;">
+            <p style="padding:2px;">{{train.remarks}}</p>
+        </div>
+
+    </div>
+{% endif %}
+
+<div class="ui basic segment">
+    <a href="{% url 'training:training_records'%}" class="ui blue button">Back</a>
+</div>
+<script type="text/javascript">
+
+     $(document).ready(function() {
+        $('#tabledata1');
+        $('#tabledata2');
+        $('.menu .item').tab();
+    });
+
+</script>
+{% endblock %}

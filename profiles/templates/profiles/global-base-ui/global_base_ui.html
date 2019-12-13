@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>K9 Coast Guard</title>
+    <link rel="icon" href="{% static 'images/k9_logo.png' %}">
+
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'Semantic-UI/semantic.min.js' %}"></script>
+    <script src="{% static 'DataTables/datatables.js' %}"></script>
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
+    <script src="{% static 'Chart.js-2.8.0/dist/Chart.bundle.min.js' %}"></script>
+    <script src="js/accordion.js"></script>
+
+    <script src="{% static 'fullcalendar-4.1.0/packages/core/main.js' %}"></script>
+    <script src="{% static 'fullcalendar-4.1.0/packages/daygrid/main.js' %}"></script>
+    <script src="{% static 'fullcalendar-4.1.0/packages/timegrid/main.js' %}"></script>
+    <script src="{% static 'fullcalendar-4.1.0/packages/moment/main.min.js' %}"></script>
+
+
+    <link rel="stylesheet" href="{% static 'Semantic-UI/semantic.min.css' %}">
+    <link rel="stylesheet" href="{% static 'DataTables/datatables.css' %}">
+    <link rel="stylesheet" href="{% static 'Chart.js-2.8.0/dist/Chart.min.css' %}">
+
+    <link href="{% static 'fullcalendar-4.1.0/packages/core/main.css' %}" rel='stylesheet' />
+    <link href="{% static 'fullcalendar-4.1.0/packages/daygrid/main.css' %}" rel='stylesheet' />
+    <link href="{% static 'fullcalendar-4.1.0/packages/timegrid/main.css' %}" rel='stylesheet' />
+
+    <!--Make this local-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+
+</head>
+<body class="Site">
+    <!--START OF TOP MENU-->
+    <main class="Site-content">
+        <div class="ui inverted top attached menu" style="height:50px;">
+                <a class="item" style="width: 175px;" id = "menu"><i class="sidebar icon"></i>Menu</a>
+                <div class="item">
+                    <a class="text" href="{% url 'profiles:profile'%}">
+                        <img class="ui avatar image" src="{{user.image.url}}" alt="">
+                        {{request.session.session_username}}
+                    </a>
+                    <span></span>
+                </div>
+                <div class="item">
+                    <strong style="color:orangered;">{{request.session.session_user_position}}</strong>
+                </div>
+                <div class="ui right borderless inverted menu">
+                    <div class="ui item" style='border-style: none;'>
+                        {% include 'profiles/global-base-ui/notification.html' %}
+                    </div>
+                    <div class="ui item">
+                        <img  class="ui avatar image" src="{% static 'images/k9_logo.png' %}">
+                        <span style="color: orangered;">PHILIPPINE K9 COAST GUARD</span>
+                    </div>
+
+                </div>
+        </div>
+                <!--END OF TOP MENU-->
+            <!--sidebar_menu.html-->
+            {% block sidebar %}
+            {% endblock%}
+    </main>
+</body>
+<style>
+        .Site {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        }
+
+        .Site-content {
+        flex: 1;
+        }
+    </style>
+
+
+
+    {% block script%}
+    {% endblock%}
+
+</html>

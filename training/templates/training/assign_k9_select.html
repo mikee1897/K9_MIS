@@ -1,0 +1,122 @@
+{% extends "profiles/sidebar_training.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ Title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui segment">
+   <div class='ui grid'>
+        <div class='two column row'>
+            <div class='column'>
+                <table class="ui celled orange table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <td>{{k9.name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>
+                            <td>{{k9.age}}</td>
+                        </tr>
+                        <tr>
+                            <th>Sex</th>
+                            <td>{{k9.sex}}</td>
+                        </tr>
+                        <tr>
+                            <th>Breed</th>
+                            <td>{{k9.breed}}</td>
+                        </tr>
+                        <tr>
+                            <th>Capability</th>
+                            <td>{{k9.capability}}</td>
+                        </tr>
+
+                    </thead>
+                </table>
+            </div>
+            <div class='column'>
+                <center>
+                    <img src="{{k9.image.url}}" alt="" width="280">
+                </center>
+            </div>
+
+        </div>
+   </div>
+
+   <h4 class="ui horizontal divider header">
+        <i class="user icon"></i>
+        Handler
+    </h4>
+
+    <form class = "ui fluid form" method="POST">
+        {% csrf_token %}
+        <div class="ui horizontal segments">
+            <div class="ui segment" style="width:5%">
+                <table class="ui celled inverted orange table" id = 'tabledata'>
+                    <thead>
+                        <th class="three wide"></th>
+                        <th>Name</th>
+                        <th class="three wide">K9 {{k9.capability}} Handled</th>
+                    </thead>
+                    <tbody>
+                        {% for a in form.handler %}
+                        {% for g in g%} {% if forloop.counter == forloop.parentloop.counter %}
+                        <tr>
+                            <td class="center aligned">{{a.tag}}</td>
+                            <td>{{a.choice_label}}</td>
+                            <td>{{g}}</td>
+                        </tr>
+                        {%endif%}{% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="ui segment" id='id_handler_data' style="width:5%">
+                
+            </div>
+        </div>
+
+        <div class="ui center aligned basic segment" style="padding: 0px;">
+            <button id = "submit" class = "ui button green" type="submit" >Submit</button>
+        </div>
+
+    </form>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata').DataTable({
+        "order": [[ 2, "desc" ]]
+        });
+    });
+</script>
+
+
+<script>
+    $("input[name='handler']").change(function () {
+      var url = 'ajax_load_handler';  // get the url of the `load_handler` view
+      var handlerId = $("input[name='handler']:checked"). val(); // get the selected handler ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-handler/)
+        data: {
+          'handler': handlerId       // add the handler id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_handler` view function
+          $("#id_handler_data").html(data);  // replace the contents of the #id_handler_data input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+ {% endblock %}

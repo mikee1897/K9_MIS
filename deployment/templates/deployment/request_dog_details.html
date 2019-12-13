@@ -1,0 +1,358 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load index %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="ui green message"> {{ message }}</div>
+    {% endfor %}
+{% endif %}
+<div class="ui segment" style="padding:20px;">
+<h1 class = "ui header">Request Details for {{data2.requester}}
+<div class="sub header">Check request details and schedule units for deployment here</div></h1>
+</div>
+
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">Request Details</a>
+    <a class="item" data-tab="second">Schedule K9s</a>
+</div>
+
+<div class="ui tab segment active" data-tab="first">
+  <div class="ui raised segment">
+    <table class="" style="width:100%;">
+      <tr>
+        <td><strong>Location: </strong>{{data2.location}}</td>
+        <td><strong>Start date: </strong>{{data2.start_date}}</td>
+        <td><strong>End date: </strong>{{data2.end_date}}</td>
+          <td><strong>Duration: </strong>{{data2.duration}} days</td>
+        <td><strong>Contact number: </strong>{{data2.phone_number}}</td>
+        <td><strong>Email Address: </strong>{{data2.email_address}}</td>
+      </tr>
+        <tr></tr>
+    </table>
+  </div>
+  <div class="row">
+    <div class="column">
+      <div class="ui basic horizontal segments" style="border-style: none;">
+       <div class="ui basic segment" style="border-style: none;">
+
+           <center>
+        <div class="ui large statistic">
+  <div class="value">
+    {{data2.k9s_needed}}
+  </div>
+  <div class="label">
+    No. of K9s Required
+  </div>
+</div>
+</center>
+
+       </div>
+
+       <div class="ui basic segment" style="border-style: none;">
+         <label>No. of K9s Scheduled: </label>
+         {% if data2.k9s_deployed >= data2.k9s_needed %}
+             <span class="ui green circular label">{{data2.k9s_deployed}}</span>
+         {%else%}
+             <span class="ui orange circular label">{{data2.k9s_deployed}}</span>
+         {% endif %}
+         <table class="ui three column celled orange table">
+           <thead>
+             <tr>
+               <th>EDD K9s Scheduled</th>
+               <th>NDD K9s Scheduled</th>
+               <th>SAR K9s Scheduled</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <td>{{edd_deployed}}</td>
+               <td>{{ndd_deployed}}</td>
+               <td>{{sar_deployed}}</td>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+      </div>
+    </div>
+  </div>
+
+
+    <h2 class="ui header">
+    <i class="paw icon"></i>
+    <div class="content">
+      K9's Scheduled/Deployed
+    </div>
+  </h2>
+
+  {% if data2.status == "Done" %}
+  <table id="tabledata1" class="ui four column celled table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Serial Number</th>
+          <th>Capability</th>
+          <th>Handler</th>
+        </tr>
+    </thead>
+    <tbody>
+         {% for dogs_deployed in dogs_deployed %}
+        <tr>
+          <td>{{dogs_deployed.k9.name}}</td>
+          <td>{{dogs_deployed.k9.serial_number}}</td>
+          <td>{{dogs_deployed.k9.capability}}</td>
+          <td>{{dogs_deployed.k9.handler}}</td>
+        </tr>
+          {% endfor %}
+    </tbody>
+</table>
+ {%else%}
+ <table id="tabledata2" class="ui five column celled table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Serial Number</th>
+        <th>Capability</th>
+        <th>Personnel</th>
+          <th>Position</th>
+          <!--<th></th>-->
+      </tr>
+  </thead>
+  <tbody>
+        {% if tl_dog %}}
+        <tr>
+            <td>{{tl_dog.name}}</td>
+        <td>{{tl_dog.serial_number}}</td>
+        <td>{{tl_dog.capability}}</td>
+        <td>{{tl_dog.handler}}</td>
+        <td>Team Leader</td>
+        </tr>
+        {% endif %}
+       {% for dogs_deployed in dogs_deployed %}
+      <tr>
+        <td>{{dogs_deployed.k9.name}}</td>
+        <td>{{dogs_deployed.k9.serial_number}}</td>
+        <td>{{dogs_deployed.k9.capability}}</td>
+        <td>{{dogs_deployed.k9.handler}}</td>
+        <td>Handler</td>
+          <!--<td class="ui center aligned" style="width:15%;">-->
+           <!--<a href="{% url 'deployment:remove_dog_request' dogs_deployed.id %}" onclick="return confirm('Are you sure?')" class="ui red basic button">Pull-out</a>-->
+         <!--</td>-->
+      </tr>
+        {% endfor %}
+  </tbody>
+</table>
+ {% endif %}
+
+{% if data2.status == "Pending"%}
+
+ <form action="" method="post">
+        {% csrf_token %}
+        <div class="ui very padded segment">
+            <center>
+                <strong><label>Remarks: </label></strong>
+            <div class="ui input">
+            <input type="text" name="remarks" style="width:500px">
+            </div></center>
+        </div>
+            <center>
+        <div class="ui buttons">
+           <button class="negative ui button" name="deny" onclick="return confirm('Are you sure?')">Deny</button>
+           <div class="or"></div>
+           <button class="ui positive button" name="approve" onclick="return confirm('Are you sure?')">Approve</button>
+           </div></center>
+    </form>
+{%else%}
+<div class="ui very padded segment">
+  <strong>Remarks:</strong>
+  <p>{{data2.remarks}}</p>
+</div>
+{%endif%}
+
+</div>
+
+<div class="ui tab segment" data-tab="second">
+    <div class="ui raised segment">
+    <table class="" style="width:100%;">
+      <tr>
+        <td><strong>Location: </strong>{{data2.location}}</td>
+        <td><strong>Start date: </strong>{{data2.start_date}}</td>
+        <td><strong>End date: </strong>{{data2.end_date}}</td>
+          <td><strong>Duration: </strong>{{data2.duration}} days</td>
+        <td><strong>Contact number: </strong>{{data2.phone_number}}</td>
+        <td><strong>Email Address: </strong>{{data2.email_address}}</td>
+      </tr>
+    </table>
+  </div>
+<div class="row">
+    <div class="column">
+      <div class="ui basic horizontal segments" style="border-style: none;">
+       <div class="ui basic segment" style="border-style: none;">
+
+        <center>
+        <div class="ui large statistic">
+  <div class="value">
+    {{data2.k9s_needed}}
+  </div>
+  <div class="label">
+    No. of K9s Required
+  </div>
+</div>
+</center>
+
+       </div>
+
+
+       <div class="ui basic segment" style="border-style: none;">
+         <label>No. of K9s Scheduled: </label>
+         {% if data2.k9s_deployed >= data2.k9s_needed %}
+             <span class="ui green circular label">{{data2.k9s_deployed}}</span>
+         {%else%}
+             <span class="ui orange circular label">{{data2.k9s_deployed}}</span>
+         {% endif %}
+         <table class="ui three column celled orange table">
+           <thead>
+             <tr>
+               <th>EDD K9s Scheduled</th>
+               <th>NDD K9s Scheduled</th>
+               <th>SAR K9s Scheduled</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <td>{{edd_deployed}}</td>
+               <td>{{ndd_deployed}}</td>
+               <td>{{sar_deployed}}</td>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+      </div>
+    </div>
+  </div>
+
+    {% if user.position != "Handler" and user.position != "Team Leader" %}
+
+    <div class="ui info message">
+  <i class="close icon"></i>
+  <div class="header">
+    <i class="question icon"></i>Scheduling K9s
+  </div>
+  <ul class="list">
+      <li>Below is a list of available K9s that don't have conflicting schedules with the current request.</li>
+      <li>Currently deployed K9s can also be listed here as long as k9 has no conflicting schedules with the request.</li>
+      <li>Any of the K9s selected from the list will be scheduled and automatically deployed when the date of request arrives.</li>
+      <li>The current location will be listed by their last known deployment location(non-requests).</li>
+      <li>If a team has finished it's request, the team is immediately sent back to the last known deployment location.</li>
+  </ul>
+</div>
+
+  {% if data2.status == "Approved" and in_the_past == False %}
+  <form class="ui form" method="POST">
+    {% csrf_token %}
+    <table id="tabledata3" class="ui nine column celled table">
+          <thead>
+            <tr>
+              <th></th>
+                <th>Priority</th>
+              <th>Name</th>
+              <th>Serial Number</th>
+              <th>Capability</th>
+              <th>Handler</th>
+                <th>Current Location</th>
+                <th>Current Area</th>
+                <th>Distance</th>
+                <th>Maritime Count (Current Location)</th>
+                <th>Incident Count (Current Location)</th>
+                <th>View Schedule</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+
+        {% for idx, can_deploy in can_deploy_df.iterrows %}
+        <tr class="ui center aligned">
+            <td style="width:10%;">
+                <input type="checkbox" name="checks" value={{can_deploy.K9.id}}>
+              </td>
+            <td>{{idx|add_one}}</td>
+            <td>{{can_deploy.K9.name}}</td>
+             <td>{{can_deploy.K9.serial_number}}</td>
+            <td>{{can_deploy.K9.capability}}</td>
+            <td>{{can_deploy.K9.handler}}</td>
+            <td>{{can_deploy.Location.place}}</td>
+            <td>{{can_deploy.Area}}</td>
+            <td>{{can_deploy.Distance}} miles</td>
+            <td>{{can_deploy.Maritime}}</td>
+            <td>{{can_deploy.Incident}}</td>
+            <td><a href="{% url 'deployment:view_schedule' can_deploy.K9.id %}">View Schedule</a></td>
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+
+    <div class="ui basic center aligned segment" style="padding: 0px;">
+        <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Schedule K9s</button>
+    </div>
+  </form>
+
+             {% elif data2.status == "Done" or in_the_past == True %}
+
+          <div class="ui visible message">
+              <div class="header">
+            This Request is already Finished.
+          </div>
+          <p>No further action can be taken. This information only serves as historical reference.</p>
+          </div>
+
+        {% else %}
+
+        <div class="ui visible message">
+              <div class="header">
+            You must approve this request before you can deploy K9s!
+          </div>
+          <p>Go back to details tab to deny or approve request.</p>
+        </div>
+
+    {% endif %}
+
+{% else %}
+
+    <div class="ui visible message">
+      <div class="header">
+   You are not allowed to deploy k9s.
+  </div>
+
+  </div>
+
+{% endif %}
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('#tabledata2').DataTable({
+              "order": [[ 4, "desc" ]]
+        });
+        $('#tabledata3').DataTable({
+              "order": []
+        });
+
+        $('.menu .item').tab();
+    });
+
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+</script>
+{% endblock %}

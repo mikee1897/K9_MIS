@@ -1,0 +1,111 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load um_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="ui fluid container">
+        <div class="ui grid">
+            <div class="row">
+                <div class="column">
+                    <h1 class="ui header">{{ title }}
+                        <div class="sub header">{{ texthelp }}</div>
+                         {{geoform.media}}
+                    </h1>
+                    <div class="ui inverted segment">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="{{ style }} row"> {{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        <form class = "ui inverted form" method="POST">
+                           {% csrf_token %}
+                           <div class="two fields">
+                             <div class="field">
+                                 <label>Area</label>
+                                     {{form.area}}
+                             </div>
+
+                               <div class="field">
+                                 <label>City</label>
+                                     {{form.city}}
+                             </div>
+
+                           </div>
+                            <div class="field">
+                                <label>Place</label>
+                                    {{form.place}}
+                            </div>
+
+
+                            <div class="ui inverted right aligned segment" style="padding: 0px;">
+                                <button class = "ui button green" type="submit" >{{actiontype}}</button>
+                            </div>
+
+
+                          <div class="ui inverted placeholder segment">
+                            <div class="ui two column stackable center aligned grid">
+                              <div class="ui vertical divider"></div>
+                              <div class="top aligned row">
+                                <div class="column">
+                              
+                                    <label>Search Location</label>
+                                    <div class="ui fluid category search">
+                                      <div class="ui icon input">
+                                        {{geosearch.search}}
+                                        <i class="search icon"></i>
+                                      </div>
+                                      <div class="results"></div>
+                                    </div>
+                                    <br>
+                                    <button id = "btn_search" class="ui blue button" type="button">Search</button>
+
+                                    <div  id ="id_location_cards"></div>
+
+
+                                </div>
+                                <div class="column">
+
+                                    <label>Geotag Location</label>
+                                  <div id = "id_geomap">
+                                      {{geoform.point}}
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    $("#btn_search").click(function () {
+      var url = 'ajax_load_locations';  // get the url of the `load_locations` view
+      var search_query = $("#id_search").val();  // get the search query from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request
+        data: {
+          'search_query': search_query, // add the search query to the GET parameters
+          'width' : {{width}}
+        },
+        success: function (data) {   // `data` is the return of the `load_locations` view function
+          $("#id_location_cards").html(data);  // replace the contents of the #id_location_cards input with the data that came from the server
+        },
+            error:
+         function(xhr){
+             alert("Error: " + xhr.statusText);
+             //alert(xhr.responseText) --> to get the full details of error
+             return false;
+             }
+      });
+
+    });
+  </script>
+
+
+{% endblock%}

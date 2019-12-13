@@ -1,0 +1,249 @@
+{% load index %}
+{% load widget_tweaks %}
+
+    <div id = "id_unit_selected_update_data" class = "ui segment">
+
+    <div class="ui right aligned segment" style="padding: 0px;">
+                                <button id = "select_sched" class = "ui right labeled icon button green" type="submit" >
+                                    <i class="calendar outline icon"></i>
+                                    Schedule Units</button>
+                            </div>
+
+    <div id = "sched" class="ui basic modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Schedule Units
+  </div>
+
+    <div class = "ui inverted segment">
+        <div class="scrolling content">
+    <form class = "ui inverted form" enctype="multipart/form-data" method="POST" id="myForm"  data-url="">
+    {% csrf_token %}
+        {{scheduleFormset}}
+
+        {% for form in formset %}
+    <div class="formset_class" id="{{ form.prefix }}-row">
+         <div class="two fields">
+            <div class="field">
+                <label>Date</label>
+                {{form.schedule}}
+            </div>
+            <div class="field">
+                <label>Units</label>
+                {{form.unit}}
+            </div>
+        </div>
+
+    </div>
+
+        {% endfor %}
+
+        {{formset.management_form}}
+
+    </form>
+        </div>
+    </div>
+
+  <div class="actions">
+    <div class="ui black deny button">
+      Cancel
+    </div>
+    <div class="ui positive right labeled icon button">
+      Confirm
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>
+
+
+<div class="ui inverted placeholder segment">
+  <div class="ui two column stackable center aligned grid">
+    <div class="ui vertical divider"></div>
+    <div class="top aligned row">
+      <div class="column">
+
+          <div class="ui inverted segment">
+          <h1 class="ui header">All Available Units</h1>
+          </div>
+
+          {% if can_deploy %}
+
+		<table id="tabledata3" class="ui celled table">
+        	<thead>
+          	<tr>
+
+				<th>K9</th>
+                <th>Handler</th>
+                <th>Capability</th>
+
+
+          	</tr>
+
+    		</thead>
+    		<tbody>
+            {% for k9 in can_deploy %}
+            <tr>
+                        <td>{{k9}}</td>
+                        <td>{{k9.handler}}</td>
+		                <td>{{k9.capability}}</td>
+
+            </tr>
+             {% endfor %}
+
+
+        </tbody>
+    </table>
+
+        {% else %}
+
+          No more units to deploy
+
+          {% endif %}
+
+      </div>
+      <div class="column">
+
+            <div class="ui inverted segment">
+          <h1 class="ui header">To be Scheduled for Deployment</h1>
+            </div>
+
+          {% if temp_deploy %}
+
+          <table id="tabledata4" class="ui celled table">
+        	<thead>
+          	<tr>
+                <th></th>
+				<th>K9</th>
+                <th>Handler</th>
+                <th>Capability</th>
+                <th>Port</th>
+          	</tr>
+
+    		</thead>
+    		<tbody>
+            {% for item in temp_deploy %}
+            <tr data-group = "load_unit_selected" >
+                        <td>{{item.k9|render_k9_checkbox:selected_list}}</td>
+                        <td>{{item.k9}}</td>
+                        <td>{{item.k9.handler}}</td>
+		                <td>{{item.k9.capability}}</td>
+                        <td>{{ item.location }}</td>
+
+            </tr>
+             {% endfor %}
+
+
+        </tbody>
+    </table>
+
+           {% else %}
+
+          Select units to deploy
+
+          {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        </div>
+
+
+    <script>
+        $( "#select_sched" ).click(function() {
+        $('#sched').modal('show');
+        });
+
+
+        $(function() {
+            $('#myForm .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });
+        });
+
+    </script>
+
+<script>
+
+     function getCheckboxesValues(){
+    return [].slice.apply(document.querySelectorAll("input[type=checkbox]"))
+           .filter(function(c){ return c.checked; })
+           .map(function(c){ return c.value; });
+            }
+
+
+    function toObject(arr) {
+        var rv = {};
+        for (var i = 0; i < arr.length; ++i)
+        rv[i] = arr[i];
+        return rv;
+        }
+
+     $("input[name='k9']").change(function () {
+
+      var url = 'ajax_load_units_selected';
+      var k9 = getCheckboxesValues();
+      var arrayLength = k9.length;
+      var json = toObject(k9);
+      var stringified = JSON.stringify(json);
+
+      $.ajax({
+        url: url,
+        data: {
+           'fullstring': stringified,
+        },
+        success: function (data) {
+         $("#id_unit_selected_data").html(data);
+
+        },
+
+      });
+
+    });
+
+</script>
+
+
+<script>
+
+$("input[name='k9']").change(function(){
+
+try{
+    var attr = $(this).closest("tr").attr("data-group");
+
+
+    if(attr == "load_unit_selected" && (! $(this).is(':checked')) ){
+         // The checkbox that was clicked
+        var actor = $(this);
+
+        // The status of that checkbox
+        var checked = actor.prop('checked');
+
+        // The value of the checkbox
+        var group = actor.val();
+
+        // All checkboxes of the same value
+        var checkboxes = $('input[type="checkbox"][value="' + group + '"]');
+
+
+        // All checkboxes excluding the one that was clicked
+        var otherCheckboxes = checkboxes.not(actor);
+
+
+        checkboxes.each(function( ) {
+                if($(this).closest("tr").attr("data-group") == "load_unit"){
+                    $(this).closest("tr").show();}
+
+        });
+
+     }
+
+
+  }
+catch(err){alert(err);}
+
+
+});
+</script>

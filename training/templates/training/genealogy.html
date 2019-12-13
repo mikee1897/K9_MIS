@@ -1,0 +1,62 @@
+{% extends "profiles/sidebar_training.html" %}
+{% block content %}
+{% load training_tags %}
+
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">Ancestors of {{ k9 }}</h3>
+</div>
+<div class= " ui segment">
+<table id="tabledata1" class="ui six column celled table">
+    <thead>
+    <tr>
+        <th>K9</th>
+        <th>Mother</th>
+        <th>Skill (Mother)</th>
+        <th>Father</th>
+        <th>Skill {Father)</th>
+        <th>Generation (Inverted)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for k9 in k9_genealogy %}
+    <tr>
+    <td>{{k9.o}}</td>
+    <td>{{k9.m}}</td>
+        <td>{{k9.m.capability}}</td>
+    <td>{{k9.f}}</td>
+        <td>{{k9.f.capability}}</td>
+        <td>{{k9.depth|to_ordinal}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<button id = 'graph_btn' class="ui blue button" type = "button">Toggle Ancestral Tree</button>
+
+<div id = "graph">
+ {% if tree %}
+ {{ tree|safe }}
+{% endif %}
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable({
+        "order": [[ 3, "asc" ]]
+    });
+        $('.menu .item').tab();
+    });
+
+        $(document).ready(function(){
+        $('#graph').show();
+
+        $('#graph_btn').on("click", function(e){
+               $('#graph').toggle();
+         });
+     });
+
+</script>
+
+ {% endblock %}

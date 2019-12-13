@@ -1,0 +1,89 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+<h1>{{Title}}</h1>
+{% if messages %}
+    {% for message in messages %}
+        <div class="{{ style }}">{{message}}</div>
+    {% endfor %}
+{% endif %}
+
+
+<div class="ui fluid container">
+    <div class="ui inverted segment">
+    <form class="ui inverted equal width form" action="{% url 'planningandacquiring:add_breed_form' %}" method="POST">
+        {% csrf_token %}
+        <div class="fields">
+            <div class="field">
+                <label>Breed</label>
+                {{form.breed}}
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field">
+                <label>Life Span (Years)</label>
+                {{form.life_span}}
+            </div>
+            <div class="field">
+                <label>Litter Number</label>
+                {{form.litter_number}}
+            </div>
+            <div class="field">
+                <label>Value</label>
+                {{form.value}}
+            </div>
+            <div class="field">
+                <label>Sex</label>
+                {{form.sex}}
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field">
+                <label>Temperament</label>
+                {{form.temperament}}
+            </div>
+            <div class="field">
+                <label>Colors</label>
+                {{form.colors}}
+            </div>
+        </div>
+
+       <div class="fields">
+            <div class="field">
+                <label>Weight (kg)</label>
+                {{form.weight}}
+            </div>
+            <div class="field">
+                <label>Male Height (cm)</label>
+                {{form.male_height}}
+            </div>
+            <div class="field">
+                <label>Female Height (cm)</label>
+                {{form.female_height}}
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field">
+                <label>Skill Recommendation</label>
+                {{form.skill_recommendation}}
+            </div>
+            <div class="field">
+                <label>Skill Recommendation</label>
+                {{form.skill_recommendation2}}
+            </div>
+            <div class="field">
+                <label>Skill Recommendation</label>
+                {{form.skill_recommendation3}}
+            </div>
+        </div>
+
+        <div class="ui inverted right aligned segment" style="padding: 0px;" style="border-width: 0px;">
+            <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+
+{% endblock %}

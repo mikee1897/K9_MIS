@@ -1,0 +1,114 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="{{style}}" > {{ message }}</div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui segment" data-tab="first">
+    <div class="ui info message">
+        <ul class="list">
+            <li>Items that are Done with no action to Follow-up will expire in 1
+           week (7 Days). </li>
+        </ul>
+    </div>
+    <table id="tabledata1" class="ui six column celled table">
+        <thead class="center aligned">
+            <tr>
+                <th>Date</th>
+                <th>K9</th>
+                <th>Duration</th>
+                <th>Veterinarian</th>
+                <th>Follow-Up</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="center aligned">
+            {% for data in data2 %}
+                {% for days in data_arr %}{% if forloop.counter == forloop.parentloop.counter %}
+                    {% if days < 0 %}
+                        <tr class="warning">
+                            <td>{{data.date|date:'Y-m-d'}}</td>
+                            <td>{{data.dog}}</td>
+                            {% if days < 0 %}
+                                {% if days == 1 %}
+                                <td>{{data.expire}} day until Expiration Date: {{data.expire_date}}</td>
+                                {% else %}
+                                <td>{{data.expire}} days until Expiration Date: {{data.expire_date}}</td>
+                                {% endif %}
+                            {% else %}
+                                {% if days == 1 %}
+                                <td>{{days}} day until Medication Done : {{data.date_done}}</td>
+                                {% else %}
+                                <td>{{days}} days until Medication Done : {{data.date_done}}</td>
+                                {% endif %}
+                            {% endif %}
+                            <td>{{data.veterinary}}</td>
+                            {% if data.follow_up == True and data.follow_up_done == True %}
+                            <td>Done</td>
+                            {% elif data.follow_up == True and data.follow_up_date == None and data.follow_up_done == False%}
+                            <td>Follow-up Requested</td>
+                            {% elif data.follow_up_date == None %}
+                            <td>No Follow-Up</td>
+                            {% else %}
+                            <td>{{data.follow_up_date|date:'Y-m-d'}}</td>
+                            {% endif %}
+                            <td class="center aligned three wide">
+                                <a href="{% url 'unitmanagement:health_details' data.id %}"
+                                class="ui basic blue button">Select</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr  class="positive">
+                            <td>{{data.date|date:'Y-m-d'}}</td>
+                            <td>{{data.dog}}</td>
+                            {% if days < 0 %}
+                                {% if days == 1 %}
+                                <td>{{data.expire}} day until Expiration Date: {{data.expire_date}}</td>
+                                {% else %}
+                                <td>{{data.expire}} days until Expiration Date: {{data.expire_date}}</td>
+                                {% endif %}
+                            {% else %}
+                                {% if days == 1 %}
+                                <td>{{days}} day until Medication Done : {{data.date_done}}</td>
+                                {% else %}
+                                <td>{{days}} days until Medication Done : {{data.date_done}}</td>
+                                {% endif %}
+                            {% endif %}
+                            <td>{{data.veterinary}}</td>
+                            {% if data.follow_up == True and data.follow_up_done == True %}
+                            <td>Done</td>
+                            {% elif data.follow_up == True and data.follow_up_date == None and data.follow_up_done == False%}
+                            <td>Follow-up Requested</td>
+                            {% elif data.follow_up_date == None %}
+                            <td>No Follow-Up</td>
+                            {% else %}
+                            <td>{{data.follow_up_date|date:'Y-m-d'}}</td>
+                            {% endif %}
+                            <td class="center aligned three wide">
+                                <a href="{% url 'unitmanagement:health_details' data.id %}"
+                                class="ui basic blue button">Select</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+
+  
+    $('#tabledata1').DataTable({
+        "order": [[ 4, "desc" ]]
+    });
+    $('.menu .item').tab();
+  
+</script>
+ {% endblock %}

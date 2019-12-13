@@ -1,0 +1,167 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+<h2 class="ui header">
+ Confirm K9 Parent
+  
+</h2>
+
+<div class="ui ordered steps">
+  <div class="completed step">
+    <div class="content">
+      <div class="title">K9 Breeding Selection</div>
+      <div class="description">Select K9 Parents</div>
+    </div>
+  </div>
+  <div class="active step">
+    <div class="content">
+      <div class="title">Confirm Parents</div>
+      <div class="description">Verify selected parents</div>
+    </div>
+  </div>
+</div>
+
+<div class="ui placeholder segment">
+  <div class="ui two column stackable center aligned grid">
+    <div class="ui vertical divider">Parents</div>
+    <div class="middle aligned row">
+
+      <div class=" column">
+        <div class="ui icon header">
+          <i class="venus icon"></i>
+
+        </div>
+        <div class="field">
+
+         <h2 class="ui dividing header">Mother</h2>
+	
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="ui icon header">
+          <i class="mars icon"></i>
+
+        </div>
+
+      <div class = "field">
+
+       <h2 class="ui dividing header">Father</h2>
+		
+      </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="ui horizontal segments">
+    <div class="ui stacked segment">
+      <table class="ui two column celled table">
+        <thead>
+          <tr>
+              <th>Name</th>
+              <td>{{mother.name}}</td>
+              </tr>
+          <tr>
+            <th>Serial Number</th>
+              <td>{{mother.serial_number}}</td>
+              </tr>
+          <tr>
+            <th>Breed</th>
+              <td>{{mother.breed}}</td>
+              </tr>
+          <tr>
+            <th>Sex</th>
+              <td>{{mother.sex}}</td>
+              </tr>
+          <tr>
+      <th>Color</th>
+              <td>{{mother.color}}</td>
+              </tr>
+          <tr>
+            <th>Age</th>
+              <td>{{mother.age}}</td>
+              </tr>
+              <tr>
+                  <th>Capability</th>
+                    <td>{{mother.capability}}</td>
+              </tr>
+              <tr>
+                  <th>Litter</th>
+                    <td>{{mother.litter_no}}</td>
+              </tr>
+          <tr>
+            <th>Source</th>
+              <td>{{mother.source}}</td>
+              </tr>
+          <tr>
+      </thead>
+      </table>
+    </div>
+    <div class="ui stacked segment">
+      <table class="ui celled table">
+        <thead>
+          <tr>
+              <th>Name</th>
+              <td>{{father.name}}</td>
+              </tr>
+          <tr>
+            <th>Serial Number</th>
+              <td>{{father.serial_number}}</td>
+              </tr>
+          <tr>
+            <th>Breed</th>
+              <td>{{father.breed}}</td>
+              </tr>
+          <tr>
+            <th>Sex</th>
+              <td>{{father.sex}}</td>
+              </tr>
+          <tr>
+      <th>Color</th>
+              <td>{{father.color}}</td>
+              </tr>
+          <tr>
+            <th>Age</th>
+              <td>{{father.age}}</td>
+              </tr>
+              <tr>
+                  <th>Capability</th>
+                    <td>{{father.capability}}</td>
+              </tr>
+              <tr>
+                  <th>Litter</th>
+                    <td>{{father.litter_no}}</td>
+              </tr>
+          <tr>
+            <th>Source</th>
+              <td>{{father.source}}</td>
+              </tr>
+          <tr>
+      </thead>
+      </table>
+    </div>
+
+  </div>
+<div class="ui center aligned basic segment" style="padding: 0px;">
+<form method="post" class="ui form">
+    {% csrf_token %}
+  <div class="ui segment">
+      <div class="three inline fields">
+          <div class=field></div>
+          <div class="field">
+              <label>Date Mated</label>
+              {{form.date_mated}}
+          </div>
+          <div class=field></div>
+      </div>    
+  </div>
+
+    <div class="ui buttons">
+  <button class="ui button" name="redo" onclick="return confirm('Go back to selecting parents?')">Select Parents</button>
+  <div class="or"></div>
+  <button class="ui positive button" name="ok" onclick="return confirm('Are you sure?')">Submit</button>
+</div>
+</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ Title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui segment" data-tab="second">
+	<table id="tabledata1" class="ui ten column celled table">
+        <thead>
+        <tr>
+            <th>Breed</th>
+            <th>Sex</th>
+            <th>Skill Recommendation</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for Breed in breed %}
+                <tr>
+                    <td><a href="{% url 'planningandacquiring:breed_detail' Breed.id %}">{{Breed.breed}}</a></td>
+                    <td>{{ Breed.sex }}</td>
+                    <td>{{ Breed.skill_recommendation }}</td>
+                    <td>{{ Breed.value }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#tabledata1').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+      
+		$('.menu .item').tab();
+	});
+
+</script>
+{% endblock %}

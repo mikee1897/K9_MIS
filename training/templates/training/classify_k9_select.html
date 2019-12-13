@@ -1,0 +1,397 @@
+{% extends "profiles/sidebar_training.html" %}
+{% load training_tags %}
+{% load static %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h1 class="ui header">Classify {{ title }}</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div class='{{style}}'> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui segment">
+    <div class='column'>
+                <center>
+                    <img src="{{data.image.url}}" alt="" width="280">
+                </center>
+            </div>
+    <table class="ui two column celled table">
+        <thead>
+        <tr>
+                <th>Name</th>
+                <td>{{data.name}}</td>
+            </tr>
+            <tr>
+                <th>Age (yrs & mons)</th>
+                <td>{{data.age}} years and {{data.month_remainder}} months</td>
+            </tr>
+            <tr>
+                <th>Age (days)</th>
+                <td>{{data.age_days}}</td>
+            </tr>
+            <tr>
+                <th>Breed</th>
+                <td>{{data.breed}}</td>
+            </tr>
+            <tr>
+                <th>Sex</th>
+                <td>{{data.sex}}</td>
+            </tr>
+            <tr>
+                <th>Source</th>
+                <td>{{data.source}}</td>
+            </tr>
+            {% if parent_exist %}
+            <tr>
+                <th>Mother</th>
+                <td>{{parent.mother}}</td>
+            </tr>
+            <tr>
+                <th>Father</th>
+                <td>{{parent.father}}</td>
+            </tr>
+
+            {% endif %}
+        </thead>
+    </table>
+</div>
+
+
+
+
+<div class="ui info message">
+  <i class="close icon"></i>
+  <div class="header">
+   <i class="question icon"></i>Information
+  </div>
+  <ul class="list">
+    <li>Below this is a list of suggested skill assignment based on current data.</li>
+      <li>PCGK9 follows the following criteria below, the skill that best meet the criteria have their values highlighted in green.</li>
+      <li>The skill with the most highlighted values are recommened, the user may check the data below in case of ties.</li>
+  </ul>
+</div>
+
+
+<form class="ui form" method="POST">
+    {% csrf_token %}
+  <div class = "ui segment">
+    <table class="ui six column celled table">
+        <thead class="center aligned">
+            <tr>
+                <th>Select</th>
+                <th ><a data-tooltip="View K9 ancestral data" class ="ui button" id = "gene_btn">Most Recurring Skill Among Ancestors</a></th>
+                <th>Highest Training Grade Average Among Trained K9s of the Same Breed</th>
+                <th><a  data-tooltip="View {{select_trait.breed}} Traits" class ="ui button" id = "trait" >Recommended Skill Based on K9 Breed and Traits</a></th>
+
+            </tr>
+
+        </thead>
+        <tbody class = "center aligned">
+             <tr>
+            {% if sar.grade == '0' or data.capability == 'SAR' %}
+            <td>
+              <input type="radio" name="radio" value="SAR" disabled>SAR
+                </td>
+            {%else%}
+        <td>
+              <input type="radio" name="radio" value="SAR">SAR
+        </td>
+            {%endif%}
+
+
+                 {% if gene_score.0 == 1%}
+                 <td><a class="ui green circular label">{{skill_gene_sar}}</a></td>
+                 {% else %}
+                 <td>{{skill_gene_sar}}</td>
+                 {% endif %}
+
+                 {% if ave_score.0 == 1%}
+                 <td><a class="ui green circular label">{{skill_ave_sar}}</a></td>
+                 {% else %}
+                 <td>{{skill_ave_sar}}</td>
+                 {% endif %}
+
+                  <td>
+                 {% if trait_score.0 == 1%}
+                 <i class="large green check circle icon"></i>
+                 {% endif %}
+                 </td>
+
+
+
+        </tr>
+
+
+            <tr>
+            {% if ndd.grade == '0' or data.capability == 'NDD'%}
+            <td>
+              <input type="radio" name="radio" value="NDD" disabled>NDD
+                </td>
+            {%else%}
+            <td>
+              <input type="radio" name="radio" value="NDD">NDD
+            </td>
+            {%endif%}
+
+
+                 {% if gene_score.1 == 1%}
+                 <td><a class="ui green circular label">{{skill_gene_ndd}}</a></td>
+                 {% else %}
+                 <td>{{skill_gene_ndd}}</td>
+                 {% endif %}
+
+                  {% if ave_score.1 == 1%}
+                 <td><a class="ui green circular label">{{skill_ave_ndd}}</a></td>
+                 {% else %}
+                 <td>{{skill_ave_ndd}}</td>
+                 {% endif %}
+
+                    <td>
+                 {% if trait_score.1 == 1%}
+                 <i class="large green check circle icon"></i>
+                 {% endif %}
+                 </td>
+
+
+            </tr>
+
+
+
+             <tr>
+            {% if edd.grade == '0' or data.capability == 'EDD' %}
+            <td>
+              <input type="radio" name="radio" value="EDD" disabled>EDD
+            </td>
+            {%else%}
+            <td>
+              <input type="radio" name="radio" value="EDD">EDD
+            </td>
+            {%endif%}
+
+
+                 {% if gene_score.2 == 1%}
+                 <td><a class="ui green circular label">{{skill_gene_edd}}</a></td>
+                 {% else %}
+                 <td>{{skill_gene_edd}}</td>
+                 {% endif %}
+
+                 {% if ave_score.2 == 1%}
+                 <td><a class="ui green circular label">{{skill_ave_edd}}</a></td>
+                 {% else %}
+                 <td>{{skill_ave_edd}}</td>
+                 {% endif %}
+
+                  <td>
+                 {% if trait_score.2 == 1%}
+                 <i class="large green check circle icon"></i>
+                 {% endif %}
+                 </td>
+
+
+             </tr>
+</tbody>
+    </table>
+
+      <center>
+    <div class="ui three statistics">
+
+  <div class="statistic">
+    <div class="value">
+      {{NDD_assigned}} / {{ NDD_difference}}
+    </div>
+    <div class="label">
+      Classified NDD K9s/ Undeployed NDD K9s
+    </div>
+
+    <h3>Total NDD K9s required: {{NDD_demand}}
+        <br>Total NDD K9s deployed:  {{NDD_deployed}}</h3>
+
+</div>
+
+
+  <div class="statistic">
+    <div class="value">
+      {{EDD_assigned}} / {{EDD_difference}}
+    </div>
+    <div class="label">
+      Classified  EDD K9s / Undeployed EDD K9s
+    </div>
+
+      <h3>Total EDD K9s required: {{EDD_demand}}
+        <br>Total NDD K9s deployed:  {{EDD_deployed}}</h3>
+
+  </div>
+
+  <div class="statistic">
+    <div class="value">
+      {{SAR_assigned}} / {{SAR_difference}}
+    </div>
+    <div class="label">
+      Classified SAR K9s  /  Undeployed SAR K9s
+    </div>
+
+       <h3>Total SAR K9s required: {{SAR_demand}}
+        <br>Total SAR K9s deployed:  {{SAR_deployed}}</h3>
+  </div>
+
+
+</div>
+
+<br>
+<button class="ui green button" type="Submit">Assign Skill</button>
+</center>
+
+  </div>
+</form>
+
+
+
+
+<div class="ui modal" id="breed">
+  <i class="close icon"></i>
+  <div class="header">
+    {{select_trait.breed}} Details
+  </div>
+
+
+
+      <table class="ui two column celled table">
+            <thead>
+            <tr>
+            <th>Breed</th>
+                <td>{{select_trait.breed}}</td>
+            </tr>
+            <tr>
+            <th>Life Span</th>
+                <td>{{select_trait.life_span}}</td>
+            </tr>
+            <tr>
+            <th>Temperament</th>
+                <td>{{select_trait.temperament}}</td>
+            </tr>
+            <tr>
+            <th>Colors</th>
+                <td>{{select_trait.colors}}</td>
+            </tr>
+            <tr>
+            <th>Weight</th>
+            <td>{{select_trait.weight}}</td>
+            </tr>
+            <tr>
+            <th>Height</th>
+                {% if data.sex == "Male" %}
+            <td>{{select_trait.male_height}}</td>
+                {% else %}
+                <td>{{select_trait.female_height}}</td>
+                {% endif %}
+            </tr>
+            <tr>
+            <th>Skill Recommendation</th>
+            <td>
+                {% if select_trait.skill_recommendation %}
+                {{select_trait.skill_recommendation}}
+                {% endif %}
+                {% if select_trait.skill_recommendation2 %}
+                {{select_trait.skill_recommendation2}}
+                {% endif %}
+                {% if select_trait.skill_recommendation3 %}
+                {{select_trait.skill_recommendation3}}
+                {% endif %}
+            </td>
+
+            </tr>
+            </thead>
+    </table>
+
+</div>
+
+
+
+<div class="ui modal" id = "gene_mod">
+  <i class="close icon"></i>
+  <div class="header">
+    Ancestors of {{data.name}}
+  </div>
+
+    <div class= " ui segment">
+<table id="tabledata1" class="ui six column celled table">
+    <thead>
+    <tr>
+        <th>K9</th>
+        <th>Mother</th>
+        <th>Skill (Mother)</th>
+        <th>Father</th>
+        <th>Skill (Father)</th>
+        <th>Generation (Inverted)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for k9 in genes %}
+    <tr>
+    <td>{{k9.o}}</td>
+    <td>{{k9.m}}</td>
+        <td>{{k9.m.capability}}</td>
+    <td>{{k9.f}}</td>
+        <td>{{k9.f.capability}}</td>
+        <td>{{k9.depth|to_ordinal}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<button id = 'graph_btn' class="ui blue button" type = "button">Toggle Ancestral Tree</button>
+
+<div id = "graph">
+ {% if tree %}
+ {{ tree|safe }}
+{% endif %}
+</div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+    $('#tabledata1').DataTable({
+        "order": [[ 3, "asc" ]]
+    });
+        $('.menu .item').tab();
+
+    $('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  });
+
+
+$( "#trait" ).click(function() {
+$('#breed').modal('show');
+});
+
+$( "#gene_btn" ).click(function() {
+$('#gene_mod').modal('show');
+});
+
+
+$('#graph').hide();
+
+        $('#graph_btn').on("click", function(e){
+               $('#graph').toggle();
+         });
+
+  } );
+
+
+
+</script>
+
+
+
+ {% endblock %}

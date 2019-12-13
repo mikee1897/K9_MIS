@@ -1,0 +1,46 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Input data of Handler Incident Here</div>
+    </h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui inverted segment">
+    <form class="ui inverted form" method="POST">
+        {% csrf_token %}
+        <div class="four fields">
+            <div class="field">
+                <label>Handler</label>
+                {{form.handler}}
+            </div>
+            <div class="field">
+                <label>Incident</label>
+                {{form.incident}}
+            </div>
+        </div>
+        <div class="field">
+            <label>Additional Information</label>
+            {{form.description}}
+        </div>
+
+        <div class="ui inverted right aligned segment" style="padding: 0px;">
+            <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >{{ actiontype }}</button>
+        </div>
+    </form>    
+</div>
+
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+      
+    });
+    
+</script>
+ {% endblock %}

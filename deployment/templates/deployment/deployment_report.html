@@ -1,0 +1,162 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load static %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+
+        <center>
+             <img src="{% static 'images/k9_logo.png' %}" width="100">
+            <br>Deployment Report
+            <br>as of {{from_date}} to {{to_date}}
+        </center>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>REQUESTS</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Requester</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Total Dogs Demand</th>
+                <th>Total Dogs Deployed</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for RD in requestdog %}
+                <tr>
+                    <td>{{RD.requester}}</td>
+                    <td>{{RD.location}}</td>
+                    <td>{{RD.status}}</td>
+                    <td class="right aligned">{{RD.total_dogs_demand}}</td>
+                    <td class="right aligned">{{RD.total_dogs_deployed}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            <thead>
+            <tr>
+                <th>INCIDENTS</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Handler</th>
+                <th>Location</th>
+                <th>Type</th>
+                <th>Remarks</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for inc in incident %}
+                <tr>
+                    <td>{{inc.user}}</td>
+                    <td>{{inc.location}}</td>
+                    <td>{{inc.type}}</td>
+                    <td>{{inc.remarks}}</td>
+                    <td>{{inc.date}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            <thead>
+            <tr>
+                <th>TEAM ADDED</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Team</th>
+                <th>Location</th>
+                <th>Total Dogs Demand</th>
+                <th>Total Dogs Deployed</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for Team in team %}
+                <tr>
+                    <td>{{Team.team}}</td>
+                    <td>{{Team.location}}</td>
+                    <td>{{Team.total_dogs_demand}}</td>
+                    <td>{{Team.total_dogs_deployed}}</td>
+                    <td>{{Team.date_added}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            <thead>
+            <tr>
+                <th>DOGS DEPLOYED/PULLED</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>K9</th>
+                <th>Team Assignment</th>
+                <th>Team Requested</th>
+                <th>Date Added</th>
+                <th>Date Pulled Out</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for Deployed in deployed %}
+                <tr>
+                    <td>{{Deployed.k9}}</td>
+                    {% if Deployed.team_assignment == Null %}
+                        <td>None</td>
+                    {% else %}
+                        <td>{{Deployed.team_assignment}}</td>
+                    {% endif %}
+                    <td>{{Deployed.team_requested}}</td>
+                    <td>{{Deployed.date_added}}</td>
+                    <td>{{Deployed.date_pulled}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+        <center>
+            END OF REPORT
+            <br>Prepared by: {{user}}
+        </center>
+
+
+<script type="text/javascript">
+
+     $(document).ready(function() {
+        $('#tabledata1');
+        $('#tabledata2');
+        $('.menu .item').tab();
+    });
+
+</script>
+{% endblock %}

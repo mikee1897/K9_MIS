@@ -1,0 +1,55 @@
+{% extends "profiles/sidebar_inventory.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<table id="tabledata" class="ui four column celled table responsive nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>Medicine</th>
+            <th>Dose/Uom</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for data in data %}
+            <tr>
+                <td>
+                    <a href="{% url 'inventory:medicine_inventory_details' data.id %}"> {{ data.medicine }}</a>
+                </td>
+                <td>{{ data.medicine.dosage }}</td>
+                <td>{{ data.quantity }}</td>
+                <td>{{ data.medicine.price }}</td>
+                <td class="two wide center aligned">
+                    <a href="{% url 'inventory:medicine_count_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal boxes icon"></i>
+                    </a>
+                    <a href="{% url 'inventory:medicine_receive_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal dolly flatbed icon"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+	        $('#tabledata').DataTable();
+            // $(function() {
+            //     $( ".message" ).slideUp( 4000, function() {
+
+            //     });
+            // });
+        } );
+    </script>
+ {% endblock %}

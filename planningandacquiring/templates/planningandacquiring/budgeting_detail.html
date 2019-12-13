@@ -1,0 +1,1124 @@
+{% extends "profiles/sidebar_reports.html" %} {% block content %}
+{% load humanize %}
+{% load um_tags %}
+{% load static %}
+{% load staticfiles %}
+<div>
+
+{% if ab %}
+<div class="ui top attached tabular menu">
+    <a class="active item" data-tab="first">Actual Budget</a>
+    <a class="item" data-tab="second">Proposed Budget</a>
+  </div>
+  <div class="ui bottom attached active tab segment" data-tab="first" >
+      <div id="printableArea1">
+        <center>
+                <br><img src="{% static 'images/k9_logo.png' %}" width="150">
+                <br>Philippine Coast Guard
+                <br>Maritime Security Command
+                    <br><b>HEADQUARTERS COAST GUARD K9 FORCE</b>
+                <br>Coast Guard Base Taguig
+                <br>#56 ML Quezon St. New Lower Bicutan, Taguig City
+                    <br><b>Budget for the Year {{pb.year_budgeted|date:"Y"}}</b>
+                    <br>
+                    <br>
+        </center>
+        <table class="ui three column celled table" style="width:50%;">
+            <thead>
+                <tr>
+                    <th colspan="2">Estimated K9 Born</th>
+                    <td colspan="1" class="right aligned" id='born_ny'>{{ab.k9_breeded}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Estimated Current K9 (Alive)</th>
+                    <td colspan="1" class="right aligned" id='k9_ny'>{{ab.k9_current}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Number of Procured k9</th>
+                    <td colspan="1" class="right aligned" id='p_count'>{{ab.k9_needed}}</td>
+                </tr>
+                <tr style="font-weight: bold;" class="right aligned">
+                    <th colspan="2">Total K9</th>
+                    <td colspan="1" id='total_k9'>{{total_new}}</td>
+                </tr>
+            </thead>
+            
+        </table>
+        
+        {% if ak9 %}
+        <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">K9 Acquisition</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in ak9 %}
+            <tr>
+                <td class="food">{{data.item}}</td>
+                <td>unit</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{ab.k9_total|intcomma}}</td>
+            </tr>
+        </tbody>
+        </table>
+        {% endif %}
+
+
+    {% if amf %}
+    <table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Dog Food & Milk</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in amf %}
+        <tr>
+            <td class="food">{{data.item}}</td>
+            <td>{{data.item.unit}}</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{ab.food_milk_total|intcomma}}</td>
+        </tr>
+    </tbody>
+    </table>
+    {% endif %}
+    {% if avp %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Prevention & Vaccination</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in avp %}
+            <tr>
+                <td>{{data.item}}</td>
+                <td>pc</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{ab.vac_prev_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    {% if am %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Medicine</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in am %}
+            <tr>
+                <td>{{data.item}}</td>
+                <td>pc</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{ab.medicine_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if avs %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Veterinarian Supplies</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in avs %}
+            <tr>
+                <td>{{data.item}}</td>
+                <td>{{data.item.uom}}</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{ab.vet_supply_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if aks %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Kennel Supplies</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in aks %}
+            <tr>
+                <td>{{data.item}}</td>
+                <td>{{data.item.uom}}</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{ab.kennel_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    {% if ao %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Others</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in ao %}
+            <tr>
+                <td>{{data.item}}</td>
+                <td>{{data.item.uom}}</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{ab.others_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    {% if at %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Training</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in at %}
+            <tr>
+                <td>K9 Training</td>
+                <td>unit</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                    <td colspan="4">Total Amount</td>
+                    <td colspan="1">{{ab.training_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    <table class="ui two column celled table">
+        <thead>
+            {% if ab.k9_total != 0%}
+            <tr>
+                <th class="thirteen wide">K9 Acquisition</th>
+                <td class="right aligned">{{ab.k9_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ab.food_milk_total != 0%}
+            <tr>
+                <th class="thirteen wide">Food & Milk</th>
+                <td class="right aligned">{{ab.food_milk_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ab.vac_prev_total != 0%}
+            <tr>
+                <th class="thirteen wide">Vaccine & Prevention</th>
+                <td class="right aligned">{{ab.vac_prev_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ab.medicine_total != 0%}
+            <tr>
+                <th class="thirteen wide">Medicines</th>
+                <td class="right aligned">{{ab.medicine_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ab.vet_supply_total != 0%}
+            <tr>
+                <th class="thirteen wide">Veterinarian Supply</th>
+                <td class="right aligned">{{ab.vet_supply_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if pb.kennel_total != 0%}
+            <tr>
+                <th class="thirteen wide">Kennel Supply</th>
+                <td class="right aligned">{{ab.kennel_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ab.others_total != 0%}
+            <tr>
+                <th class="thirteen wide">Others</th>
+                <td class="right aligned">{{ab.others_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ab.training_total != 0%}
+            <tr>
+                <th class="thirteen wide">K9 Training</th>
+                <td class="right aligned">{{ab.training_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ab.petty_cash != 0%}
+            <tr>
+                <th class="thirteen wide">Petty Cash</th>
+                <td class="right aligned">{{ab.petty_cash|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ab.grand_total != 0%}
+            <tr class="ui right aligned" style="font-weight: bold;">
+                <th class="thirteen wide">Grand Total</th>
+                <td>{{ab.grand_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+        </thead>
+      </table>
+    </div>
+    <br>
+    <center><input type="button" class="ui primary button"
+    onclick="printDiv('printableArea1')" value="Print Actual Budget" /></center>
+    
+  </div>
+  <div class="ui bottom attached tab segment" data-tab="second">
+    <div id="printableArea1">
+
+    <center>
+            <br><img src="{% static 'images/k9_logo.png' %}" width="150">
+            <br>Philippine Coast Guard
+            <br>Maritime Security Command
+                <br><b>HEADQUARTERS COAST GUARD K9 FORCE</b>
+            <br>Coast Guard Base Taguig
+            <br>#56 ML Quezon St. New Lower Bicutan, Taguig City
+                <br><b>Proposed Budget for the Year {{pb.year_budgeted|date:"Y"}}</b>
+    </center>
+    {% if pb %}
+    <table class="ui five column celled table">
+            <table class="ui three column celled table" style="width:50%;">
+                <thead>
+                    <tr>
+                        <th colspan="2">Estimated K9 Born</th>
+                        <td colspan="1" class="right aligned" id='born_ny'>{{pb.k9_breeded}}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Estimated Current K9 (Alive)</th>
+                        <td colspan="1" class="right aligned" id='k9_ny'>{{pb.k9_current}}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Number of Procured k9</th>
+                        <td colspan="1" class="right aligned" id='p_count'>{{pb.k9_needed}}</td>
+                    </tr>
+                    <tr style="font-weight: bold;" class="right aligned">
+                        <th colspan="2">Total K9</th>
+                        <td colspan="1" id='total_k9'>{{total_k9}}</td>
+                    </tr>
+                </thead>
+                
+            </table>
+    {% endif %}
+    {% if pk9 %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">K9 Acquisition</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in pk9 %}
+            <tr>
+                <td class="k9">{{data.item}}</td>
+                <td>unit</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{pb.k9_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    {% if mf %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Dog Food & Milk</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in mf %}
+            <tr>
+                <td class="food">{{data.item}}</td>
+                <td>{{data.item.unit}}</td>
+                <td class="right aligned">{{data.price|intcomma}}</td>
+                <td class="right aligned">{{data.quantity|intcomma}}</td>
+                <td class="right aligned">{{data.total|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{pb.food_milk_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+{% if vp %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Prevention & Vaccination</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in vp %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>pc</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.vac_prev_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+{% if pm %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Medicine</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pm %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>pc</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.medicine_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+{% if pvs %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Veterinarian Supplies</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pvs %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>{{data.item.uom}}</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.vet_supply_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+{% if pks %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Kennel Supplies</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pks %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>{{data.item.uom}}</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.kennel_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+{% if po %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Others</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in po %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>{{data.item.uom}}</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.others_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+{% if pb.training_total %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Training</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in at %}
+        <tr>
+            <td>K9 Training</td>
+            <td>unit</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{pb.training_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+<table class="ui  two column celled table">
+    <thead>
+        {% if pb.k9_total != 0%}
+        <tr>
+            <th>K9 Acquisition</th>
+            <td class="right aligned">{{pb.k9_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.food_milk_total != 0%}
+        <tr>
+            <th>Food & Milk</th>
+            <td class="right aligned">{{pb.food_milk_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.vac_prev_total != 0%}
+        <tr>
+            <th>Vaccine & Prevention</th>
+            <td class="right aligned">{{pb.vac_prev_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.medicine_total != 0%}
+        <tr>
+            <th>Medicines</th>
+            <td class="right aligned">{{pb.medicine_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.vet_supply_total != 0%}
+        <tr>
+            <th>Veterinarian Supply</th>
+            <td class="right aligned">{{pb.vet_supply_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.kennel_total != 0%}
+        <tr>
+            <th>Kennel Supply</th>
+            <td class="right aligned">{{pb.kennel_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.others_total != 0%}
+        <tr>
+            <th>Others</th>
+            <td class="right aligned">{{pb.others_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.training_total != 0%}
+        <tr>
+            <th>K9 Training</th>
+            <td class="right aligned">{{pb.training_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.grand_total != 0%}
+        <tr class="ui right aligned" style="font-weight: bold;">
+            <th>Grand Total</th>
+            <td class="right aligned">{{pb.grand_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+    </thead>
+  </table>
+    
+   </div>
+   <br>
+  <form action="" method="POST" class="ui form">
+    {% csrf_token %}
+    <div class="three fields">
+        <div class="field"></div>
+        <div class="field">
+            <input type="number" placeholder="Approved Budget" name='lump_sum' step="0.01">
+        </div>
+        <div class="field"></div>
+    </div>
+      <center>
+        <button class="ui green button" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+      </center>
+  </form>
+  <br>
+  <center><input type="button" class="ui primary button"
+    onclick="printDiv('printableArea2')" value="Print Proposed Budget" /></center>
+  </div>
+{% else %}
+
+<div id = 'printableArea3'>
+<center>
+        <br><img src="{% static 'images/k9_logo.png' %}" width="150">
+        <br>Philippine Coast Guard
+        <br>Maritime Security Command
+            <br><b>HEADQUARTERS COAST GUARD K9 FORCE</b>
+        <br>Coast Guard Base Taguig
+        <br>#56 ML Quezon St. New Lower Bicutan, Taguig City
+            <br><b>Proposed Budget for the Year {{pb.year_budgeted|date:"Y"}}</b>
+</center>
+{% if pb %}
+<table class="ui five column celled table">
+        <table class="ui three column celled table" style="width:50%;">
+            <thead>
+                <tr>
+                    <th colspan="2">Estimated K9 Born</th>
+                    <td colspan="1" class="right aligned" id='born_ny'>{{pb.k9_breeded}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Estimated Current K9 (Alive)</th>
+                    <td colspan="1" class="right aligned" id='k9_ny'>{{pb.k9_current}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Number of Procured k9</th>
+                    <td colspan="1" class="right aligned" id='p_count'>{{pb.k9_needed}}</td>
+                </tr>
+                <tr style="font-weight: bold;" class="right aligned">
+                    <th colspan="2">Total K9</th>
+                    <td colspan="1" id='total_k9'>{{total_k9}}</td>
+                </tr>
+            </thead>
+            
+        </table>
+{% endif %}
+{% if pk9 %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">K9 Acquisition</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pk9 %}
+        <tr>
+            <td class="k9">{{data.item}}</td>
+            <td>unit</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.k9_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+{% if mf %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Dog Food & Milk</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in mf %}
+        <tr>
+            <td class="food">{{data.item}}</td>
+            <td>{{data.item.unit}}</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.food_milk_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+{% if vp %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Prevention & Vaccination</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in vp %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>pc</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.vac_prev_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+{% if pm %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Medicine</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pm %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>pc</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.medicine_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+{% if pvs %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Veterinarian Supplies</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pvs %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>{{data.item.uom}}</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.vet_supply_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+{% if pks %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Kennel Supplies</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pks %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>{{data.item.uom}}</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.kennel_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+{% if po %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Others</th>
+        </tr>
+        <tr class="center aligned">
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in po %}
+        <tr>
+            <td>{{data.item}}</td>
+            <td>{{data.item.uom}}</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.others_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+{% if pb.training_total %}
+<table class="ui five column celled table">
+    <thead>
+        <tr>
+            <th colspan="5">Training</th>
+        </tr>
+        <tr class="center aligned"> 
+            <th>Item</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pt %}
+        <tr>
+            <td>K9 Training</td>
+            <td>unit</td>
+            <td class="right aligned">{{data.price|intcomma}}</td>
+            <td class="right aligned">{{data.quantity|intcomma}}</td>
+            <td class="right aligned">{{data.total|intcomma}}</td>
+        </tr>
+        {% endfor %}
+        <tr style="font-weight: bold;" class="right aligned">
+            <td colspan="4">Total Amount</td>
+            <td colspan="1">{{pb.training_total|intcomma}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+<table class="ui  two column celled table">
+    <thead>
+        {% if pb.k9_total != 0%}
+        <tr>
+            <th>K9 Acquisition</th>
+            <td class="right aligned">{{pb.k9_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.food_milk_total != 0%}
+        <tr>
+            <th>Food & Milk</th>
+            <td class="right aligned">{{pb.food_milk_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.vac_prev_total != 0%}
+        <tr>
+            <th>Vaccine & Prevention</th>
+            <td class="right aligned">{{pb.vac_prev_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.medicine_total != 0%}
+        <tr>
+            <th>Medicines</th>
+            <td class="right aligned">{{pb.medicine_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.vet_supply_total != 0%}
+        <tr>
+            <th>Veterinarian Supply</th>
+            <td class="right aligned">{{pb.vet_supply_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.kennel_total != 0%}
+        <tr>
+            <th>Kennel Supply</th>
+            <td class="right aligned">{{pb.kennel_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.others_total != 0%}
+        <tr>
+            <th>Others</th>
+            <td class="right aligned">{{pb.others_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.training_total != 0%}
+        <tr>
+            <th>K9 Training</th>
+            <td class="right aligned">{{pb.training_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% if pb.grand_total != 0%}
+        <tr class="ui right aligned" style="font-weight: bold;">
+            <th>Grand Total</th>
+            <td class="right aligned">{{pb.grand_total|intcomma}}</td>
+        </tr>
+        {% endif %}
+    </thead>
+  </table>
+    </div>
+    <br>
+  <form action="" method="POST" class="ui form">
+    {% csrf_token %}
+    <div class="three fields">
+        <div class="field"></div>
+        <div class="field">
+            <input type="number" placeholder="Approved Budget" name='lump_sum' step="0.01">
+        </div>
+        <div class="field"></div>
+    </div>
+      <center>
+        <button class="ui green button" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+      </center>
+  </form>
+
+  <br>
+  <center><input type="button" class="ui primary button"
+  onclick="printDiv('printableArea3')" value="Print Actual Budget" /></center>
+
+{% endif %}
+
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.menu .item').tab();
+    });
+
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
+{% endblock %}

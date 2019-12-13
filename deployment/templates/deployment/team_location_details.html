@@ -1,0 +1,265 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load index %}
+
+{% block content %}
+<h1 class="ui header">
+    {{data.team}}
+    <div class="sub header">Team details for {{data.team}}</div>
+</h1>
+{% if messages %}
+    {% for message in messages %}
+        <div class="ui green message"> {{ message }}</div>
+    {% endfor %}
+{% endif %}
+<div class="ui inverted raised segment">
+    <form action="" class="ui inverted form">
+      <div class= 'four fields'>
+        <div class="field">
+          <label>Area</label>
+          <input type="text" value="{{data.location.area}}" readonly>
+        </div>
+        <div class="field">
+            <label>City</label>
+            <input type="text" value="{{data.location.city}}" readonly>
+          </div>
+          <div class="field"></div>
+          <div class="right aligned">
+              <br>
+              <a href="{% url 'deployment:edit_team' data.id %}" class="ui blue button">Edit</a>
+          </div>
+      </div>
+      <div class="field">
+          <label>Place</label>
+          <input type="text" value="{{data.location.place}}" readonly>
+        </div>
+    </form>
+  </div>
+
+  <div class="row">
+      <div class="column">
+        <div class="ui basic horizontal segments" style="border-style: none;">
+         <div class="ui basic segment" style="border-style: none;">
+           <label>No. of K9s Required: </label>
+           {% if data.total_dogs_deployed >= data.total_dogs_demand %}
+               <span class="ui green circular label">{{data.total_dogs_demand}}</span>
+           {%else%}
+               <span class="ui red circular label">{{data.total_dogs_demand}}</span>
+           {% endif %}
+           <table class="ui three column celled red table">
+             <thead>
+               <tr>
+                 <th>EDD Demand</th>
+                 <th>NDD Demand</th>
+                 <th>SAR Demand</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <td>{{data.EDD_demand}}</td>
+                 <td>{{data.NDD_demand}}</td>
+                 <td>{{data.SAR_demand}}</td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+         <div class="ui basic segment" style="border-style: none;">
+           <label>No. of K9s Deployed: </label>
+           {% if data.total_dogs_deployed >= data.total_dogs_demand %}
+               <span class="ui green circular label">{{data.total_dogs_deployed}}</span>
+           {%else%}
+               <span class="ui orange circular label">{{data.total_dogs_deployed}}</span>
+           {% endif %}
+           <table class="ui three column celled orange table">
+             <thead>
+               <tr>
+                 <th>EDD Deployed</th>
+                 <th>NDD Deployed</th>
+                 <th>SAR Deployed</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <td>{{data.EDD_deployed}}</td>
+                 <td>{{data.NDD_deployed}}</td>
+                 <td>{{data.SAR_deployed}}</td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui basic segment">
+        <label> No. of Incidents Related to</label>
+            <div class="ui statistics">
+    
+             <div class="statistic">
+        <div class="value">
+          <i class="binoculars icon"></i> {{sar_inc}}
+        </div>
+        <div class="label">
+          Search and Rescue
+        </div>
+      </div>
+    
+            <div class="statistic">
+        <div class="value">
+          <i class="pills icon"></i> {{ndd_inc}}
+        </div>
+        <div class="label">
+          Narcotics
+        </div>
+      </div>
+    
+             <div class="statistic">
+        <div class="value">
+          <i class="bomb icon"></i> {{edd_inc}}
+        </div>
+        <div class="label">
+          Explosives
+        </div>
+      </div>
+    
+    
+        <div class="statistic">
+          <div class="value">
+            <i class="star outline icon"></i>{{incidents}}
+          </div>
+          <div class="label">
+            All Types
+          </div>
+        </div>
+    
+            </div>
+        </div>
+
+<div class="ui top attached tabular menu">
+    <a class="active item" data-tab="second">Details</a>
+    <a class="item" data-tab="third">History</a>
+</div>
+
+
+
+<div class="ui active tab segment" data-tab="second">
+
+
+    <div class="ui info message">
+<i class="close icon"></i>
+<div class="header">
+  <i class="question icon"></i>Deployed K9s
+</div>
+<ul class="list">
+  <li>Below is a list of K9s that are currently deployed in this port.</li>
+    <li>If a K9 has a scheduled request, it will be automatically deployed on the date of request at the requested location.</li>
+    <li>After a request has been completed, the units are brought back to the last known deployment location.</li>
+</ul>
+</div>
+
+<h2 class="ui header">
+    <i class="paw icon"></i>
+    <div class="content">
+      K9's Deployed
+    </div>
+  </h2>
+ <table id="tabledata1" class="ui five column celled table">
+       <thead>
+         <tr>
+           <th>Name</th>
+           <th>Serial Number</th>
+           <th>Capability</th>
+           <th>Personnel</th>
+             <th>Position</th>
+             <th>Status</th>
+         </tr>
+     </thead>
+     <tbody>
+     {% if tl_dog %}
+        <tr>
+            <td>{{tl_dog.name}}</td>
+        <td>{{tl_dog.serial_number}}</td>
+        <td>{{tl_dog.capability}}</td>
+        <td>{{tl_dog.handler}}</td>
+        <td>Team Leader</td>
+            <td>{{tl_dog.handler.status}}</td>
+        </tr>
+        {% endif %}
+
+        	{% for dogs_deployed in dogs_deployed %}
+         <tr>
+           <td>{{dogs_deployed.k9.name}}</td>
+           <td>{{dogs_deployed.k9.serial_number}}</td>
+           <td>{{dogs_deployed.k9.capability}}</td>
+           <td>{{dogs_deployed.k9.handler}}</td>
+             <td>Handler</td>
+             <td>{{tl_dog.handler.status}}</td>
+         </tr>
+         	{% endfor %}
+     </tbody>
+ </table>
+</div>
+
+<div class="ui tab segment" data-tab="third">
+
+    <div class="ui info message">
+<i class="close icon"></i>
+<div class="header">
+  <i class="question icon"></i>History
+</div>
+<ul class="list">
+  Below is the deployment history for this port.
+</ul>
+</div>
+
+  <table id="tabledata3" class="ui five column celled table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Serial Number</th>
+            <th>Capability</th>
+            <th>Date Assigned</th>
+            <th>Date Pulled</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for dogs_pulled in dogs_pulled %}
+          <tr class="ui center aligned">
+            <td>{{dogs_pulled.k9.name}}</td>
+            <td>{{dogs_pulled.k9.serial_number}}</td>
+            <td>{{dogs_pulled.k9.capability}}</td>
+            <td>{{dogs_pulled.date_added}}</td>
+            {% if dogs_pulled.date_pulled is not None %}
+            <td>{{dogs_pulled.date_pulled}}</td>
+            {% else %}
+              <td>Currently Deployed</td>
+              {% endif %}
+          </tr>
+            {% endfor %}
+      </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable({
+              "order": [[ 4, "desc" ]]
+        });
+        $('#tabledata2').DataTable();
+        $('#tabledata3').DataTable({
+              "order": [[ 4, "desc" ]]
+        });
+         $('#tabledata4').DataTable();
+        $('.menu .item').tab();
+    });
+
+
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+</script>
+{% endblock %}

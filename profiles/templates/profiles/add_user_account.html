@@ -1,0 +1,65 @@
+{% extends "profiles/sidebar_um.html" %} {% block content %}
+<h1>{{Title}}</h1>
+{% if messages %}
+    {% for message in messages %}
+        <div class="{{ style }}">{{message}}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="ui small steps">
+  <div class="completed step">
+    <div class="content">
+      <div class="title">User Information</div>
+      <div class="description">Provide basic information of user</div>
+    </div>
+  </div>
+  <div class="completed step">
+    <div class="content">
+      <div class="title">Personal Information</div>
+      <div class="description">Add personal information about the user </div>
+    </div>
+  </div>
+  <div class="completed step">
+    <div class="content">
+      <div class="title">Education</div>
+      <div class="description">Add education information of the user</div>
+    </div>
+  </div>
+        <div class="active step">
+    <div class="content">
+      <div class="title">Account</div>
+      <div class="description">Add account of the user</div>
+    </div>
+  </div>
+</div>
+
+<div class="ui fluid container">
+    <div class="ui inverted segment">
+        <div class="ui three column grid">
+          <div class="column"></div>
+          <div class="column">
+              <form class="ui inverted equal width form" action="{% url 'profiles:add_user_account' %}" method="POST">
+                  {% csrf_token %}
+                  <div class="fields">
+                      <div class="field">
+                        <label>Email Address</label>
+                        {{form.email_address}}
+                      </div>
+                      <div class="field">
+                          <label>Password</label>
+                          {{form.password}}
+                      </div>
+                  </div>
+
+                  <div class="ui inverted right aligned segment" style="padding: 0px;" style="border-width: 0px;">
+                      <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+                  </div>
+              </form>
+          </div>
+          <div class="column"></div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

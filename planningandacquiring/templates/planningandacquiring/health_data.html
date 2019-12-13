@@ -1,0 +1,39 @@
+
+{% load static %}
+{% block content %}
+
+{% if health %}
+<div class="header">
+    <center>
+        {{k9}}
+    </center>
+</div>
+  <div class="scrolling content">
+    
+      <table class="ui three column green celled table">
+            <thead>
+                <th>Date</th>
+                <th>Problem</th>
+                <th>Treatment</th>
+            </thead>
+            <tbody>
+                {% for data in health %}
+                <tr>
+                    <td>{{data.date}}</td>
+                    <td>{{data.problem}}</td>
+                    <td>{{data.treatment}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+  </div> 
+
+{% else %}
+
+<div class="ui info message">
+    <div class="header">
+        {{k9}} has no previous health record 
+    </div>
+</div>
+{% endif %}
+{% endblock %}

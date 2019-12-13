@@ -1,0 +1,248 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load um_tags %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="ui green message" > {{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+</div>
+    <div class="ui blue message">
+  <p>Select a K9 to decide if they are for breeding or for deployment.</p>
+</div>
+<button class="ui teal button" id="btn">K9's Summmary</button>
+
+    <div class="ui segment" id="summary" style="display: none;">
+        <div class="ui two column grid">
+            <div class="ten wide column">
+                <center>
+                    <h4 class='ui horizontal divider header'>For-Breeding</h4>
+                </center>
+                <table class="ui small celled structured table">
+                <thead class="center aligned">
+                    <tr>
+                        <th rowspan="2">Breed</th>
+                        <th colspan="3">Dam (Mother)</th>
+                        <th colspan="3">Sire (Father)</th>
+                        <th rowspan="2">Total K9</th>
+                    </tr>
+                    <tr>
+                        <th>NDD</th>
+                        <th>EDD</th>
+                        <th>SAR</th>
+                        <th>NDD</th>
+                        <th>EDD</th>
+                        <th>SAR</th>
+                    </tr>
+                </thead>
+                <tbody class="right aligned">
+                    <tr>
+                        <td>Belgian Malinois</td>
+                        <td>{{bm_f_ndd}}</td>
+                        <td>{{bm_f_edd}}</td>
+                        <td>{{bm_f_sar}}</td>
+                        <td>{{bm_m_ndd}}</td>
+                        <td>{{bm_m_edd}}</td>
+                        <td>{{bm_m_sar}}</td>
+                        <td style="font-weight: bold;">{{bm}}</td>
+                    </tr>
+                    <tr>
+                        <td>Dutch Sheperd</td>
+                        <td>{{ds_f_ndd}}</td>
+                        <td>{{ds_f_edd}}</td>
+                        <td>{{ds_f_sar}}</td>
+                        <td>{{ds_m_ndd}}</td>
+                        <td>{{ds_m_edd}}</td>
+                        <td>{{ds_m_sar}}</td>
+                        <td style="font-weight: bold;">{{ds}}</td>
+                    </tr>
+                    <tr>
+                        <td>German Sheperd</td>
+                        <td>{{gs_f_ndd}}</td>
+                        <td>{{gs_f_edd}}</td>
+                        <td>{{gs_f_sar}}</td>
+                        <td>{{gs_m_ndd}}</td>
+                        <td>{{gs_m_edd}}</td>
+                        <td>{{gs_m_sar}}</td>
+                        <td style="font-weight: bold;">{{gs}}</td>
+                    </tr>
+                    <tr>
+                        <td>Golden Retriever</td>
+                        <td>{{gr_f_ndd}}</td>
+                        <td>{{gr_f_edd}}</td>
+                        <td>{{gr_f_sar}}</td>
+                        <td>{{gr_m_ndd}}</td>
+                        <td>{{gr_m_edd}}</td>
+                        <td>{{gr_m_sar}}</td>
+                        <td style="font-weight: bold;">{{gr}}</td>
+                    </tr>
+                    <tr>
+                        <td>Jack Russel</td>
+                        <td>{{jr_f_ndd}}</td>
+                        <td>{{jr_f_edd}}</td>
+                        <td>{{jr_f_sar}}</td>
+                        <td>{{jr_m_ndd}}</td>
+                        <td>{{jr_m_edd}}</td>
+                        <td>{{jr_m_sar}}</td>
+                        <td style="font-weight: bold;">{{jr}}</td>
+                    </tr>
+                    <tr>
+                        <td>Labrador Retriever</td>
+                        <td>{{lr_f_ndd}}</td>
+                        <td>{{lr_f_edd}}</td>
+                        <td>{{lr_f_sar}}</td>
+                        <td>{{lr_m_ndd}}</td>
+                        <td>{{lr_m_edd}}</td>
+                        <td>{{lr_m_sar}}</td>
+                        <td style="font-weight: bold;">{{lr}}</td>
+                    </tr>
+
+                    <tr style="font-weight: bold;">
+                        <td>Total</td>
+                        <td>{{ndd_f}}</td>
+                        <td>{{edd_f}}</td>
+                        <td>{{sar_f}}</td>
+                        <td>{{ndd_m}}</td>
+                        <td>{{edd_m}}</td>
+                        <td>{{sar_m}}</td>
+                        <td class="center aligned">{{t_breed}}</td>
+                    </tr>
+                   
+                </tbody>
+                <tfoot class="right aligned">
+                    <tr>
+                        <th><b>Summary</b></th>
+                        <th colspan="2"><b>{{ndd}} NDD</b></th>
+                        <th colspan="2"><b>{{edd}} EDD</b></th>
+                        <th colspan="2"><b>{{sar}} SAR</b></th>
+                      <td></td>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+            <div class="six wide column">
+                    <center>
+                            <h4 class='ui horizontal divider header'>For-Deployment</h4>
+                        </center>
+                        <br><br><br><br><br><br>
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        {{NDD_count}} / {{NDD_demand}}
+                                    </div>
+                                    <div class="label">
+                                        NDD Count / NDD Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        {{EDD_count}} / {{EDD_demand}}
+                                    </div>
+                                    <div class="label">
+                                        EDD Count / EDD Required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui two column centered grid">
+                               
+                                <div class="column">
+                                    <div class="ui small statistic">
+                                        <div class="value">
+                                            {{SAR_count}} / {{SAR_demand}}
+                                        </div>
+                                        <div class="label">
+                                            SAR Count / SAR Required
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                    </div>
+            </div>
+            
+        </div>
+    <div class="ui segment">
+        <table id="tabledata1" class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Finished Training</th>
+                    <th>Name</th>
+                    <th>Breed</th>
+                    <th>Capability</th>
+                    <th>Sex</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in data %}
+
+                <tr>
+                    <td>{{ts|list_item_date:forloop.counter0}}</td>
+                    <td>{{data}}</td>
+                    <td >{{data.breed}}</td>
+                    <td>{{data.capability}}</td>
+                    <td>{{data.sex}}</td>
+
+                    <td style="text-align:center;" class="two wide">
+                        <!--<a href="#" class="ui tiny basic blue button btn_modal" id='{{data.id}}' >Select</a>-->
+                        <button class="ui tiny basic blue button btn_modal" id='id-{{data.id}}' value='{{data.id}}'>Select</button>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+<div class="ui large modal" id='id_modal_data'>
+
+</div>
+
+
+<script>
+
+     $( ".btn_modal" ).click(function() {
+            var url = 'trained-list/ajax_load_k9_data';
+            id = $(this).val();
+
+            $.ajax({
+                url: url,
+                data: {
+                'id': id,
+                },
+                success: function (data) {
+                $("#id_modal_data").html(data);
+                }
+            });
+            $('#id_modal_data').modal('show');
+        });
+
+        $("#summary").hide();
+        $("#btn").click(function(){
+            $("#summary").slideToggle();
+        });
+</script>
+
+<script type="text/javascript">
+
+  
+    $('#tabledata1').DataTable({
+        "order": [[ 0, "asc" ]]
+        });
+    $('.menu .item').tab();
+
+
+</script>
+ {% endblock %}

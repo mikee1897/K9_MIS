@@ -1,0 +1,70 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %}  
+
+{% block sidebar_module %}
+
+       
+        <div class="ui fluid container">
+        <div class='ui basic segment'>
+                <div class="ui grid">
+                <div class="three wide column">
+                        <div class="ui pointing vertical menu">
+                        <a class="item"> <b>Planning and Acquiring Menu</b></a>
+                        {% if request.session.session_user_position == "Veterinarian" %}
+                        <a href="{% url 'planningandacquiring:add_breed_form'%}" class="item">
+                                <i class="plus circle icon"></i>Add Breed
+                        </a>
+                        <a href="{% url 'planningandacquiring:add_K9_parents_form'%}" class="item">
+                                <i class="plus circle icon"></i>Breed K9
+                        </a>
+                        <a href="{% url 'planningandacquiring:breeding_list'%}" class="item">
+                                <i class="venus mars icon"></i>Breeding List
+                        </a>
+                        <a href="{% url 'planningandacquiring:K9_list'%}" class="item">
+                                <i class="list alternate icon"></i>K9 List
+                        </a>
+                        <a href="{% url 'planningandacquiring:breed_list'%}" class="item">Breed List
+                                <i class="money bill alternate outline icon"></i>
+                        </a>
+
+                        {% endif %}
+
+                        {% if request.session.session_user_position == "Administrator" %}
+                        <a href="{% url 'planningandacquiring:add_supplier'%}" class="item">
+                                <i class="plus circle icon"></i>Add Supplier
+                        </a>
+                        <a href="{% url 'planningandacquiring:add_breed_form'%}" class="item">
+                                <i class="plus circle icon"></i>Add Breed
+                        </a>
+                                <a href="{% url 'planningandacquiring:breed_list'%}" class="item">Breed List
+                                        <i class="money bill alternate outline icon"></i>
+                                </a>
+                        <a href="{% url 'planningandacquiring:add_procured_k9'%}" class="item">
+                                <i class="plus circle icon"></i>Add Procured K9
+                        </a>
+                        <a href="{% url 'planningandacquiring:K9_list'%}" class="item">
+                                <i class="list alternate icon"></i>K9 List
+                        </a>
+
+                        <a href="{% url 'planningandacquiring:budgeting'%}" class="item">
+                                <i class="money bill alternate outline icon"></i>Budgeting
+                        </a>
+                        </a>
+                        <!-- <a href="{% url 'planningandacquiring:budget_list'%}" class="item">
+                                <i class="money bill alternate outline icon"></i>Budgeting List
+                        </a> -->
+                    
+
+                        {% endif %}
+
+                        </div>
+                </div>
+                
+                <div class="thirteen wide column">
+                        {% block content %}
+                        {% endblock %}
+                </div>
+                </div>
+        </div>
+</div>
+
+{% endblock%}

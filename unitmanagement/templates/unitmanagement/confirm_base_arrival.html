@@ -1,0 +1,58 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="ui green message" > {{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+</div>
+<div class="ui segment">
+    <table id="tabledata1" class="ui celled table">
+        <thead>
+            <tr>
+                <th>Date Called Back</th>
+                <th>K9</th>
+                <th>Handler</th>
+                <th>Port</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data %}
+            <tr>
+                <td  class="two wide">{{data.0.date_created | date:"Y-m-d"}}</td>
+                <td  class="three wide">{{data.0.k9}}</td>
+                <td  class="three wide">{{data.1}}</td>
+                <td>{{data.0.k9.assignment}}</td>
+                <td class="two wide center aligned">
+                    {% if data.0.status == 'Confirmed' %}
+                    <a href="{% url 'unitmanagement:confirm_arrive' data.0.id %}" class="ui tiny blue button">Confirm</a>
+                    {% else %}
+                    <i class="hourglass half orange icon"></i>
+                    Pending 
+                    {% endif%}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('.menu .item').tab();
+
+    });
+
+</script>
+ {% endblock %}

@@ -1,0 +1,367 @@
+{% extends "profiles/sidebar_inventory.html" %}
+{% load static %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+
+        <center>
+             <img src="{% static 'images/k9_logo.png' %}" width="100">
+            <br>Inventory Report
+            <br>as of {{from_date}} to {{to_date}}
+        </center>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>FOOD RECEIVED</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Date</th>
+                <th>Time</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for FR in food_received %}
+            {% for F in food %}
+                <tr>
+                    <td>{{FR.inventory}}</td>
+                    <td>{{F.foodtype}}</td>
+                    <td>{{F.price}}</td>
+                    <td>{{FR.quantity}}</td>
+                    <td>{{FR.date_received}}</td>
+                    <td>{{FR.time}}</td>
+
+                </tr>
+            {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>FOOD SUBTRACTED</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for FS in food_delivered %}
+                <tr>
+                    <td>{{FS.inventory}}</td>
+                    <td>{{FS.date_subtracted}}</td>
+                    <td>{{FS.time}}</td>
+                    <td>{{FS.quantity}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>FOOD PHYSICAL COUNT</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for FC in food_count %}
+                <tr>
+                    <td>{{FC.inventory}}</td>
+                    <td>{{FC.date_counted}}</td>
+                    <td>{{FC.time}}</td>
+                    <td>{{FC.quantity}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>MEDICINE RECEIVED</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Medicine Type</th>
+                <th>Quantity</th>
+                <th>Unit of Measurement</th>
+                <th>Dose</th>
+                <th>Date</th>
+                <th>Time</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for MR in medicine_received %}
+            {% for M in medicine %}
+                <tr>
+                    <td>{{MR.inventory}}</td>
+                    <td>{{M.price}}</td>
+                    <td>{{M.med_type}}</td>
+                    <td>{{MR.quantity}}</td>
+                    <td>{{M.uom}}</td>
+                    <td>{{M.dose}}</td>
+                    <td>{{MR.date_received}}</td>
+                    <td>{{MR.time}}</td>
+
+                </tr>
+            {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>MEDICINE SUBTRACTED</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for MS in medicine_delivered %}
+                <tr>
+                    <td>{{MS.inventory}}</td>
+                    <td>{{MS.date_subtracted}}</td>
+                    <td>{{MS.time}}</td>
+                    <td>{{MS.quantity}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>MEDICINE PHYSICAL COUNT</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for MC in medicine_count %}
+                <tr>
+                    <td>{{MC.inventory}}</td>
+                    <td>{{MC.date_counted}}</td>
+                    <td>{{MC.time}}</td>
+                    <td>{{MC.quantity}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>MISCELLANEOUS RECEIVED</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Unit of Measurement</th>
+                <th>Date</th>
+                <th>Time</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for MiscR in miscellaneous_received %}
+            {% for M in miscellaneous %}
+                <tr>
+                    <td>{{MiscR.inventory}}</td>
+                    <td>{{M.price}}</td>
+                    <td>{{M.misc_type}}</td>
+                    <td>{{MiscR.quantity}}</td>
+                    <td>{{M.uom}}</td>
+                    <td>{{MiscR.date_received}}</td>
+                    <td>{{MiscR.time}}</td>
+
+                </tr>
+            {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>MISCELLANEOUS SUBTRACTED</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for MiscS in miscellaneous_delivered %}
+                <tr>
+                    <td>{{MiscS.inventory}}</td>
+                    <td>{{MiscS.date_subtracted}}</td>
+                    <td>{{MiscS.time}}</td>
+                    <td>{{MiscS.quantity}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>MISCELLANEOUS PHYSICAL COUNT</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for MiscC in miscellaneous_count %}
+                <tr>
+                    <td>{{MiscC.inventory}}</td>
+                    <td>{{MiscC.date_counted}}</td>
+                    <td>{{MiscC.time}}</td>
+                    <td>{{MiscC.quantity}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table id="tabledata2" class="ui fixed table">
+            <thead>
+            <tr>
+                <th>DAMAGED EQUIPMENT</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Concern</th>
+                <th>Remarks</th>
+                <th>Date Requested</th>
+                <th>Status</th>
+                <th>Date Approved</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for E in equipment %}
+                <tr>
+                    <td>{{E.equipment}}</td>
+                    <td>{{E.concern}}</td>
+                    <td>{{E.remarks}}</td>
+                    <td>{{E.date}}</td>
+                    <td>{{E.request_status}}</td>
+                    <td>{{E.date_approved}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <center>
+            END OF REPORT
+            <br>Prepared by: {{user}}
+        </center>
+
+
+<script type="text/javascript">
+
+     $(document).ready(function() {
+        $('#tabledata1');
+        $('#tabledata2');
+        $('.menu .item').tab();
+    });
+
+</script>
+{% endblock %}

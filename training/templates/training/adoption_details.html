@@ -1,0 +1,97 @@
+{% extends "profiles/sidebar_adoption.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui segment">
+    <table class="ui four column celled table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <td>{{data.k9.name}}</td>
+                <th>Breed</th>
+                <td>{{data.k9.breed}}</td>
+            </tr>
+            <tr>
+                <th>Sex</th>
+                <td>{{data.k9.sex}}</td>
+                <th>Color</th>
+                <td>{{data.k9.color}}</td>
+            </tr>
+            <tr>
+                <th>Birthday</th>
+                <td>{{data.k9.birth_date}}</td>
+                <th>Age</th>
+                <td>{{data.k9.age}}</td>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="ui segment">
+  <h2 class="ui header">
+    <i class="user icon"></i>
+    <div class="content">
+      Adopted By:{{data}}
+       <div class="sub header">Date Adopted: {{data.date_adopted}}</div>
+    </div>
+  </h2>
+    <table class="ui four column celled table">
+        <thead>
+            <tr>
+                <th>Age</th>
+                <td>{{data.age}}</td>
+                <th>Birthday</th>
+                <td>{{data.birth_date}}</td>
+            </tr>
+            <tr>
+                <th>Sex</th>
+                <td>{{data.sex}}</td>
+                <th>Contact #</th>
+                <td>{{data.contact_no}}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{data.email}}</td>
+                <th>Address</th>
+                <td>{{data.address}}</td>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div id = 'showthis'>
+    <div class="ui inverted segment">
+        <form class="ui inverted form" method="POST" action="{% url 'training:k9_returned' data.k9.id %}">
+            {% csrf_token %}
+            <div class="field">
+                <label>Reason</label>
+                <textarea placeholder="Reason" rows="4" cols="50" name='reason'></textarea>
+            </div>
+        
+            <button type="submit" class="ui green button">Submit</button>
+        </form>
+    </div>
+</div>
+
+<div class="actions">
+    <center>
+        <a class="ui primary button r_btn">Returned</a>
+    </center>
+</div>
+
+<script type="text/javascript">
+
+    $('#showthis').hide();
+    $( ".r_btn" ).bind('click', function() {
+        $('#showthis').show();   
+        $('.r_btn').hide();
+    });
+
+</script>
+ {% endblock %}

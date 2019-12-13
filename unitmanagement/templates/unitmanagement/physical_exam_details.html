@@ -1,0 +1,92 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}{{ name }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class = "ui segment">
+    <table class="ui two column celled table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <td>{{data.date}}</td>
+            </tr>
+            <tr>
+                <th>Veterinary</th>
+                <td>{{data.veterinary}}</td>
+            </tr>
+            <tr>
+                <th>Cage Number</th>
+                <td>{{data.cage_number}}</td>
+            </tr>
+            <tr>
+                <th>General Appearance</th>
+                <td>{{data.general_appearance}}</td>
+            </tr>      
+            <tr>
+                <th>Integumentary</th>
+                <td>{{data.integumentary}}</td>
+            </tr>       
+            <tr>
+                <th>Musculo Skeletal</th>
+                <td>{{data.musculo_skeletal}}</td>
+            </tr>
+            <tr>
+                <th>Respiratory</th>
+                <td>{{data.respiratory}}</td>
+            </tr>
+            <tr>
+                <th>Genito Urinary</th>
+                <td>{{data.genito_urinary}}</td>
+            </tr>
+            <tr>
+                <th>Nervous</th>
+                <td>{{data.nervous}}</td>
+            </tr>      
+            <tr>
+                <th>Circulatory</th>
+                <td>{{data.circulatory}}</td>
+            </tr>    
+            <tr>
+                <th>Digestive</th>
+                <td>{{data.digestive}}</td>
+            </tr>      
+            <tr>
+                <th>Mucous Membrances</th>
+                <td>{{data.mucous_membrances}}</td>
+            </tr>
+            <tr>
+                <th>Lymph Nodes</th>
+                <td>{{data.lymph_nodes}}</td>
+            </tr>      
+            <tr>
+                <th>Eyes</th>
+                <td>{{data.eyes}}</td>
+            </tr>    
+            <tr>
+                <th>Ears</th>
+                <td>{{data.ears}}</td>
+            </tr> 
+            <tr>
+                <th>Remarks</th>
+                <td>{{data.remarks}}</td>
+            </tr>       
+        </thead>
+    </table>
+</div>
+<div class="ui basic segment">
+    <a href="{% url 'unitmanagement:health_history' dog.id %}" class="ui blue button">Back</a>
+</div>
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+    } );
+    
+</script>
+ {% endblock %}

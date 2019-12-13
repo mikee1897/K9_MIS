@@ -1,0 +1,73 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Report an Incident here.</div>
+    </h2>
+</div>
+<div class="ui centered grid">
+    <div class="twelve wide column">
+            <div class="ui inverted segment">
+                    {% if messages %}
+                    {% for message in messages %}
+                        <div class="{{style}}" > {{ message }}</div>
+                    {% endfor %}
+                    {% endif %}
+                    <form class="ui inverted form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Handler</label>
+                                {{form.handler}}
+                            </div>
+
+                            <div class="field">
+                                <label>K9</label>
+                                <select name="k9_select">
+                                    <option id = 'id_k9_data'></option>
+                                </select>
+                            </div>    
+                        </div>
+                       
+                        <div class="field">
+                            <label>Incident</label>
+                            {{form.incident}}
+                        </div>
+                          
+                        <div class="field">
+                            <label>Description</label>
+                            {{form.description}}
+                        </div>
+                        <center>
+                            <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >Submit</button>
+                        </center>
+                    </form>
+                </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+        $("select[name='handler']").change(function () {
+            var url = 'ajax_load_k9';  
+            var handler = $("select[name='handler']"). val(); 
+
+            $.ajax({                       
+                url: url,                  
+                data: {
+                'handler': handler       
+                },
+                success: function (data) {  
+                    $("#id_k9_data").html(data); 
+                }
+            });
+
+        });
+    });
+    
+</script>
+ {% endblock %}

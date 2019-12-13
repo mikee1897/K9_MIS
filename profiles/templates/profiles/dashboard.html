@@ -1,0 +1,362 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %} 
+{% load humanize %}
+{% block dashboard %}
+<div class="container fluid">
+    <div class="ui two column grid">
+      <div class="streched row">
+        <div class="nine wide column"  style="padding-right: 0%;">
+          <div class="ui basic segment">
+            <div class="ui stackable grid">
+                <div class="sixteen wide column">
+                    <div class="ui equal width height grid">
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="user purple icon"></i>
+                                        <!-- <i class="paw purple icon"></i> -->
+                                        <i class="purple icon">{{c_count}}</i>
+                                        
+                                    </div>
+                                    <div class="label">
+                                        
+                                            <a href="{% url 'unitmanagement:classified_list' %}">ASSIGN HANDLER TO K9</a>
+                                        
+                                    </div>
+                                </div>                                         
+                            </div>     
+                        </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="question black icon"></i>
+                                        <!-- <i class="paw black icon"></i> -->
+                                        <i class="black icon">{{up_count}}</i>
+                                    </div>
+                                    <div class="label">
+
+                                            <a href="{% url 'unitmanagement:k9_unpartnered_list'%}">REASSIGN UNPARTNERED K9's</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="compass blue icon">{{dept_count}}</i>
+                                    </div>
+                                    <div class="label">
+                                            <a href="{% url 'deployment:schedule_units' %}">K9's
+                                            FOR INITIAL DEPLOYMENT</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="exclamation paw teal icon">{{ab_k9}}</i>
+                                    </div>
+                                    <div class="label">
+                                            <a href="{% url 'planningandacquiring:add_procured_k9'%} ">K9 ACQUISITION COUNTDOWN</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+
+                <div class="sixteen wide column">
+                    <div class="ui equal width height grid">
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="exclamation circle red icon">{{ua_count}}</i>
+                                    </div>
+                                    <div class="label">
+                                            <a href="{% url 'unitmanagement:k9_mia_list'%}">MIA COUNT</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="exclamation violet icon"></i>
+                                        <i class="paw violet icon">{{k9i}}</i>
+                                    </div>
+                                    <div class="label">
+                                     
+                                        <a href="{% url 'unitmanagement:k9_incident_list'%}">K9
+                                        INCIDENT</a>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="bus brown icon">{{tq_count}}</i>
+                                    </div>
+                                    <div class="label">
+
+                                            <a href="{% url 'unitmanagement:transfer_request_list' %}">TRANSFER REQUESTS</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>       
+                </div>
+
+                <div class="sixteen wide column">
+                    <div class="ui equal width height grid">
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="tasks orange icon">{{pre_req_count}}</i>
+                                    </div>
+                                    <div class="label">
+                                      
+                                        <a href="{% url 'deployment:pre_req_unconfirmed'%}">INSUFFICIENT PRE-REQUIREMENT ITEMS</a>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div style="margin-left: 25%;">
+                                    <span style="color: red;">Retire Due</span> |
+                                    <span style="color: orange;">Returning</span>
+                                </div>
+                                <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="yellow hourglass end icon"></i>
+                                        <i class="red icon">{{due_retire}}</i>
+                                        <i class="orange icon">{{cb_conf_count}}</i>
+                                    </div>
+                                    <div class="label">
+                                            <a href="{% url 'unitmanagement:due_retired_list'%}">RETIREMENT</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                    <div class="ui small statistic">
+                                    <div class="value">
+                                        <i class="shopping basket green icon"></i>
+                                        <i class="green icon">{{item_req_count}}</i>
+                                    </div>
+                                    <div class="label">
+
+                                            <a href="{% url 'unitmanagement:replenishment_confirm' %}">PENDING ITEM REPLENISHMENT REQUESTS</a>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+               
+                <div class="sixteen wide column">
+                    <div class="ui raised segment">
+                        <div class="chart-container" style="position: relative; height:40vh;">
+                            <canvas id="myChart4"></canvas>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="seven wide column" style="padding: 0%;padding-right: 1%;">
+            <div class="ui basic segment"> 
+              <div class="ui inverted segment">
+                <h4>Calendar</h4>
+              </div>
+                <div class="ui right aligned basic segment"
+                style="padding:0%;margin:0%;margin-bottom:5px">
+                    <div class="ui buttons">
+                        <button class="ui button"  id = "prev" >Previous Year</button>
+                        <div class="or"></div>
+                        <button class="ui button"  id = "next" >Next Year</button>
+                      </div>
+                
+                </div>
+        
+                <div id = "calendar" style="margin-top:0%;"></div>
+             </div> 
+          </div>
+        </div>
+    </div>    
+</div>
+
+
+  <div id = "id_event_load"></div>
+
+
+<style>
+#prev, #next{
+  background-color:orangered;
+  color: white;
+}
+</style>
+
+<script>
+  $(document).ready(function() {
+    $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+
+          defaultView: 'month',
+          weekNumbers: 'true',
+          editable: true,
+          selectable: true,
+          eventLimit: 3,
+          nowIndicator: true,
+
+          eventTextColor: "white",
+
+          eventClick: function(event, element) {
+                var url = 'ajax_load_event';
+
+                 $.ajax({
+                        url: url,
+                        data: {
+                        'event_id': event.id,},
+                        success: function (data) {
+                        $("#id_event_load").html(data);
+                          $('#event_modal').modal('show');
+
+                          },
+                        error:
+                            function(xhr){
+                            alert(xhr.statusText)
+                            return false;}
+                    });
+
+                 },
+
+          events: [
+                {% for i in events %}
+                {
+                    id: '{{ i.id }}',
+                    title: '{{i.event_name}}',
+                    start: '{{ i.start_date|date:"Y-m-d" }}',
+                    end: '{{ i.end_date|date:"Y-m-d" }}',
+                    allDay: 'true',
+                },
+                {% endfor %}
+            ],
+            dayClick: function(date) {
+                new_date = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                var view = $('#calendar').fullCalendar('getView');
+
+                    $('#calendar').fullCalendar('gotoDate',date);
+                    $('#calendar').fullCalendar('changeView', 'agendaDay');
+
+                },
+
+          });
+
+
+
+      $('#prev').click(function() {
+      $('#calendar').fullCalendar('prevYear');
+      });
+
+      $('#next').click(function() {
+      $('#calendar').fullCalendar('nextYear');
+      });
+
+      //Charts
+      var endpoint = '../../unitmanagement/admin/api'
+      var list_month = []
+      var list_month_name = []
+    
+      $.ajax({
+          method: "GET",
+          url: endpoint,
+          success: function(data){
+            list_month = data.list_month
+            list_month_name = data.list_month_name
+          
+            setChart()         
+          },
+          error: function(error_data){
+            console.log("error")
+            console.log(error_data)
+          }
+      })
+
+      function setChart(){
+        var ctx = document.getElementById('myChart4');
+        //Chart1
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: list_month_name,
+              datasets: [{
+                    label: "{{ab_total|intcomma}}",
+                    data: list_month,
+                    backgroundColor: ['rgba(75, 192, 192, 0.5)'],
+                    borderColor: ['rgba(75, 192, 192, 1)'],
+                    borderWidth: 1,
+                    lineTension:0.1,
+                    borderJointStyle:'miter',
+                }],
+            },
+            options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                animateScale: true,
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        // var label = list_month_name[tooltipItem.datasetIndex] || '';
+                        var label = ''
+                        // if (label) {
+                        //     label += ': ';
+                        // }
+                        label += Math.round(tooltipItem.yLabel * 100) / 100;
+                        return label.toLocaleString();
+                    }
+                }
+            },
+            scales: {
+                xAxes: [{
+                ticks: {
+                   
+                }
+                }],
+                yAxes: [{
+                ticks: {
+                    step:1,
+                 
+                }
+                }]
+            },
+          }
+        });
+      }
+    
+  });
+</script>
+
+{% endblock%}
+

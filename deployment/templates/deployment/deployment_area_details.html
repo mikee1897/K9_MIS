@@ -1,0 +1,179 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<h1 class="ui header">
+  {{data.team}}
+  <div class="sub header">Team details for {{data.team}}</div>
+</h1>
+{% if messages %}
+  {% for message in messages %}
+      <div class="ui green message"> {{ message }}</div>
+  {% endfor %}
+{% endif %}
+<div class="ui inverted raised segment">
+  <form action="" class="ui inverted form">
+    <div class= 'four fields'>
+      <div class="field">
+        <label>Area</label>
+        <input type="text" value="{{data.location.area}}" readonly>
+      </div>
+      <div class="field">
+          <label>City</label>
+          <input type="text" value="{{data.location.city}}" readonly>
+        </div>
+        <div class="field"></div>
+    </div>
+    <div class="field">
+        <label>Place</label>
+        <input type="text" value="{{data.location.place}}" readonly>
+      </div>
+  </form>
+</div>
+
+<div class="row">
+    <div class="column">
+      <div class="ui basic horizontal segments" style="border-style: none;">
+       <div class="ui basic segment" style="border-style: none;">
+         <label>No. of K9s Required: </label>
+         {% if data.total_dogs_deployed >= data.total_dogs_demand %}
+             <span class="ui green circular label">{{data.total_dogs_demand}}</span>
+         {%else%}
+             <span class="ui red circular label">{{data.total_dogs_demand}}</span>
+         {% endif %}
+         <table class="ui three column celled red table">
+           <thead>
+             <tr>
+               <th>EDD Demand</th>
+               <th>NDD Demand</th>
+               <th>SAR Demand</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <td>{{data.EDD_demand}}</td>
+               <td>{{data.NDD_demand}}</td>
+               <td>{{data.SAR_demand}}</td>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+       <div class="ui basic segment" style="border-style: none;">
+         <label>No. of K9s Deployed: </label>
+         {% if data.total_dogs_deployed >= data.total_dogs_demand %}
+             <span class="ui green circular label">{{data.total_dogs_deployed}}</span>
+         {%else%}
+             <span class="ui orange circular label">{{data.total_dogs_deployed}}</span>
+         {% endif %}
+         <table class="ui three column celled orange table">
+           <thead>
+             <tr>
+               <th>EDD Deployed</th>
+               <th>NDD Deployed</th>
+               <th>SAR Deployed</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <td>{{data.EDD_deployed}}</td>
+               <td>{{data.NDD_deployed}}</td>
+               <td>{{data.SAR_deployed}}</td>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui basic segment">
+      <label> No. of Incidents Related to</label>
+          <div class="ui statistics">
+  
+           <div class="statistic">
+      <div class="value">
+        <i class="binoculars icon"></i> {{sar_inc}}
+      </div>
+      <div class="label">
+        Search and Rescue
+      </div>
+    </div>
+  
+          <div class="statistic">
+      <div class="value">
+        <i class="pills icon"></i> {{ndd_inc}}
+      </div>
+      <div class="label">
+        Narcotics
+      </div>
+    </div>
+  
+      <div class="statistic">
+      <div class="value">
+        <i class="bomb icon"></i> {{edd_inc}}
+      </div>
+      <div class="label">
+        Explosives
+      </div>
+    </div>
+  
+  
+      <div class="statistic">
+        <div class="value">
+          <i class="star outline icon"></i>{{incidents}}
+        </div>
+        <div class="label">
+          All Types
+        </div>
+      </div>
+  
+          </div>
+      </div>
+
+      <div class="ui segment">
+          <h2>FOU's Assigned</h2>
+          <table id="tabledata1" class="ui five column celled table">
+              <thead>
+                <tr>
+                  <th>Date Assigned</th>
+                  <th>Name:SN#</th>
+                  <th>Capability</th>
+                  <th>Handler</th>
+                  <th>Mobile #</th>
+                </tr>
+            </thead>
+            <tbody>
+      
+              {% for data, mn in data_list %}
+               <tr>
+                  <td>{{data.date_added}}</td>
+                  <td>{{data.k9}}</td>
+                  <td>{{data.k9.capability}}</td>
+                  <td>{{data.k9.handler}}</td>
+                  <td>{{mn}}</td>
+               </tr>
+              {% endfor %}
+      
+            </tbody>
+        </table>
+
+      </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable({
+              "order": [[ 0, "asc" ]]
+        });
+        $('.menu .item').tab();
+    });
+
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+</script>
+{% endblock %}

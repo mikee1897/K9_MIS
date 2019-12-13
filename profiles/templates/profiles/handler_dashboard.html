@@ -1,0 +1,550 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %} 
+
+{% load um_tags %}
+{% load widget_tweaks %}
+
+{% block dashboard %}
+
+  <div class="container fluid">
+      {{geoform.media}}
+      <div class="ui grid" style="margin: 0%; padding: 0%;">
+        <div class="two column row">
+            <div class="ten wide column"  style="margin-right:0%;">
+                {%if cb %}
+                {%if cb.status == 'Pending' %}
+                <div class="ui info message">
+                   
+                    <div class="header">
+                      <i></i>
+                        YOU HAVE BEEN CALLED BACK TO BASE! 
+                        <a href="{% url 'unitmanagement:confirm_going_back' cb.id %}" class="ui orange small button">Confirm</a>
+                    </div>
+                    <ul class="list">
+                      <li>Please confirm that
+                          you have received the message and will return at your most earliest
+                          convenient time. </li>
+                    </ul>
+                  </div>
+                  {% elif cb.status == 'Confirmed'%}
+                  <div class="ui info icon message">
+                      <i class="exclamation icon"></i>
+                      <div class="content">
+                        <div class="header">
+                            Admin is awaiting your arrival back to base.
+                        </div>
+                      </div> 
+                  </div>
+                  {% else %}
+                  
+                  {% endif %}
+                  {% endif %}
+
+                <!--{% if cb_handler %}-->
+                 <!--{%if cb_handler.status == 'Pending' %}-->
+                <!--<div class="ui info message">-->
+
+                    <!--<div class="header">-->
+                      <!--<i></i>-->
+                        <!--YOU HAVE BEEN CALLED BACK TO BASE!-->
+                        <!--<a href="{% url 'unitmanagement:confirm_going_back_handler' cb_handler.id %}" class="ui orange small button">Confirm</a>-->
+                    <!--</div>-->
+                    <!--<ul class="list">-->
+                      <!--<li>Please confirm that-->
+                          <!--you have received the message and will return at your most earliest-->
+                          <!--convenient time. </li>-->
+                    <!--</ul>-->
+                  <!--</div>-->
+                  <!--{% elif cb.status == 'Confirmed'%}-->
+                  <!--<div class="ui info icon message">-->
+                      <!--<i class="exclamation icon"></i>-->
+                      <!--<div class="content">-->
+                        <!--<div class="header">-->
+                            <!--Admin is awaiting your arrival back to base.-->
+                        <!--</div>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--{% else %}-->
+                  <!--{% endif %}-->
+                <!--{% endif %}-->
+
+                {% if k9 %}
+
+                    <div class="ui three column grid">
+
+                    <div class="column">
+                        <div class="ui raised segment center aligned">
+                            <div class="card">
+                                <div class="content">
+                                    {%if dr == 1%}
+                                    <i class="huge green check icon"></i>
+                                    {%else%}
+                                    <i class="huge red close icon"></i>
+                                    {%endif%}
+                                </div>
+                                <div class="extra content">
+                                    <strong>
+                                        <a href="{% url 'deployment:daily_refresher_form'%}">DAILY REFRESHER</a>
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="ui raised segment center aligned">
+                            <div class="card">
+                                <div class="content">
+                                    <h3>
+                                        {% if upcoming_deployment is None %}
+                                        No upcoming deployments
+                                        {% else %}
+                                        {{ upcoming_deployment }}
+                                        {% endif %}
+                                    </h3>
+                                </div>
+                                <div class="extra content">
+                                    <strong>
+                                        {% if upcoming_deployment is None %}
+                                        <a href="#">UPCOMING DEPLOYMENT</a>
+                                        {% else %}
+                                        <a href="{% url 'deployment:request_dog_details'  upcoming_deployment.id %}">UPCOMING DEPLOYMENT</a>
+                                        {% endif %}
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="ui raised segment center aligned">
+                            <div class="card">
+                                <div class="content">
+                                    <h3>
+                                         {% if current_port is not None %}
+                                            {{current_port}}
+                                        {% elif current_request is not None %}
+                                            {{current_request}}
+                                        {% else %}
+                                            You are currently undeployed
+                                        {% endif %}
+                                    </h3>
+                                </div>
+                                <div class="extra content">
+                                    <strong>
+                                        {% if current_port is not None %}
+                                            <a href="{% url 'deployment:team_location_details' current_port.id %}">CURRENT ASSIGNMENT (PORT)</a>
+                                        {% elif current_request is not None %}
+                                            <a href="{% url 'deployment:request_dog_details' current_request.id %}">CURRENT ASSIGNMENT (REQUEST)</a>
+                                        {% else %}
+                                            <a href="#">CURRENT ASSIGNMENT</a>
+                                        {% endif %}
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                  </div>
+
+
+                    <div class = "ui segment" id = "start_end_training">
+                    <table class="ui very basic four column table">
+                    <thead>
+                    <tr>
+                    <th>Status: {{k9.training_status}}</th>
+                    {% if k9.status == "Sick" or k9.status == "Lost" or k9.status == "Stolen" or k9.status == "Accident"%}
+                    <th style="color:red;">K9 in Incident ({{k9.status}})</th>
+                    {%else%}
+                    <th>Type: {{k9.status}}</th>
+                    {%endif%}
+                    <th>Capability: {{k9.capability}}</th>
+
+                        {% if k9.training_status == "On-Training" %}
+
+                        {% if k9.training_level == "Stage 0" %}
+                        <th>Training Stage: Stage 1.1 </th>
+                        {% elif k9.training_level == "Stage 1.1" %}
+                        <th>Training Stage: Stage 1.2 </th>
+                        {% elif k9.training_level == "Stage 1.2" %}
+                        <th>Training Stage: Stage 1.3 </th>
+
+                        {% elif k9.training_level == "Stage 1.3" %}
+                        <th>Training Stage: Stage 2.1 </th>
+                        {% elif k9.training_level == "Stage 2.1" %}
+                        <th>Training Stage: Stage 2.2 </th>
+                        {% elif k9.training_level == "Stage 2.2" %}
+                        <th>Training Stage: Stage 2.3 </th>
+
+                        {% elif k9.training_level == "Stage 2.3" %}
+                        <th>Training Stage: Stage 3.1 </th>
+                        {% elif k9.training_level == "Stage 3.1" %}
+                        <th>Training Stage: Stage 3.2 </th>
+                        {% elif k9.training_level == "Stage 3.2" %}
+                        <th>Training Stage: Stage 3.3 </th>
+                        {% elif k9.training_level == "Stage 3.3" %}
+                        <th>Training Stage: Final Stage</th>
+                        {% endif %}
+
+
+                        <th><h3>Training</h3><div><strong>Date Start :</strong> {{training_sched.date_start}}</div>
+                            <div><strong>Date End :</strong> {{training_sched.date_end}}</div></th>
+
+                        {% endif %}
+
+                    </tr>
+                    </thead>
+                    </table>
+
+                        {% if k9.training_level %}
+                        <form class="ui form" method="POST">
+                            {% csrf_token %}
+
+                            {% if show_start == True and show_end == False %}
+                            <input class = "ui green button" type="submit" name = "start_training" value="Start Training">
+
+                            {% elif show_start == False and show_end == True %}
+                            <input class = "ui green button" type="submit" name = "end_training" value="End Training">
+
+                            {% elif show_start == True and show_end == True%}
+                            <h3 class = "ui blue header">Pending grade for current training stage.</h3>
+                            {% else %}
+                            {% endif %}
+
+                        </form>
+                        {% endif %}
+
+                        {% if reveal_items == True %}
+                          {% if pre_deployment_item %}
+                            <div class="ui two column grid">
+                                <div class="six wide column">
+                                    <input class = "ui green button" type="submit"  value="Confirm Initial Deployment" id = "reveal_predep_checklist">
+                                </div>
+                                 <div class="ten wide column">
+                                     <strong>Deployment Date : </strong> <span>{{pre_deployment_item.initial_sched.date_start}} </span> <br>
+                                      <strong>Port: </strong> <span>{{pre_deployment_item.initial_sched.team.team}}</span>
+                                </div>
+                            </div>
+                            {%endif%}
+                        {% elif all_clear == True and reveal_items == True %}
+                         <strong>Deployment Date : </strong> <span>{{pre_deployment_item.initial_sched.date_start}} </span> <br>
+                        <strong>Port: </strong> <span>{{pre_deployment_item.initial_sched.team.team}}</span>
+                        {% else %}
+                        {% endif %}
+
+                        </div>
+
+                {% else %}
+                        <div class = "ui segment">
+                            You don't have a K9 yet.
+                        </div>
+                {% endif %}
+
+
+                      
+                  <div class="ui raised segment" >
+                      <canvas id="myChart" height="355" ></canvas>
+                  </div>
+              </div>
+
+              <div class="six wide column" style="padding: 0%;margin:0%;">
+                  {% if messages %}
+                  {% for message in messages %}
+                      <input class="msg" type='hidden' value="{{message}}">
+                      <div class="ui info message">
+                        <div class="header">
+                          {{message}}
+                        </div>
+                      </div>
+                  {% endfor %}
+                  {% endif %}
+
+                    {%if ki %}
+                    <div class="ui info message">
+                      <ul class="list">
+                        {%if ki.incident == 'Lost'%}
+                        <li>You have reported your K9 Lost.</li>
+                        {%elif ki.incident == 'Stolen'%}
+                        <li>You have reported your K9 Stolen.</li>
+                        {%elif ki.incident == 'Accident'%}
+                        <li>You have reported your K9 in an Accident.</li>
+                        <a href="#" class="ui tiny red button died_btn">Deceased</a>
+                        <a href="{% url 'unitmanagement:k9_accident' ki.id %}?accident=recovered" class="ui tiny blue button">Recovered</a>
+                        {%endif%}
+                      </ul>
+                    </div>
+                    {%endif%}
+                    <div class="ui inverted segment">
+                            <h4>Calendar</h4>
+                          </div>
+                <div class="ui right aligned basic segment" style="padding: 0%;margin:0%;">
+                    <div class="ui buttons">
+                      <button class="ui button"  id = "prev" >Previous Year</button>
+                      <div class="or"></div>
+                      <button class="ui button"  id = "next" >Next Year</button>
+                    </div>
+
+                    <div id = "calendar" style="margin-top:0%;"></div>
+                </div>
+                   <a href="{% url 'unitmanagement:on_leave_request'%}" class="ui small green button">Apply for Leave</a>
+                  {% if emergency_leave_count <= 0 %}
+                   <a class="ui small red button" id="id_e_leave">Emergency Leave</a>
+                  {% else %}
+                  <a class="ui disabled red button" id="id_e_leave">Emergency Leave (Ongoing)</a>
+                  {% endif %}
+                  <a href="{% url 'unitmanagement:k9_incident'%}" class="ui small yellow button">Report Incident</a>
+                  <a href="{% url 'unitmanagement:k9_sick_form'%}" class="ui small teal button">Health Concern</a>
+              </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+   <!--Pre Deployment Items Modal-->
+
+<div class="ui mini modal" id = 'modal3'>
+      <i class="close icon"></i>
+    <div class="header"><h2>Pre Deployment Requirements</h2></div>
+    <div class="scrolling content">
+             {% for item in items_list %}
+                    {% if item.0 == True %}
+                    <h4><i class="green check icon"></i>{{item.1}}</h4>
+                    {%else%}
+                    <h4><i class="red close icon"></i>{{item.1}}</h4>
+                    {%endif%}
+                {% endfor %}
+
+
+        <form  class="ui form" method="POST">
+             {% csrf_token %}
+            {% if all_clear == True %}
+            <button class="ui green button" type="submit" name = "confirm_deployment" value="Confirm Deployment"><i class="ship icon"></i>Confirm Deployment</button>
+
+            {% else %}
+            <button class="ui disabled green button"><i class="ship icon"></i>Confirm Deployment</button>
+
+            {% endif %}
+        </form>
+
+    </div>
+</div>
+
+{% if ki %}
+<div class="ui modal" id= 'died_modal'>
+    <div class="header">{{k9}}</div>
+    <div class="content">
+      <form class = 'ui form' action="{% url 'unitmanagement:k9_accident' ki.id %}?accident=died" method="POST"> {% csrf_token %}
+        <div class="two fields">
+          <div class="field">
+            <label for="">Date Died</label>
+            <input type="date" name='date_died'>
+          </div>
+          <div class="field">
+              <label for="">Death Certificate</label>
+              <input type="file" name='death_cert'>
+            </div>
+        </div>
+        <center>
+          <button class="ui green button" type="submit">Submit</button>
+        </center>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+ <!--End Pre Deployment Items Modal-->
+
+<div class="ui modal" id= "emergency_leave_modal">
+    <div class="header">Apply Emergency Leave</div>
+    <div class="content">
+      <form class = 'ui form' method="POST">
+          {% csrf_token %}
+        {{emergency_leave_form}}
+        <center>
+          <button class="ui green button" type="submit">Submit</button>
+        </center>
+      </form>
+    </div>
+  </div>
+
+ <div id = "id_event_load"></div>
+
+<style>
+
+#prev, #next{
+  background-color:orangered;
+  color: white;
+  }
+
+/*
+  #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+  } */
+</style>
+
+<script>
+$(document).ready(function() {
+      // alert($('.msg').val());
+      $( ".died_btn" ).click(function() {
+          $('#died_modal').modal('show');
+        });
+
+        $( "#id_e_leave" ).click(function() {
+          $('#emergency_leave_modal').modal('show');
+        });
+      
+      if($('.msg').val() == 'event'){
+        $('#modal2').modal('show');
+      }
+
+      var endpoint = '../../unitmanagement/handler/api'
+      var performance = []
+      var sched = []
+      $.ajax({
+          method: "GET",
+          url: endpoint,
+          success: function(data){
+            performance = data.performance
+            sched = data.sched
+            setChart()         
+          },
+          error: function(error_data){
+            console.log("error")
+            console.log(error_data)
+          }
+      })
+
+    function setChart(){
+        var ctx = document.getElementById('myChart');
+        //Chart1
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+              datasets: [{
+                    label: "{{k9}}",
+                    data: performance,
+                    backgroundColor: ['rgba(75, 192, 192, 0.5)'],
+                    borderColor: ['rgba(75, 192, 192, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                animateScale: true,
+            },
+            title: {
+                display: true,
+                text: "K9 Performance"
+            },
+            scales: {
+                xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                }
+                }],
+                yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    step:1,
+                    suggestedMax:100,
+                }
+                }]
+            },
+          }
+        });
+      }
+
+      //Calendar
+      
+      $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+
+          defaultView: 'month',
+          weekNumbers: 'true',
+          editable: false,
+          selectable: true,
+          eventLimit: 3,
+          showNonCurrentDates: true,
+
+
+          eventTextColor: "white",
+          nowIndicator: true,
+
+          {% if k9_schedules %}
+          events: [
+
+                    {% for i in k9_schedules %}
+                    {
+                    id: '{{ i.id }}',
+
+                    {% if i.status == 'Request' %}
+                    title: '{{i|get_event_name}}',
+                    {% elif i.status == 'Checkup' %}
+                    title : 'Physical Exam',
+                    {% elif i.status == 'Initial Deployment' %}
+                    title : '{{i|get_team_name}}',
+                    {% else %}
+
+                    {% endif %}
+
+                    start: '{{ i.date_start|date:"Y-m-d" }}',
+                    end: '{{ i.date_end|date:"Y-m-d" }}',
+                    allDay: 'true',
+                    },
+                    {% endfor %}
+            ],
+            {% endif %}
+
+          eventClick: function(event, element) {
+                var url = 'ajax_load_event_handler';
+
+                 $.ajax({
+                        url: url,
+                        data: {
+                        'event_id': event.id,},
+                        success: function (data) {
+
+                          $("#id_event_load").html(data);
+                           $('#event_modal').modal('show');
+                          },
+                        error:
+                            function(xhr){
+                            alert(xhr.statusText)
+                            return false;}
+                    });
+
+                 },
+          }); // end #calendar
+          
+          
+
+        $('#prev').click(function() {
+        $('#calendar').fullCalendar('prevYear');
+        });
+
+        $('#next').click(function() {
+        $('#calendar').fullCalendar('nextYear');
+        });
+
+     
+});
+</script>
+
+
+<script>
+
+    $( "#reveal_predep_checklist" ).click(function() {
+  $('#modal3').modal('setting', 'closable', false).modal('show');
+});
+</script>
+
+
+{% endblock %}

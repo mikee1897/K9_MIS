@@ -1,0 +1,24 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %}
+
+{% block sidebar_module %}
+      
+<div class="ui fluid container">
+    <div class="ui basic segment">
+        <div class="ui grid">
+            <div class="three wide column">
+                    <div class="ui pointing vertical menu">
+                        <a class="item"> <b>Adoption Menu</b></a>
+                        <a href="{% url 'training:adoption_list'%}" class="item">
+                            <i class="list alternate icon"></i>Adoption List
+                        </a>
+                    </div>
+            </div>
+            <!>
+            <div class="thirteen wide column">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

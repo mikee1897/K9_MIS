@@ -1,0 +1,36 @@
+{% load static %}
+{% block content %}
+<div class="header">{{item_type}}</div>
+<div class="content">
+    <form action="" class="ui form" method="POST">
+        {% csrf_token %}
+        <div class="two fields">
+            <div class="field">
+                <label>Item</label>
+                <select class="ui fluid search dropdown" name='select'>
+                    {% for data in data%}
+                    <option value="{{data.id}}">{{data}}</option>                  
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+                <label>Quantity</label>
+                <input type="number" name="quantity">
+            </div>
+        </div>
+        {% if item_type == 'Vitamins'%}
+        <div class="field">
+            <label>Expiration Date</label>
+            <input type="date" name="date">
+        </div>
+        {% endif %}
+
+        <input type="hidden" name="item_type" value="{{item_type}}">
+
+        <center>
+                <button class="ui green button" type="submit">Submit</button>
+        </center>
+        
+    </form>
+</div>
+{% endblock %}

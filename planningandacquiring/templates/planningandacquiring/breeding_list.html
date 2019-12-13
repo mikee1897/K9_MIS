@@ -1,0 +1,118 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">Breeded K9's List</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui top attached tabular menu">
+{%if type_text%}
+    {% if type_text == 'pregnant' %}
+   
+        <a class="item" data-tab="first">Confirm Pregnancy</a>
+        <a class="active item" data-tab="second">Pregnant</a>
+   
+    {% else%}
+        <a class="active item" data-tab="first">Confirm Pregnancy</a>
+        <a class="item" data-tab="second">Pregnant</a>
+    {% endif %}
+{%else%}
+<a class="active item" data-tab="first">Confirm Pregnancy</a>
+<a class="item" data-tab="second">Pregnant</a>
+{%endif%}
+</div>
+
+
+{% if type_text == 'pregnant' %}
+<div class="ui bottom attached tab segment" data-tab="first">
+{% else%}
+<div class="ui bottom attached active tab segment" data-tab="first">
+{% endif %}
+
+
+    <table id="tabledata1" class="ui four column celled table">
+        <thead class="center aligned">
+        <tr>
+            <th class="ui pink">Dam</th>
+            <th>Sire</th>
+            <th>Mating Date</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% if d %}
+            <tr class="positive">
+                <td>{{ d.mother}}</td>
+                <td>{{ d.father}}</td>
+                <td class="center aligned">{{ d.date_mated|date:'Y-m-d'}}</td>
+                <td class="center aligned">
+                    <a href="{% url 'planningandacquiring:confirm_failed_pregnancy' d.id %}?decision=confirm" class="ui tiny blue button">Confirm</a>
+                    <a href="{% url 'planningandacquiring:confirm_failed_pregnancy' d.id %}?decision=failed" class="ui tiny red button">Failed</a>
+                </td>
+            </tr>
+            {% endif %}
+
+            {% for data in data1 %}
+                <tr>
+                    <td>{{ data.mother}}</td>
+                    <td>{{ data.father}}</td>
+                    <td class="center aligned">{{ data.date_mated|date:'Y-m-d'}}</td>
+                    <td class="center aligned">
+                        <a href="{% url 'planningandacquiring:confirm_failed_pregnancy' data.id %}?decision=confirm" class="ui tiny blue button">Confirm</a>
+                        <a href="{% url 'planningandacquiring:confirm_failed_pregnancy' data.id %}?decision=failed" class="ui tiny red button">Failed</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% if type_text == 'pregnant' %}
+<div class="ui bottom attached tab active segment" data-tab="second">
+{% else%}
+<div class="ui bottom attached tab segment" data-tab="second">
+{% endif %}
+	<table id="tabledata2" class="ui four column celled table">
+        <thead class="center aligned">
+        <tr>
+            <th class="ui pink">Dam</th>
+            <th>Sire</th>
+            <th>Mating Date</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for data in data2 %}
+                <tr>
+                    <td>{{ data.mother}}</td>
+                    <td>{{ data.father}}</td>
+                    <td class="center aligned">{{ data.date_mated|date:'Y-m-d'}}</td>
+                    <td class="center aligned">
+                        <a href="{% url 'planningandacquiring:add_K9_offspring' data.id %}" class="ui tiny blue button">Add Litter</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#tabledata1').DataTable({
+            "ordering": false
+        });
+
+        $('#tabledata2').DataTable( {
+        "order": [[ 2, "desc" ]]
+        });
+      
+		$('.menu .item').tab();
+	});
+
+</script>
+{% endblock %}

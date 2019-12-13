@@ -1,0 +1,275 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load um_tags %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="ui segment" style="padding:20px;">
+    <h1 class="ui header">Schedule Checkup
+    <div class="sub header">Schedule k9 for checkup pre-requirement before initial deployment.</div>
+    </h1>
+
+     {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+</div>
+
+<div class="ui info message">
+  <i class="close icon"></i>
+  <div class="header">
+    Steps
+  </div>
+  <ol class="ui ordered list">
+    <li>First select a date to view current appointments for said date.</li>
+    <li>Check the checkboxes in order to assign k9s to the date selected.</li>
+      <li>Click on confirm button to schedule k9s for checkups.</li>
+  </ol>
+</div>
+
+ <div class="ui inverted placeholder segment">
+  <div class="ui two column stackable center aligned grid">
+    <div class="ui vertical divider"></div>
+    <div class="top aligned row">
+      <div class="column">
+          <div  class="ui segment" >
+              <h1 class="ui header">Appointments</h1>
+
+              <div class="ui list" id="legends">
+                  <div class="item"> <i class="red stop icon"> </i>Existing Appointments</div>
+                  </div>
+
+              <!--<button class = "ui blue button" id = "view_calendar">View Calendar</button>-->
+
+              <div class="sub header">Schedule phex on <div class="ui input">{{date_form}}</div></div>
+
+              <div id = "calendar"></div>
+              <div id='id_appointment_data' > </div>
+
+          </div>
+
+      </div>
+      <div class="column">
+
+          <div class = "ui inverted segment">
+
+              <h1 class="ui header">Available Units for Checkup</h1>
+
+		<table id="tabledata" class="ui celled table">
+        	<thead>
+          	<tr>
+                <th></th>
+				<th>K9</th>
+                <th>Handler</th>
+                <th>Recommended Phex Schedule</th>
+                <th>Deployment Date</th>
+          	</tr>
+
+    		</thead>
+    		<tbody>
+
+            {% for item in k9_pending %}
+            <tr data-group="pending" id = {{forloop.counter0}}-unit-row >
+                <td>{{item.k9|render_k9_checkbox:selected_list}}</td>
+                <td>{{item.k9}}</td>
+                <td>{{item.k9.handler}}</td>
+                <td>{{item.date_start | recommended_checkup_date | date:"Y-m-d"}}</td>
+                <td>{{item.date_start | date:"Y-m-d"}}</td>
+            </tr>
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+ </div>
+
+    <div id="id_scheduled_data"></div>
+
+
+<!--<div class="ui longer modal" id ="calendar_modal">-->
+  <!--<div class="header">Current Appointments</div>-->
+  <!--<div class="content">-->
+
+                       <!--<div id = "calendar"></div>-->
+
+  <!--</div>-->
+<!--</div>-->
+
+
+
+
+<script>
+
+        <!--$('input[type=checkbox]').attr('disabled','true');-->
+
+        <!--$("input[name='date']").change(function () {-->
+      var url = 'ajax_load_appointments';
+      var date = $("input[name='date']").val();
+
+
+      if (date != ""){
+      $.ajax({
+        url: url,
+        data: {
+          'date': date
+        },
+        success: function (data) {
+
+         $('input[type=checkbox]').removeAttr('disabled','disabled');
+
+         $("#id_appointment_data").html(data); //The solution lies on the checkbox initial values
+        }
+
+      });
+                    }
+
+
+    <!--});-->
+
+     <!--$("input[name='date']").trigger('change');-->
+
+</script>
+
+
+<script>
+
+    <!--$(document).on('click', 'input[type="checkbox"][value]', function(event) {-->
+  // The checkbox that was clicked
+  var actor = $(this);
+
+  // The status of that checkbox
+  var checked = actor.prop('checked');
+
+  // The value of the checkbox
+  var group = actor.val();
+
+  // All checkboxes of the same value
+  var checkboxes = $('input[type="checkbox"][value="' + group + '"]');
+
+  // All checkboxes excluding the one that was clicked
+  var otherCheckboxes = checkboxes.not(actor);
+
+  // Check those checkboxes
+  otherCheckboxes.prop('checked', checked);
+<!--});-->
+
+</script>
+
+<script>
+
+$("input[name='k9']").change(function(){
+
+try{
+    var attr = $(this).closest("tr").attr("data-group");
+
+     if( attr=="pending" && $(this).is(':checked') ){
+        $(this).closest("tr").hide();}
+
+  }
+catch(err){alert(err);}
+
+
+});
+</script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+	 $('#tabledata').DataTable( {
+        "order": [[ 3, "asc" ]]
+        });
+
+		$('.menu .item').tab();
+		});
+</script>
+
+
+<style>
+
+  #calendar .fc-dayGridMonth-view .fc-scroller {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  }
+
+  .fc-center>h2 {
+     font-size:  18px !important;
+     }
+
+  .fc-header, .fc-button, #prev, #next{
+  background-color:orangered;
+  color: white;
+  }
+
+  #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+  }
+</style>
+
+<script>
+
+<!--$( "#view_calendar" ).click(function() {-->
+   <!--$('#calendar_modal').modal('show');-->
+   <!--$('.fc-today-button.fc-button ').click();-->
+<!--});-->
+
+
+     $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+
+          defaultView: 'month',
+          weekNumbers: 'true',
+          editable: true,
+          selectable: true,
+          eventLimit: true,
+          showNonCurrentDates: true,
+          eventTextColor: "white",
+
+          events: [
+                {% for i in events %}
+                {
+                    id: '{{ i.id }}',
+                    title: '{{i.k9}}',
+                    start: '{{ i.date_start|date:"Y-m-d" }}',
+                    end: '{{ i.date_end|date:"Y-m-d" }}',
+                    allDay: 'true',
+                    color: '#FB1F1F',
+                },
+                {% endfor %}
+
+            ],
+
+            dayClick: function(date, jsEvent, view, resourceObj) {
+                    var formatted = date.format("YYYY-MM-DD");
+                    $("input[name='date']").val(formatted);
+                    $("input[name='date']").trigger("change");
+
+                  }
+
+
+          }); // end #calendar
+
+
+</script>
+
+<style>
+     #legends{
+  position: absolute;
+  right: 50px;
+  width: 150px;
+  height: 80px;
+
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "profiles/sidebar_adoption.html" %}
+{% load humanize %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">For Adoption</a>
+    <a class="item" data-tab="second">Adopted</a>
+</div>
+<div class="ui tab segment active" data-tab="first">
+    <table id="tabledata1" class="ui five column celled table">
+        <thead>
+            <tr class="center aligned">
+                <th>Name</th>
+                <th>Breed</th>
+                <th>Sex</th>
+                <th>Age (yrs & mon)</th>
+                <th>Age (days)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in for_adoption %}
+            <tr>
+                <td>
+                    <a href="{% url 'training:adoption_form' data.id %}">{{data.name}}</a>
+                </td>
+                <td>{{data.breed}}</td>
+                <td>{{data.sex}}</td>
+                <td>{{data.age}} years and {{data.month_remainder}} months</td>
+                <td class="right aligned">{{data.age_days}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="second">
+    <table id="tabledata2" class="ui celled table">
+        <thead>
+            <tr class="center aligned">
+                <th>Date Adopted</th>
+                <th>K9 Adopted</th>
+                <th>Breed</th>
+                <th>Adopter</th>
+                <th>Contact Info</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in adopted %}
+            <tr>
+                <td class="two wide">
+                    <a href="{% url 'training:adoption_details' data.id %}"> {{data.date_adopted|date:'Y-m-d'}}</a>
+                </td>
+                <td>{{data.k9.name}}</td>
+                <td>{{data.k9.breed}}</td>
+                
+                <td>{{data.first_name}} {{data.last_name}}</td>
+                <td class="right aligned two wide">{{data.contact_no}}</td>
+                <td class="two wide center aligned">
+                    <i class="ui small primary button returned_btn" id={{data.k9.id}}>Returned</i>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="ui large modal" id = 'id_data'></div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#tabledata1').DataTable();
+        $('#tabledata2').DataTable();
+        $('.menu .item').tab();
+        
+    });
+
+    $( ".returned_btn" ).bind('click', function() {
+        var url = 'adoption-list/ajax_load_adoption';  
+        var id = $(this).attr('id')
+        $('.ui.large.modal').modal('show');
+        $.ajax({                         
+            url: url,                  
+            data: {
+            'id': id       
+            },
+            success: function (data) {  
+                $("#id_data").html(data);
+            }
+        });
+        
+    });
+
+</script>
+ {% endblock %}

@@ -1,0 +1,54 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load index %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+		<h3 class="ui header">{{ title }}</h3>
+		{% if messages %}
+			{% for message in messages %}
+				<div class="{{style}}" > {{ message }}</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+		<table id="tabledata" class="ui seven column celled table">
+        	<thead>
+          	<tr>
+              <th>Team</th>
+							<th>Area</th>
+							<th>City</th>
+							<th>Place</th>
+							<th>No. of Maritime</th>
+							<th>No. of Incidents</th>
+							<th>No. of Units Deployed</th>
+							<th></th>
+          	</tr>
+    		</thead>
+    		<tbody>
+				{% for data in data %}
+    				<tr>
+							<td>
+								<a href="{% url 'deployment:team_location_details' data.id %}">{{data.team }}</a>
+							</td>
+							<td>{{data.location.area}}</td>
+							<td>{{data.location.city}}</td>
+							<td>{{data.location.place}}</td>
+							<td>{{data.location|maritime_count_location:0 }}</td>
+							<td>{{data.location|incident_count_location:0 }}</td>
+							<td>{{data.total_dogs_deployed}} out of 5</td>
+							<td class="ui center aligned">
+								<a href="{% url 'deployment:edit_team' data.id %}" class="ui basic blue button">Edit</a>
+							</td>
+    				</tr>
+				{% endfor %}
+        </tbody>
+    </table>
+
+<script type="text/javascript">
+
+
+	$('#tabledata').DataTable( {
+        "order": [[ 0, "asc" ]]
+    });
+	$('.menu .item').tab();
+	
+</script>
+{% endblock %}

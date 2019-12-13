@@ -1,0 +1,151 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+<h2 class="ui header">
+    {{k9}}
+    <div class="sub header">K9 details for {{k9}}</div>
+</h2>
+{% if messages %}
+    {% for message in messages %}
+        <div class="ui green message" > {{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+{% if k9.status == 'Dead'%}
+<div class="ui negative message">
+    <i class="close icon"></i>
+    <div class="header">
+      {{k9}} is Deceased....
+    </div>
+  </p>
+</div>
+{% endif %}
+<div class="ui basic segment">
+        
+  <center>
+      <img src="{{k9.image.url}}" alt="" width="280">
+  </center>
+
+
+
+</div>
+    <form class="ui form" action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="field">
+          <label>K9 Image</label>
+          {{form.image}}
+      </div>
+    
+		<table class="ui celled table">
+        	<thead>
+          	<tr>
+                <th>Name</th>
+                <td>{{k9.name}}</td>
+                </tr>
+            <tr>
+              <th>Serial Number</th>
+                <td>{{k9.serial_number}}</td>
+                </tr>
+            <tr>
+              <th>Breed</th>
+                <td>{{k9.breed}}</td>
+                </tr>
+            <tr>
+              <th>Sex</th>
+                <td>{{k9.sex}}</td>
+                </tr>
+            <tr>
+			  <th>Color</th>
+                <td>{{k9.color}}</td>
+                </tr>
+            <tr>
+              <th>Birthdate</th>
+                <td>{{k9.birth_date}}</td>
+                </tr>
+            <tr>
+              <th>Age</th>
+                <td>{{k9.age}}</td>
+                </tr>
+            <tr>
+            <tr>
+              <th>Source</th>
+                <td>{{k9.source}}</td>
+                </tr>
+            <tr>
+            {% if k9.source == "Procurement" %}
+                <tr>
+              <th>Date Procured</th>
+                <td>{{k9.date_created}}</td>
+                </tr>
+            <tr>
+                {% endif %}
+
+              <th>Status</th>
+                <td>{{k9.status}}</td>
+                </tr>
+            <tr>
+              <th>Type</th>
+                <td id='status'>{{k9.training_status}}</td>
+                </tr>
+            <tr>
+              <th>Capability</th>
+                <td>{{k9.capability}}</td>
+                </tr>
+            <tr>
+              <th>Assignment</th>
+                <td>{{k9.assignment}}</td>
+                </tr>
+
+            <tr>
+              <th>Year Retired</th>
+                <td>{{k9.year_retired}}</td>
+                </tr>
+
+             {% if parent_exist %}
+            <tr>
+                <th>Mother</th>
+                <td>{{parent.mother}}</td>
+            </tr>
+            <tr>
+                <th>Father</th>
+                <td>{{parent.father}}</td>
+            </tr>
+            {% else %}
+          
+            {% endif %}
+
+    		</thead>
+        </table>
+
+        {% if k9.training_status ==  'For-Breeding' or k9.training_status ==  'For-Deployment'%}
+        <div class="inline fields">
+          <div class="field">
+              <input type="radio" name="radio" value="For-Breeding">For-Breeding
+          </div>
+          <div class="field">
+              <input type="radio" name="radio" value="For-Deployment">For-Deployment
+          </div>
+        </div>
+       {% endif %}
+        
+        <div class="ui very basic center aligned segment" style="padding: 0px;">
+          <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Update</button>
+        </div>
+        
+      </form>
+        <div class="ui basic segment">
+            <a href="{% url 'planningandacquiring:K9_list'%}" class="ui blue button">Back</a>
+        </div>
+        
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+      if ($("#status").html() == 'For-Deployment'){
+        $('input:radio[name="radio"][value="For-Deployment"]').attr('checked',true);
+      }else{
+        $('input:radio[name="radio"][value="For-Breeding"]').attr('checked',true);
+      }
+    });
+
+</script>
+{% endblock %}

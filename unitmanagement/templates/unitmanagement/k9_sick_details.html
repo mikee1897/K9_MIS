@@ -1,0 +1,377 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% if user.position == 'Handler' %}
+    {% if th %}
+        
+    <div class="ui raised segment">
+            <table class="ui collapse green celled table">
+                <thead>
+                    <tr>
+                        <th class="two wide">K9</th>
+                        <td>{{th.health.dog}}</td>
+                        <th class="two wide">Reported by:</th>
+                        <td>{{th.health.incident_id.reported_by}}</td>
+                        <th class="two wide">Reported on:</th>
+                        <td>{{th.health.incident_id.date}}</td>
+                    </tr>
+                    <tr>
+                        <th>Veterinarian:</th>
+                        <td>{{th.health.veterinary}}</td>
+                        <th>Prescribed on:</th>
+                        <td>{{th.health.date}}</td>
+                        <th>Duration:</th>
+                        <td>{{th.health.duration}}</td>
+                    </tr>
+                </thead>
+            </table>
+            <div class="ui grid">
+                <div class="ten wide column">
+                        <table class="ui celled table">
+                                <thead>
+                                    <tr>
+                                        <th class="two wide">Problem:</th>
+                                        <td class="fourteen wide">{{th.health.problem}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Treatment:</th>
+                                        <td>{{th.health.treatment}}</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                </div>
+                <div class="six wide column">
+                        <center>
+                                <img src="{{th.health.image.url}}" alt="" style="position:relative;max-width: 300px;">
+                        </center>
+                </div>
+            </div>
+        </div>
+
+      
+        <table class="ui inverted green celled table" id = 'tabledata'>
+            <thead>
+                <th>Medicine</th>
+                <th>Quantity</th>
+                <th>Time of Day</th>
+                <th>Duration (Days)</th>  
+            </thead>
+            <tbody>
+                    {% for data in h%}
+                <tr>
+                    <td>{{data.medicine}}</td>
+                    <td>{{data.quantity}}</td>
+                    <td>{{data.time_of_day}}</td>
+                    <td>{{data.duration}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+    <div class="ui info message">
+            <div class="content">
+                <div class="header">
+                   Please wait for a reply from the Vet.
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="ui raised segment">
+            {% if th %}
+                <h2>Follow-Up</h2>
+            {% endif %}
+        <table class="ui collapse table">
+            <thead>
+                <tr>
+                    <th>K9</th>
+                    <td>{{data.k9}}</td>
+                    <th>Date</th>
+                    <td>{{data.date}}</td>
+                </tr>
+                <tr>
+                    <th>Remarks</th>
+                    <td class="nine wide">{{data.description}}</td>
+                    <th>Reported by:</th>
+                    <td>{{data.reported_by}}</td>
+                </tr>
+            </thead>
+        </table>
+        <br>
+        <div class="ui grid">
+            {% for image in image%}
+                <div class="five wide column center aligned">
+                    <center>
+                            <img src="{{th.health.image.url}}" alt="" style="position:relative;max-width: 300px;">
+                    </center>
+                </div>
+            {%endfor%}
+        </div>
+    </div>
+
+{% elif user.position == 'Veterinarian' %}
+
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">Concern</a>
+    <a class="item" data-tab="second">History</a>
+</div>
+<div class="ui tab segment active" data-tab="first">
+{% if th %}
+        
+<div class="ui raised segment">
+        <table class="ui collapse green celled table">
+            <thead>
+                <tr>
+                    <th class="two wide">K9</th>
+                    <td>{{th.health.dog}}</td>
+                    <th class="two wide">Reported by:</th>
+                    <td>{{th.health.incident_id.reported_by}}</td>
+                    <th class="two wide">Reported on:</th>
+                    <td>{{th.health.incident_id.date}}</td>
+                </tr>
+                <tr>
+                    <th>Veterinarian:</th>
+                    <td>{{th.health.veterinary}}</td>
+                    <th>Prescribed on:</th>
+                    <td>{{th.health.date}}</td>
+                    <th>Duration:</th>
+                    <td>{{th.health.duration}}</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="ui grid">
+            <div class="ten wide column">
+                    <table class="ui celled table">
+                            <thead>
+                                <tr>
+                                    <th class="two wide">Problem:</th>
+                                    <td class="fourteen wide">{{th.health.problem}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Treatment:</th>
+                                    <td>{{th.health.treatment}}</td>
+                                </tr>
+                            </thead>
+                        </table>
+            </div>
+            <div class="six wide column">
+                <center>
+                        <img src="{{th.health.image.url}}" alt="" style="position:relative;max-width: 300px;">
+                </center>
+            </div>
+        </div>
+    </div>
+
+  
+    <table class="ui inverted green celled table" id = 'tabledata'>
+        <thead>
+            <th>Medicine</th>
+            <th>Quantity</th>
+            <th>Time of Day</th>
+            <th>Duration (Days)</th>  
+        </thead>
+        <tbody>
+                {% for data in h%}
+            <tr>
+                <td>{{data.medicine}}</td>
+                <td>{{data.quantity}}</td>
+                <td>{{data.time_of_day}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+   
+{% endif %}
+<div class="ui basic segment">
+        {% if th %}
+        <h3 class="ui horizontal divider header">
+            FOLLOW UP
+        </h3>
+        {% endif %}
+        <div class="ui raised segment">
+                <table class="ui collapse table">
+                    <thead>
+                        <tr>
+                            <th>K9</th>
+                            <td>{{data.k9}}</td>
+                            <th>Date</th>
+                            <td>{{data.date}}</td>
+                        </tr>
+                        <tr>
+                            <th>Remarks</th>
+                            <td class="nine wide">{{data.description}}</td>
+                            <th>Reported by:</th>
+                            <td>{{data.reported_by}}</td>
+                        </tr>
+                    </thead>
+                </table>
+                <br>
+                <div class="ui grid">
+                    {% for image in image%}
+                        <div class="five wide column center aligned">
+                            <a href="#">
+                                <img src="{{image.image.url}}" class= 'img' alt="" id = '{{image.id}}'style="position:relative;max-width: 300px;">
+                            </a>
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
+        <div class="ui inverted segment">
+            <form class="ui inverted form" method="POST" id="myForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="field">
+                        <label>Problem</label>
+                        {{form.problem}}
+                    </div>
+                <div class="field">
+                    <label>Treatment</label>
+                    {{form.treatment}}
+                </div>
+                <div class="three fields">
+                    <div class="field">
+                        <label>Prescription Image (if any)</label>
+                        {{form.image}}
+                    </div>
+                    <div class="field">
+                        <label>Follow Up?</label>
+                        {{form.follow_up}}
+                    </div>
+                    <div class="field">
+                        <label>Follow Date</label>
+                        {{form.follow_up_date}}
+                    </div>
+                </div>
+                <table>
+                    <tbody>
+                    {% for form in formset %}
+                    <tr id="{{ form.prefix }}-row" class="formset_class">
+                        {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+                        {% for field in form.visible_fields %}
+                        {% if form.visible_fields.instance.pk %} {{ form.visible_fields.DELETE }}{% endif %}
+                                <span class ="text-danger small">{{field.errors}}</span>
+                                <th>{{field.label_tag}}</th>
+                                <td>{{field}}</td>
+                
+                                {% for item in item %}
+                                <option value="{{ item.id }}">{{ item.item_name }}</option>
+                                {% endfor %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+        
+                <div class="ui inverted right aligned segment" style="padding: 0px;">
+                    <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >{{ actiontype }}</button>
+                </div>
+                {{formset.management_form}}
+            </form>
+        </div>
+</div>
+
+</div>
+
+<div class="ui tab segment" data-tab="second">
+    <table class="ui celled table" id = 'tabledata2'>
+        <thead>
+            <th>Date</th>
+            <th>Veterinarian</th>
+            <th>Problem</th>
+        </thead>
+        <tbody>
+            {% for data in health_id%}
+            <tr>
+                <td class="three wide">
+                   <span class="flip" href="#" id={{data.id}} style="cursor: pointer;  color:blue;">{{data.date}}</span>
+                    </td>
+                <td class="five wide">{{data.veterinary}}</td>
+                <td>{{data.problem}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id ="id_health_data" class="ui longer modal"></div>
+
+<div class="ui modal" id = 'id_image_data'></div>
+<style>
+    ul {
+        list-style-type: none;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('#tabledata2').DataTable();
+        $('.menu .item').tab();
+        $(function() {
+            $('#myForm .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });            
+        })
+        
+        $('#id_follow_up_date').prop('disabled', 'disabled');
+
+        $( "#id_follow_up" ).change(function() {
+          
+            if ($("input[name='follow_up']:checked").val() == 'True'){
+                $('#id_follow_up_date').prop('disabled', false);
+            }else{
+                $('#id_follow_up_date').prop('disabled', 'disabled');
+            }
+        });
+
+
+        $( ".img" ).bind('click', function() {
+            var url = 'ajax_load_image';  
+            var image_id = $(this).attr('id')
+            $('#id_image_data').modal('show');
+
+            $.ajax({                      
+                url: url,                    
+                data: {
+                'image': image_id      
+                },
+                success: function (data) {   
+                $("#id_image_data").html(data); 
+                }
+            });
+        });
+        
+
+
+        $( ".flip" ).bind('click', function() {
+            var url = 'ajax_load_health';  
+            var health_id = $(this).attr('id')
+            $('.ui.longer.modal').modal('show');
+
+            $.ajax({                      
+                url: url,                    
+                data: {
+                'health': health_id      
+                },
+                success: function (data) {   
+                $("#id_health_data").html(data); 
+                }
+            });
+        });
+
+    });
+
+</script>
+
+{% endif %}
+
+{% endblock %}

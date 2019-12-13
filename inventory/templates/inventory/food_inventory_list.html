@@ -1,0 +1,157 @@
+{% extends "profiles/sidebar_inventory.html" %}  
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<table id="tabledata" class="ui five column celled table responsive nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>Food</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for data in data %}
+            {% if data.foodtype == 'Adult Dog Food' %}
+                {% if adult_inventory <= ss.adult_food%}
+                <tr class = 'negative'>
+                    <td>
+                        <a href="{% url 'inventory:food_inventory_details' data.id %}">{{ data.food }}</a>
+                    </td>
+                    <td>{{ data.foodtype }}</td>
+                    <td>{{ data.quantity }}</td>
+                    <td>{{ data.unit }}</td>
+                    <td>{{ data.price }}</td>
+                    <td class="two wide center aligned">
+                        <a href="{% url 'inventory:food_count_form' data.id %}" style="margin-right:10px;">
+                            <i class="teal list ol icon"></i>
+                        </a>
+                        <a href="{% url 'inventory:food_receive_form' data.id %}" style="margin-right:10px;">
+                            <i class="teal dolly flatbed icon"></i>
+                        </a>
+                    </td>       
+                </tr>
+                {%else%}
+                <tr>
+                    <td>
+                        <a href="{% url 'inventory:food_inventory_details' data.id %}">{{ data.food }}</a>
+                    </td>
+                    <td>{{ data.foodtype }}</td>
+                    <td>{{ data.quantity }}</td>
+                    <td>{{ data.unit }}</td>
+                    <td>{{ data.price }}</td>
+                    <td class="two wide center aligned">
+                        <a href="{% url 'inventory:food_count_form' data.id %}" style="margin-right:10px;">
+                            <i class="teal list ol icon"></i>
+                        </a>
+                        <a href="{% url 'inventory:food_receive_form' data.id %}" style="margin-right:10px;">
+                            <i class="teal dolly flatbed icon"></i>
+                        </a>
+                    </td>       
+                </tr>
+                {%endif%}
+            {%endif%}
+            {% if data.foodtype == 'Puppy Dog Food' %}
+                {% if puppy_inventory <= ss.puppy_food%}
+                <tr class = 'negative'>
+                    <td>
+                        <a href="{% url 'inventory:food_inventory_details' data.id %}">{{ data.food }}</a>
+                    </td>
+                    <td>{{ data.foodtype }}</td>
+                    <td>{{ data.quantity }}</td>
+                    <td>{{ data.unit }}</td>
+                    <td>{{ data.price }}</td>
+                    <td class="two wide center aligned">
+                        <a href="{% url 'inventory:food_count_form' data.id %}" style="margin-right:10px;">
+                            <i class="teal list ol icon"></i>
+                        </a>
+                        <a href="{% url 'inventory:food_receive_form' data.id %}" style="margin-right:10px;">
+                            <i class="teal dolly flatbed icon"></i>
+                        </a>
+                    </td>       
+                </tr>
+                {%else%}
+                <tr>
+                    <td>
+                        <a href="{% url 'inventory:food_inventory_details' data.id %}">{{ data.food }}</a>
+                    </td>
+                    <td>{{ data.foodtype }}</td>
+                    <td>{{ data.quantity }}</td>
+                    <td>{{ data.unit }}</td>
+                    <td>{{ data.price }}</td>
+                    <td class="two wide center aligned">
+                        <a href="{% url 'inventory:food_count_form' data.id %}" style="margin-right:10px;">
+                            <i class="teal list ol icon"></i>
+                        </a>
+                        <a href="{% url 'inventory:food_receive_form' data.id %}" style="margin-right:10px;">
+                            <i class="teal dolly flatbed icon"></i>
+                        </a>
+                    </td>       
+                </tr>
+                {%endif%}
+            {%endif%}
+            {% if data.foodtype == 'Milk' %}
+            {% if milk_inventory <= ss.milk%}
+            <tr class = 'negative'>
+                <td>
+                    <a href="{% url 'inventory:food_inventory_details' data.id %}">{{ data.food }}</a>
+                </td>
+                <td>{{ data.foodtype }}</td>
+                <td>{{ data.quantity }}</td>
+                <td>{{ data.unit }}</td>
+                <td>{{ data.price }}</td>
+                <td class="two wide center aligned">
+                    <a href="{% url 'inventory:food_count_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal list ol icon"></i>
+                    </a>
+                    <a href="{% url 'inventory:food_receive_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal dolly flatbed icon"></i>
+                    </a>
+                </td>       
+            </tr>
+            {%else%}
+            <tr>
+                <td>
+                    <a href="{% url 'inventory:food_inventory_details' data.id %}">{{ data.food }}</a>
+                </td>
+                <td>{{ data.foodtype }}</td>
+                <td>{{ data.quantity }}</td>
+                <td>{{ data.unit }}</td>
+                <td>{{ data.price }}</td>
+                <td class="two wide center aligned">
+                    <a href="{% url 'inventory:food_count_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal list ol icon"></i>
+                    </a>
+                    <a href="{% url 'inventory:food_receive_form' data.id %}" style="margin-right:10px;">
+                        <i class="teal dolly flatbed icon"></i>
+                    </a>
+                </td>       
+            </tr>
+            {%endif%}
+            {%endif%}
+            {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript">
+               
+        $(document).ready(function() {
+	        $('#tabledata').DataTable();
+            // $(function() {
+            //     $( ".message" ).slideUp( 4000, function() {
+                   
+            //     });
+            // });
+        } );
+    </script>
+ {% endblock %}

@@ -1,0 +1,101 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+{% if num > 0 %}
+    {% for data in incident %}
+    <div class="ui info icon message">
+        <i class="exclamation icon"></i>
+        <div class="content">
+            <div class="header">
+                You have reported {{data.k9}} as {{data.incident}} at {{data.date}}!
+            </div>
+            <p>{{data.description}}</p>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Input data of K9 Incident Here</div>
+    </h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui inverted segment">
+    <form class="ui inverted form" method="POST">
+        {% csrf_token %}
+        <div class="three fields">
+            <div class="field">
+                <label>Dog Name : Serial Number</label>
+                {{form.k9}}
+            </div>
+            <div class="field">
+                <label>Type</label>
+                {{form.incident}}
+            </div>
+            <div class="field"></div>
+        </div>
+        <div class="two fields">
+            <div class="sixteen wide field">
+                <label>Cheif Complaint</label>
+                {{form.title}}
+            </div>
+            <div class="field"></div>
+        </div>
+        <div class="field">
+            <label>Vet Clinic Address</label>
+            {{form.clinic}}
+        </div>
+        <div class="field">
+            <label>Additional Information</label>
+            {{form.description}}
+        </div>
+
+        <div class="ui inverted right aligned segment" style="padding: 0px;">
+            <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" name='incident_form'>{{ actiontype }}</button>
+        </div>
+    </form>
+</div>
+
+{%endif%}
+
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $("input[name='clinic']").prop('disabled', 'disabled');
+
+        $("select[name='incident']").change(function() {
+            if( $("select[name='incident']").val() == 'Accident'){
+                $("input[name='clinic']").prop('disabled', false);
+            }else{
+                $("input[name='clinic']").prop('disabled', true);
+            }
+        });
+
+
+        if($("#id_death_cert").val() != ''){
+            $("#dead").prop('disabled', false);
+            $("#recovered").prop('disabled', true);
+        }else{
+            $("#dead").prop('disabled', true);
+            $("#recovered").prop('disabled', false);
+        }
+
+        $("#id_death_cert").change(function(){
+            if($("#id_death_cert").val() != ''){
+                $("#dead").prop('disabled', false);
+                $("#recovered").prop('disabled', true);
+            }else{
+                $("#dead").prop('disabled', true);
+                $("#recovered").prop('disabled', false);
+            }
+        })
+
+    });
+    
+</script>
+ {% endblock %}

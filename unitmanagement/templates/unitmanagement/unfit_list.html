@@ -1,0 +1,90 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load static %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">Monitor Unfit K9</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<table id="tabledata1" class="ui six column celled table">
+    <thead class="center aligned">
+        <tr>
+            <th>Last Physical Check-up</th>
+            <th>K9</th>
+            <th>Breed</th>
+            <th>Age (yrs & mons)</th>
+            <th>Age (days)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in data %}
+            <tr>
+                <td>{{data.1|date:'Y-m-d'}}</td>
+                <td>
+                    <a href="#" class="btn_details" id ="{{data.0.id}}">{{data.0}}</a>
+                </td>
+                <td>{{data.0.breed}}</td>
+                <td>{{data.age}} years and {{data.month_remainder}} months</td>
+                <td>{{data.age_days}}</td>
+                <td class="center aligned">
+                    <a href="#" class="ui tiny basic blue button btn_form" id ="{{data.0.id}}">Select</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="ui longer modal" id='id_modal_data'></div>
+
+         
+<script type="text/javascript">
+        
+   
+    $('#tabledata1').DataTable({
+        "order": [[ 0, "desc" ],[ 1, "asc" ]]
+    });
+    $('.menu .item').tab();
+
+    $( ".btn_details" ).bind( "click", function() {
+        var url = 'unfit-list/ajax_load_physical';  
+        id = $(this).attr('id');
+        
+        $.ajax({                      
+            url: url,                    
+            data: {
+            'id': id,  
+            'type': 'details',       
+            },
+            success: function (data) {   
+            $("#id_modal_data").html(data); 
+            }
+        });
+        $('#id_modal_data').modal('show');
+    });
+
+    $( ".btn_form" ).bind( "click", function() {
+        var url = 'unfit-list/ajax_load_physical';  
+        id = $(this).attr('id');
+        
+        $.ajax({                      
+            url: url,                    
+            data: {
+            'id': id,  
+            'type': 'form',       
+            },
+            success: function (data) {   
+            $("#id_modal_data").html(data); 
+            }
+        });
+        $('#id_modal_data').modal('show');
+    });
+   
+    
+</script>
+
+{% endblock %}

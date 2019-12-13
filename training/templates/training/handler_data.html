@@ -1,0 +1,55 @@
+{% if handler %}
+
+{% load static %}
+{% block content %}
+
+<center>
+
+    <img src="{{handler.image.url}}" alt="" width="240">
+</center>
+
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th class="two wide">Name</th>
+            <td class="eight wide">{{handler.fullname}}</td>
+
+            <th class="two wide">Age</th>
+            <td class="four wide">{{handler.age}}</td>
+        </tr>
+        <tr>
+            <th>Rank</th>
+            <td>{{handler.rank}}</td>
+
+            <th>Sex</th>
+            <td>{{handler.gender}}</td>
+        </tr>
+        <tr>
+            <th>City</th>
+            <td>{{pi.city}}</td>
+
+            <th>Mobile</th>
+            <td>{{pi.mobile_number}}</td>
+        </tr>
+    </thead>
+</table>
+
+<table class="ui three column celled table">
+    <thead class="center aligned">
+        <th>EDD</th>
+        <th>NDD</th>
+        <th>SAR</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{edd}}</td>
+            <td>{{ndd}}</td>
+            <td>{{sar}}</td>
+        </tr>
+    </tbody>
+
+</table>   
+
+ {% endblock %}
+
+{% endif %}

@@ -1,0 +1,41 @@
+{% load static %}
+{% block content %}
+<div class="ui modal" id ="event_modal">
+<div class="header">Requester: {{dog_request.requester}}</div>
+  <div class="content">
+      <table class="ui basic table">
+    <thead>
+    <tr>
+        <th class="two wide">Event Name</th>
+        <td>{{dog_request.event_name}}</td>
+
+        <th class="two wide">Email</th>
+        <td>{{dog_request.email_address}}</td>
+
+        <th class="two wide">Start Date</th>
+        <td>{{dog_request.start_date}}</td>
+
+        <th class="two wide">End Date</th>
+        <td>{{dog_request.end_date}}</td>
+    </tr>
+    </thead>
+</table>
+        <h4>Location</h4>
+      <textarea rows="4" cols="50" disabled="disabled">
+{{dog_request.location}}}
+</textarea>
+
+      <h4>Remarks</h4>
+      <textarea rows="4" cols="50" disabled="disabled">
+{{dog_request.remarks}}
+</textarea>
+
+
+
+
+  </div>
+</div>
+
+
+
+ {% endblock %}

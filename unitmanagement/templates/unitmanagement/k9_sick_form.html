@@ -1,0 +1,70 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+{% if handler %}
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Input data of Health Concern Here</div>
+    </h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui inverted segment">
+    <form class="ui inverted form" method="POST" id="myForm"  data-url="{% url 'unitmanagement:health_form' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="three fields">
+            <div class='field'>
+                <label>K9</label>
+                {{form.k9}}
+            </div>
+            <div class='field'></div>
+            <div class='field'></div>
+        </div>
+        <div class="three fields">
+                <div class='field'>
+                    <label>K9 Problem Image</label>
+                    <input name="image_file" multiple="true" type="file">
+                </div>
+                <div class='field'></div>
+                <div class='field'></div>
+            </div>
+        <div class='field'>
+            <label>Remarks</label>
+            {{form.description}}
+        </div>
+
+        <div class="ui inverted right aligned segment" style="padding: 0px;">
+            <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >{{ actiontype }}</button>
+        </div>
+        {{formset.management_form}}
+    </form>
+</div>
+{% else %}
+<div class="ui info message">
+    <div class="header">
+        You are not Partnered to a K9.
+    </div>
+    <ul class="list">
+        <li>Please see the Admin to have your details updated.</li>
+        <li>You can only Fill-out the form in reference to your K9 partner.</li>
+    </ul>
+</div>
+{% endif %}
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+        
+        $(function() {
+            $('#myForm .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });            
+        })
+    });
+    
+</script>
+ {% endblock %}

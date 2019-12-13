@@ -1,0 +1,17 @@
+{% extends "profiles/sidebar_pa.html" %}  
+{% load humanize %}
+{% block content %}
+
+<input type="number" id = 'input1' oninput="theinput.value=input1.value-input2.value">
+<input type="number" id = 'input2' oninput="theinput.value=input1.value-input2.value">
+
+<input type="number" name="" id="theinput" readonly>
+
+<script type="text/javascript">
+            
+        $(document).ready(function() {
+        
+        } );
+        
+    </script>
+{% endblock%}

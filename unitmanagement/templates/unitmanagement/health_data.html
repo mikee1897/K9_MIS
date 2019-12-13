@@ -1,0 +1,60 @@
+
+{% load static %}
+{% block content %}
+{% if k9 %}
+<div class="header">{{k9}}</div>
+  <div class="scrolling content">
+    
+      <table class="ui inverted green celled table">
+            <thead>
+                <th>Date</th>
+                <th>Problem</th>
+                <th>Treatment</th>
+            </thead>
+            <tbody>
+                {% for data in k9_health %}
+                <tr>
+                    <td>{{data.date}}</td>
+                    <td>{{data.problem}}</td>
+                    <td>{{data.treatment}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+  </div> 
+
+{% else %}
+<div class="header">{{health.date}}</div>
+  <div class="scrolling content">
+    <div class="ui grid">
+        <div class="six wide column">
+                <img class = "image" src="{{health.image.url}}" style="position: relative;width: 300px;height: 300px;">
+        </div>
+        <div class="ten wide column">
+            <strong>Veterinarian: </strong><span>{{health.veterinary}}</span><br>
+            <strong>Problem: </strong><p>{{health.problem}}</p><br>
+            <strong>Treatment: </strong><p>{{health.treatment}}</p><br>
+        </div>
+    </div>
+      <table class="ui inverted green celled table">
+            <thead>
+                <th>Medicine</th>
+                <th>Quantity</th>
+                <th>Time of Day</th>
+                <th>Duration (Days)</th>  
+            </thead>
+            <tbody>
+                    {% for data in h%}
+                <tr>
+                    <td>{{data.medicine}}</td>
+                    <td>{{data.quantity}}</td>
+                    <td>{{data.time_of_day}}</td>
+                    <td>{{data.duration}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+  </div>
+{% endif %}
+{% endblock %}
+

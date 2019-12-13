@@ -1,0 +1,70 @@
+{% extends "profiles/sidebar_deployment.html" %}
+
+{% block content %}
+<div class="ui fluid container">
+  <div class="ui two column centered grid">
+    <div class="twelve wide column">
+      <h1 class="ui header">{{ title }}
+          <div class="sub header" id = 'texthelp'>{{ texthelp }}</div>
+      </h1>
+    </div>
+  </div>
+  <div class="ui two column centered grid">
+    <div class="twelve wide column">
+      <div class="ui inverted segment">
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="{{ style }} row"> {{ message }}</div>
+              {% endfor %}
+          {% endif %}
+          <form class = "ui inverted form" method="POST">
+             {% csrf_token %}
+             <div class="two fields">
+               <div class="field">
+                   <label>Team</label>
+                       {{form.team}}
+               </div>
+               <div class="field">
+                <label>Team</label>
+                    {{form.team_leader}}
+              </div>
+             </div>
+             <div class="field">
+                <label>Location</label>
+                    {{form.location}}
+            </div>
+             <div class="three fields">
+                  <div class="field">
+                      <label>Number of EDD needed</label>
+                      {{form.EDD_demand}}
+                  </div>
+                  <div class="field">
+                      <label>Number of NDD needed</label>
+                      {{form.NDD_demand}}
+                  </div>
+                  <div class="field">
+                      <label>Number of SAR needed</label>
+                      {{form.SAR_demand}}
+                  </div>
+             </div>
+
+              <div class="ui inverted right aligned segment" style="padding: 0px;">
+                  <button class = "ui button green" type="submit" >{{actiontype}}</button>
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+      if($("#texthelp").text() == 'Edit Team Details Here'){
+         $("input[name='location']").prop('disabled', true);
+         $("input[name='team']").prop('disabled', true);
+       }
+    });
+
+</script>
+{% endblock%}

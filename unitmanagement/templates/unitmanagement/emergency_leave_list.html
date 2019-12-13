@@ -1,0 +1,61 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">Emergency Leave List</h3>
+
+    <div class="ui info message">
+  <i class="close icon"></i>
+  <div class="header">
+    Description
+  </div>
+  <ol class="ui ordered list">
+    <li>Handlers may file emergency leaves that are effectively immediately.</li>
+    <li>You can monitor how many days a handler have not yet returned to duty.</li>
+      <li>If a handler cannot be contacted, you may label a handler as "MIA"</li>
+  </ol>
+</div>
+
+</div>
+
+<div class="ui segment">
+    <table id="tabledata1" class="ui celled table">
+        <thead>
+            <tr>
+                <th>Leave Date</th>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Tel Number</th>
+                <th>Days Lapsed</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in data %}
+            <tr>
+                <td>{{x.0.date_of_leave}}</td>
+                <td>{{x.0.handler.fullname}}</td>
+                <td>{{x.1.mobile_number}}</td>
+                <td>{{x.1.tel_number}}</td>
+                <td>{{x.2}} days</td>
+                <td>{{x.0.status}}</td>
+                <td>
+                    <a class = "ui red button" name = "mia_btn" id = "id_mia_btn" href="{% url 'unitmanagement:handler_status_mia' x.0.id %}" >MIA</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+ 
+    $('#tabledata1').DataTable({ "order": [[ 0, "asc" ],[ 1, "asc" ]]  });
+    $('.menu .item').tab();
+
+</script>
+
+ {% endblock %}

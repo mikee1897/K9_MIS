@@ -1,0 +1,57 @@
+{% extends "profiles/sidebar_inventory.html" %}  
+
+{% block content %}
+<div class="ui two column centered grid">
+    <div class="column">
+        <div class="ui basic segment" style="margin-bottom:0px;">
+            <h2 class="ui header">
+                {{title}}
+                <div class="sub header">Input data of Item Concern Here</div>
+            </h2>
+        </div>
+        <div class="ui inverted segment">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="{{style}}" > {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <form class="ui inverted form" method="POST">
+                {% csrf_token %}
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>Equipment</label>
+                        {{form.inventory}}
+                    </div>
+                        
+                    <div class="field">
+                        <label>Quantity</label>
+                        {{form.quantity}}
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Concern</label>
+                    {{form.concern}}
+                </div>
+
+                <div class="ui inverted right aligned segment" style="padding: 0px;">
+                    <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+        
+        $(function() {
+            $('#myForm .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });            
+        })
+    } );
+    
+</script>
+ {% endblock %}

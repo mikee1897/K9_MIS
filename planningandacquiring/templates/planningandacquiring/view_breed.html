@@ -1,0 +1,51 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ Title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class = "ui segment">
+		<table id="tabledata" class="ui celled table">
+        	<thead>
+          	<tr>
+              <th>Breed</th>
+              <th>Life Span</th>
+              <th>Colors</th>
+              <th>Temperament</th>
+			  <th>Weight</th>
+              <th>Male Height</th>
+              <th>Female Height</th>
+              <th>Skill Recommendation</th>
+          	</tr>
+    		</thead>
+    		<tbody>
+				{% for Breed in breed %}
+    				<tr>
+    					<td>{{Breed.breed}}</td>
+                        <td>{{Breed.life_span}}</td>
+    					<td>{{Breed.colors}}</td>
+    					<td>{{Breed.temperament}}</td>
+						<td>{{Breed.weight}}</td>
+                        <td>{{Breed.male_height}}</td>
+                        <td>{{Breed.female_height}}</td>
+                        <td>{{Breed.skill_recommendation}}</td>
+    				</tr>
+				{% endfor %}
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#tabledata').DataTable( {
+        "order": [[ 0, "desc" ]]
+    });
+		$('.menu .item').tab();
+	});
+
+</script>
+{% endblock %}

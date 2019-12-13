@@ -1,0 +1,70 @@
+{% extends "profiles/sidebar_inventory.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+</div>
+<table id="tabledata1" class="ui seven column celled table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Handler</th>
+                <th>Equipment</th>
+                <th>Concern</th>
+                <th>Remarks</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for Data in data %}
+                {% if Data.request_status == "Pending" %}
+                    <tr class = "warning">
+                        <td>{{Data.date|date:'Y-m-d'}}</td>
+                        <td>{{Data.handler}}</td>
+                        <td>{{Data.equipment}}</td>
+                        <td>{{Data.concern}}</td>
+                        <td>{{Data.remarks}}</td>
+                        <td><center><i class="attention icon"></i>{{Data.request_status}}</center></td>
+                        <td style="text-align:center;">
+                            <a href="{% url 'unitmanagement:change_equipment' Data.id %}" class = "tiny ui blue basic button">Select</a>
+                        </td>
+                    </tr>
+                {% elif Data.request_status == "Approved" %}
+                    <tr class = "positive">
+                        <td>{{Data.date}}</td>
+                        <td>{{Data.handler}}</td>
+                        <td>{{Data.equipment}}</td>
+                        <td>{{Data.concern}}</td>
+                        <td>{{Data.remarks}}</td>
+                        <td><center><i class="icon checkmark"></i> {{Data.request_status}}</center></td>
+                         <td style="text-align:center;">
+                            <a href="{% url 'unitmanagement:change_equipment' Data.id %}" class = "tiny ui blue basic button">Select</a>
+                         </td>
+                    </tr>
+                {%else%}
+                <tr class = "negative">
+                    <td>{{Data.date}}</td>
+                    <td>{{Data.handler}}</td>
+                    <td>{{Data.equipment}}</td>
+                    <td>{{Data.concern}}</td>
+                    <td>{{Data.remarks}}</td>
+                    <td><center><i class="icon close"></i> {{Data.request_status}}</center></td>
+                        <td style="text-align:center;">
+                        <a href="{% url 'unitmanagement:change_equipment' Data.id %}" class = "tiny ui blue basic button">Select</a>
+                        </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+<script type="text/javascript">
+
+    $('#tabledata1').DataTable();
+   
+
+
+</script>
+ {% endblock %}

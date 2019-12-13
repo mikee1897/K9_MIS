@@ -1,0 +1,108 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %}
+{% block dashboard %}
+<div class="pusher" style="background:white;">
+    <div class="ui container">
+        <div class="ui very basic segment">
+            <div class="ui icon message">
+            <i class="teal inbox icon"></i>
+                <div class="content">
+                    <div class="header">
+                    Notifications
+                    </div>
+                    <p>Dont miss out!</p>
+                </div>
+            </div>
+        </div>
+        <div class="ui top attached tabular menu">
+            <a class="item active" data-tab="first">Unit Management</a>
+            <a class="item" data-tab="second">Deployment</a>
+        </div>
+
+        <div class="ui very basic tab segment active" data-tab="first">
+                {% for notif_data in um_notif%}
+                {% if notif_data.viewed == True%}
+                <div class="ui orange message" style='opacity: 0.5;'>
+                        <div class="ui feed">
+                            <div class="event">
+                                <div class="content">
+                                <div class="date">
+                                        {{notif_data.datetime}}
+                                </div>
+                                <a class="summary" href="{% url 'unitmanagement:redirect_notif' notif_data.id %}">
+                                        {{notif_data.message}}
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
+                {%else%}
+                <div class="ui orange message">
+                        <div class="ui feed">
+                            <div class="event">
+                                <div class="content">
+                                <div class="date">
+                                        {{notif_data.datetime}}
+                                </div>
+                                <a class="summary" href="{% url 'unitmanagement:redirect_notif' notif_data.id %}">
+                                        {{notif_data.message}}
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
+                {% endif %}
+                {% endfor%}
+
+        </div>
+        <div class="ui very basic tab segment" data-tab="second">
+                {% for notif_data in dept_notif %}
+                {% if notif_data.viewed == True%}
+                <div class="ui orange message" style='opacity: 0.5;'>
+                        <div class="ui feed">
+                            <div class="event">
+                                <div class="content">
+                                <div class="date">
+                                        {{notif_data.datetime}}
+                                </div>
+                                <a class="summary" href="{% url 'unitmanagement:redirect_notif' notif_data.id %}">
+                                        {{notif_data.message}}
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
+                {%else%}
+                <div class="ui orange message">
+                        <div class="ui feed">
+                            <div class="event">
+                                <div class="content">
+                                <div class="date">
+                                        {{notif_data.datetime}}
+                                </div>
+                                <a class="summary" href="{% url 'unitmanagement:redirect_notif' notif_data.id %}">
+                                        {{notif_data.message}}
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
+                {% endif %}
+                {% endfor%}
+        </div>
+        
+      
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.menu .item').tab();
+    });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+     <form class="ui form" action="" method="POST">
+    {% csrf_token %}
+         <div class="two fields">
+            {{form.choose_date}}
+         </div>
+         <div class="ui basic center aligned segment">
+            <button onclick="return confirm('Are you sure?')" id = "btn" class = "ui button green" type="submit" >Submit</button>
+        </div>
+
+
+    </form>
+
+<script type="text/javascript">
+
+     $(document).ready(function() {
+        $('#tabledata1');
+        $('#tabledata2');
+        $('.menu .item').tab();
+    });
+
+</script>
+{% endblock %}

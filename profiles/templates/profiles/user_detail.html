@@ -1,0 +1,235 @@
+{% extends "profiles/sidebar_um.html" %} {% block content %}
+<h1 class="ui header">
+    {{user_s}}
+    <div class="sub header">User details for {{user_s}}</div>
+</h1>
+{% if user_s.status == 'Died'%}
+<div class="ui negative message">
+    <i class="close icon"></i>
+    <div class="header">
+      {{user_s}} is Deceased....
+    </div>
+  </p>
+</div>
+{% endif %}
+<div class="ui basic segment">
+        
+  <center>
+      <img src="{{user_s.image.url}}" alt="" width="240">
+  </center>
+
+</div>
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">User Information</a>
+    <a class="item" data-tab="second">Personal Information</a>
+    <a class="item" data-tab="third">Education</a>
+    <a class="item" data-tab="fourth">Account</a>
+</div>
+
+<div class="ui tab segment active" data-tab="first">
+ <table id="tabledata1" class="ui two column celled table">
+          	<tr>
+                <td>Name</td>
+                <td>{{user_s}}</td>
+            </tr>
+            <tr>
+              <td>Position</td>
+                <td>{{user_s.position}}</td>
+                </tr>
+            <tr>
+              <td>Rank</td>
+                <td>{{user_s.rank}}</td>
+            </tr>
+            <tr>
+			  <td>Nickname</td>
+                <td>{{user_s.nickname}}</td>
+            </tr>
+            <tr>
+              <td>Birthdate</td>
+                <td>{{user_s.birthdate}}</td>
+            </tr>
+            <tr>
+              <td>Age</td>
+                <td>{{user_s.age}}</td>
+            </tr>
+            <tr>
+              <td>Birthplace</td>
+                <td>{{user_s.birthplace}}</td>
+            </tr>
+            <tr>
+              <td>Gender</td>
+                <td>{{user_s.gender}}</td>
+            </tr>
+            <tr>
+              <td>Civil Status</td>
+                <td>{{user_s.civilstatus}}</td>
+            </tr>
+            <tr>
+              <td>Citizenship</td>
+                <td>{{user_s.citizenship}}</td>
+            </tr>
+            <tr>
+              <td>Religion</td>
+                <td>{{user_s.religion}}</td>
+            </tr>
+            <tr>
+              <td>Bloodtype</td>
+                <td>{{user_s.bloodtype}}</td>
+            </tr>
+            <tr>
+              <td>Distinct Feature</td>
+                <td>{{user_s.distinct_feature}}</td>
+            </tr>
+            <tr>
+              <td>Hair Color</td>
+                <td>{{user_s.haircolor}}</td>
+            </tr>
+            <tr>
+              <td>Eye Color</td>
+                <td>{{user_s.eyecolor}}</td>
+            </tr>
+            <tr>
+              <td>Skin Color</td>
+                <td>{{user_s.skincolor}}</td>
+            </tr>
+            <tr>
+              <td>Height</td>
+                <td>{{user_s.height}}</td>
+            </tr>
+            <tr>
+              <td>Weight</td>
+                <td>{{user_s.weight}}</td>
+            </tr>
+            <tr>
+              <td>Head Size</td>
+                <td>{{user_s.headsize}}</td>
+            </tr>
+            <tr>
+              <td>Foot Size</td>
+                <td>{{user_s.footsize}}</td>
+            </tr>
+            <tr>
+              <td>Body Build</td>
+                <td>{{user_s.bodybuild}}</td>
+            </tr>
+        </table>
+</div>
+
+<div class="ui tab segment" data-tab="second">
+    <table id="tabledata2" class="ui two column celled table">
+            <tr>
+                <td>Mobile Number</td>
+                <td>{{personal_info.mobile_number}}</td>
+            </tr>
+            <tr>
+                <td>Telephone Number</td>
+                <td>{{personal_info.tel_number}}</td>
+            </tr>
+            <tr>
+                <td>Street</td>
+                <td>{{personal_info.street}}</td>
+            </tr>
+            <tr>
+                <td>Barangay</td>
+                <td>{{personal_info.barangay}}</td>
+            </tr>
+            <tr>
+                <td>City</td>
+                <td>{{personal_info.city}}</td>
+            </tr>
+            <tr>
+                <td>Province</td>
+                <td>{{personal_info.province}}</td>
+            </tr>
+            <tr>
+                <td>Mother's Name</td>
+                <td>{{personal_info.mother_name}}</td>
+            </tr>
+            <tr>
+                <td>Mother's Birthdate</td>
+                <td>{{personal_info.mother_birthdate}}</td>
+            </tr>
+            <tr>
+                <td>Father's Name</td>
+                <td>{{personal_info.father_name}}</td>
+            </tr>
+            <tr>
+                <td>Father's Birthdate</td>
+                <td>{{personal_info.father_birthdate}}</td>
+            </tr>
+            <tr>
+                <td>TIN</td>
+                <td>{{personal_info.tin}}</td>
+            </tr>
+            <tr>
+                <td>Philhealth</td>
+                <td>{{personal_info.philhealth}}</td>
+            </tr>
+        </table>
+</div>
+<div class="ui tab segment" data-tab="third">
+    <table id="tabledata3" class="ui celled table">
+            <tr>
+                <td>Primary Education</td>
+                <td>{{education.primary_education}}</td>
+            </tr>
+            <tr>
+                <td>Primary Education School Year</td>
+                <td>{{education.pe_schoolyear}}</td>
+            </tr>
+            <tr>
+                <td>Primary Education Degree</td>
+                <td>{{education.pe_degree}}</td>
+            </tr>
+            <tr>
+                <td>Secondary Education</td>
+                <td>{{education.secondary_education}}</td>
+            </tr>
+            <tr>
+                <td>Secondary Education School Year</td>
+                <td>{{education.se_schoolyear}}</td>
+            </tr>
+            <tr>
+                <td>Secondary Education Degree</td>
+                <td>{{education.se_degree}}</td>
+            </tr>
+            <tr>
+                <td>Tertiary Education</td>
+                <td>{{education.tertiary_education}}</td>
+            </tr>
+            <tr>
+                <td>Tertiary Education School Year</td>
+                <td>{{education.te_schoolyear}}</td>
+            </tr>
+            <tr>
+                <td>Tertiary Education Degree</td>
+                <td>{{education.te_degree}}</td>
+            </tr>
+        </table>
+</div>
+<div class="ui tab segment" data-tab="fourth">
+    <table id="tabledata4" class="ui celled table">
+            <tr>
+                <td>Serial Number</td>
+                <td>{{account.serial_number}}</td>
+            </tr>
+            <tr>
+                <td>Email Address</td>
+                <td>{{account.email_address}}</td>
+            </tr>
+        </table>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1');
+        $('#tabledata2');
+        $('#tabledata3');
+        $('#tabledata4');
+
+        $('.menu .item').tab();
+    });
+
+</script>
+{% endblock %}

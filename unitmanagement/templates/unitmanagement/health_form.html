@@ -1,0 +1,104 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Input data of Health Concern Here</div>
+    </h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui inverted segment">
+        <form class="ui inverted form" method="POST" id="myForm"  data-url="{% url 'unitmanagement:health_form' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="three fields">
+                <div class="four wide field">
+                    <label>Dog Name : Serial Number</label>
+                    {{form.dog}}
+                </div>
+                <div class="field"></div>
+                <div class="field"></div>
+            </div>
+            <div class="field">
+                <label>Problem</label>
+                {{form.problem}}
+            </div>
+            <div class="field">
+                <label>Treatment</label>
+                {{form.treatment}}
+            </div>
+            <div class="three fields center">
+                <div class="field">
+                    <label>Prescription Image (if any)</label>
+                    {{form.image}}
+                </div>
+                <div class="field">
+                    <label>Follow Up?</label>
+                    {{form.follow_up}}
+                </div>
+                <div class="field">
+                    <label>Follow Date</label>
+                    {{form.follow_up_date}}
+                </div>
+            </div>
+            <table>
+                <tbody>
+                {% for form in formset %}
+                <tr id="{{ form.prefix }}-row" class="formset_class">
+                    {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+                    {% for field in form.visible_fields %}
+                    {% if form.visible_fields.instance.pk %} {{ form.visible_fields.DELETE }}{% endif %}
+                            <span class ="text-danger small">{{field.errors}}</span>
+                            <th>{{field.label_tag}}</th>
+                            <td>{{field}}</td>
+            
+                            {% for item in item %}
+                            <option value="{{ item.id }}">{{ item.item_name }}</option>
+                            {% endfor %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="ui inverted right aligned segment" style="padding: 0px;">
+                <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >{{ actiontype }}</button>
+            </div>
+            {{formset.management_form}}
+        </form>
+    </div>
+
+<style>
+    ul {
+        list-style-type: none;
+    }
+</style>
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+        
+        $(function() {
+            $('#myForm .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });            
+        })
+
+        $('#id_follow_up_date').prop('disabled', 'disabled');
+
+        $( "#id_follow_up" ).change(function() {
+          
+            if ($("input[name='follow_up']:checked").val() == 'True'){
+                $('#id_follow_up_date').prop('disabled', false);
+            }else{
+                $('#id_follow_up_date').prop('disabled', 'disabled');
+            }
+        });
+    });
+    
+</script>
+ {% endblock %}

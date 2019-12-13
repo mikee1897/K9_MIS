@@ -1,0 +1,179 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load static %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui tiny info message">
+    <i class="close icon"></i>
+    <ul class="list">
+      <li>Proestrus - K9 is in heat.</li>
+      <li>Estrus - Feritle period.</li>
+      <li>Metestrus/Diestrus - Period after Estrus or mating. K9 maybe pregnant.</li>
+      <li>Anestrus - Period of inactivity.</li>
+    </ul>
+  </div>
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">Proestrus</a>
+    <a class="item" data-tab="second">Estrus</a>
+    <a class="item" data-tab="third">Metestrus/Diestrus</a>
+    <a class="item" data-tab="fourth">Anestrus</a>
+</div>
+<div class="ui tab segment active" data-tab="first">
+    <table id="tabledata1" class="ui six column celled table">
+        <thead>
+            <tr>
+                <th>K9</th>
+                <th>Breed</th>
+                <th>Age (yrs & mons)</th>
+                <th>Age (days)</th>
+                <th>Last Proestrus Date</th>
+                <th>Next Proestrus Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proestrus in proestrus %}
+                <tr>
+                    <td><a href="{% url 'unitmanagement:reproductive_edit' proestrus.id %}">{{ proestrus.name }}</a></td>
+                    <td>{{ proestrus.breed }}</td>
+                    <td>{{data.age}} years and {{data.month_remainder}} months</td>
+                    <td>{{data.age_days}}</td>    
+                        {% if proestrus.last_proestrus_date == None %} </td>
+                        <td>No date yet</td>
+                        {% else %}
+                        <td>{{ proestrus.last_proestrus_date | date:"Y-m-d"}}</td>
+                        {% endif %}
+                        {% if proestrus.next_proestrus_date == None %} </td>
+                        <td>No date yet</td>
+                        {% else %}
+                        <td>{{ proestrus.next_proestrus_date | date:"Y-m-d" }}</td>
+                        {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="second">
+    <table id="tabledata2" class="ui five column celled table">
+        <thead>
+            <tr>
+                <th>K9</th>
+                <th>Breed</th>
+                <th>Age</th>
+                <th>Last Proestrus Date</th>
+                <th>Next Proestrus Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for estrus in estrus %}
+                <tr>
+                    <td><a href="{% url 'unitmanagement:reproductive_edit' estrus.id %}">{{ estrus.name }}</a></td>
+                    <td>{{ estrus.breed }}</td>
+                    <td>{{ estrus.age }}</td>
+                        {% if estrus.last_proestrus_date == None %} </td>
+                        <td>No date yet</td>
+                        {% else %}
+                        <td>{{ estrus.last_proestrus_date | date:"Y-m-d"}}</td>
+                        {% endif %}
+                        {% if estrus.next_proestrus_date == None %} </td>
+                        <td>No date yet</td>
+                        {% else %}
+                        <td>{{ estrus.next_proestrus_date | date:"Y-m-d"}}</td>
+                        {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="third">
+    <table id="tabledata3" class="ui five column celled table">
+        <thead>
+            <tr>
+                <th>K9</th>
+                <th>Breed</th>
+                <th>Age</th>
+                <th>Last Proestrus Date</th>
+                <th>Next Proestrus Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for metestrus in metestrus %}
+                <tr>
+                    <td><a href="{% url 'unitmanagement:reproductive_edit' metestrus.id %}">{{ metestrus.name }}</a></td>
+                    <td>{{ metestrus.breed }}</td>
+                    <td>{{ metestrus.age }}</td>
+                        {% if metestrus.last_proestrus_date == None %} </td>
+                        <td>No date yet</td>
+                        {% else %}
+                        <td>{{ metestrus.last_proestrus_date | date:"Y-m-d"}}</td>
+                        {% endif %}
+                        {% if metestrus.next_proestrus_date == None %} </td>
+                        <td>No date yet</td>
+                        {% else %}
+                        <td>{{ metestrus.next_proestrus_date | date:"Y-m-d"}}</td>
+                        {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="fourth">
+    <table id="tabledata4" class="ui five column celled table">
+        <thead>
+            <tr>
+                <th>K9</th>
+                <th>Breed</th>
+                <th>Age</th>
+                <th>Last Proestrus Date</th>
+                <th>Next Proestrus Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for anestrus in anestrus %}
+                <tr>
+                    <td><a href="{% url 'unitmanagement:reproductive_edit' anestrus.id %}">{{ anestrus.name }}</a></td>
+                    <td>{{ anestrus.breed }}</td>
+                    <td>{{ anestrus.age }}</td>
+                        {% if anestrus.last_proestrus_date == None %} </td>
+                        <td>No date yet</td>
+                        {% else %}
+                        <td>{{ anestrus.last_proestrus_date | date:"Y-m-d"}}</td>
+                        {% endif %}
+                        {% if anestrus.next_proestrus_date == None %} </td>
+                        <td>No date yet</td>
+                        {% else %}
+                        <td>{{ anestrus.next_proestrus_date | date:"Y-m-d"}}</td>
+                        {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $('#tabledata1').DataTable({
+            "order": [[ 3, "asc" ]]
+        });
+        $('#tabledata2').DataTable({
+            "order": [[ 3, "asc" ]]
+        });
+        $('#tabledata3').DataTable({
+            "order": [[ 3, "asc" ]]
+        });
+        $('#tabledata4').DataTable({
+            "order": [[ 3, "asc" ]]
+        });
+        $('.menu .item').tab();
+    });
+    
+</script>
+
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+        <table id="tabledata2" class="ui celled table">
+            <tr>
+                <td><b><center>Training Record for {{record.k9}}</center></b></td>
+            <td>{{record.date_today}}</td>
+            </tr>
+            <tr>
+                <td><b>Training/Utilization (With Dog)</b></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>On-Leash Obedience</b></td>
+                {% if record.on_leash == True %}
+                <td>Passed</td>
+                {%elif record.on_leash == '0'%}
+                <td>Failed</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Off-Leash Obedience</b></td>
+                {% if record.off_leash == True %}
+                <td>Passed</td>
+                {%elif record.off_leash == '0'%}
+                <td>Failed</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Obstacle Course</b></td>
+                {% if record.obstacle_course == True %}
+                <td>Passed</td>
+                {%elif record.obstacle_course == '0'%}
+                <td>Failed</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Panelling</b></td>
+                {% if record.panelling == True %}
+                <td>Passed</td>
+                {%elif record.panelling == '0'%}
+                <td>Failed</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Port Facility (Plant/Find)</b></td>
+                <td>{{record.port_plant}} / {{record.port_find}}</td>
+                <td><b>Time (seconds):</b> {{record.port_time}}</td>
+            </tr>
+            <tr>
+                <td><b>Building (Plant/Find)</b></td>
+                <td>{{record.building_plant}} / {{record.building_find}}</td>
+                <td><b>Time (seconds):</b> {{record.building_time}}</td>
+            </tr>
+            <tr>
+                <td><b>Vehicle (Plant/Find)</b></td>
+                <td>{{record.vehicle_plant}} / {{record.vehicle_find}}</td>
+                <td><b>Time (seconds):</b> {{record.vehicle_time}}</td>
+            </tr>
+            <tr>
+                <td><b>Baggage (Plant/Find)</b></td>
+                <td>{{record.baggage_plant}} / {{record.baggage_find}}</td>
+                <td><b>Time (seconds):</b> {{record.baggage_time}}</td>
+            </tr>
+            <tr>
+                <td><b>Others (Plant/Find)</b></td>
+                <td>{{record.others_plant}} / {{record.others_find}}</td>
+                <td><b>Time (seconds):</b> {{record.others_time}}</td>
+            </tr>
+            <tr>
+                <td><b>Daily Training Rating</b></td>
+                <td>{{record.daily_rating}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Utilization (Without Dog)</b></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>MARSEC</b></td>
+                {% if record.MARSEC == True %}
+                <td>Passed</td>
+                {%elif record.MARSEC == '0'%}
+                <td>Failed</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>MARLEN</b></td>
+                {% if record.MARLEN == True %}
+                <td>Passed</td>
+                {%elif record.MARLEN == '0'%}
+                <td>Failed</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>MARSAR</b></td>
+                {% if record.MARSAR == True %}
+                <td>Passed</td>
+                {%elif record.MARSAR == '0'%}
+                <td>Failed</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>MAREP</b></td>
+                {% if record.MAREP == True %}
+                <td>Passed</td>
+                {%elif record.MAREP == '0'%}
+                <td>Failed</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Daily Feeding</b></td>
+                <td><b>Morning Feed:</b> {{record.morning_feed}}</td>
+                <td><b>Evening Feed:</b> {{record.evening_feed}}</td>
+            </tr>
+        </table>
+
+
+<div class="ui basic segment">
+    <a href="{% url 'training:training_records'%}" class="ui blue button">Back</a>
+</div>
+<script type="text/javascript">
+
+     $(document).ready(function() {
+        $('#tabledata1');
+        $('#tabledata2');
+        $('.menu .item').tab();
+    });
+
+</script>
+{% endblock %}

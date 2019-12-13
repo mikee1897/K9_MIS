@@ -1,0 +1,179 @@
+{% load static %}
+{% block content %}
+<div class="header">{{transfer.handler}}</div>
+
+    <div class="scrolling content">
+        <form action="" class="ui form" method="POST">
+        {% csrf_token %}
+        <div class="ui two column grid">
+            <div class="column">
+                <center>
+                    <img src="{{transfer.handler.image.url}}" alt="" style="position:
+                    relative; width: 200px;height: 200px;" >
+                </center>                
+                <table class="ui celled small table"> 
+                    <thead>
+                        <tr>
+                            <th>Handler</th>
+                            <td id='id_handler'>{{transfer.handler}}</td>
+                            <th>K9</th>
+                            <td>{{k9}}</td>
+                        </tr>
+                        <tr>
+                            <th>City</th>
+                            <td>{{personal.city}}</td>
+                            <th>K9 Age</th>
+                            <td>{{k9.age}}</td>
+                        </tr>
+                        <tr>
+                            <th>Mobile</th>
+                            <td>{{personal.mobile_number}}</td>
+                            <th>Capability</th>
+                            <td>{{k9.capability}}</td>
+                        </tr>
+                        <tr>
+                            <th>Achievement</th>
+                            <td>{{c_ac}}</td>
+                            <th>Infractions</th>
+                            <td>{{c_in}}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="1">Remarks</th>
+                            <td colspan="3">{{transfer.remarks}}</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="column">
+                {% if matches %}
+                <div id='id_handler_data'>
+                    <center>
+                        <img src="{% static 'images/default.png' %}" alt="" style="position:
+                        relative; width: 200px;height: 200px;" >
+                    </center>
+                </div>
+                {% else %}
+                <div class="ui info message">
+                    <div class="header">
+                        There is currently no Handler that can be swapped with
+                        the Requester's current location. 
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="ui raised segment">
+                <div class="field">
+                        <strong style="font-size: 20px;">Transfer Request Date: </strong><span style="color: teal;font-size: 18px;">{{transfer.date_of_transfer}}</span>
+                </div>
+             
+                <div class="three fields">
+                    <div class="field">
+                        <strong>From Location: </strong><span style="color: teal;">{{transfer.location_from}}</span>
+                    </div>
+                    <div class="field">
+                        <strong>Team Leader: </strong><span style="color: teal;">{{transfer.location_from.team_leader}}</span>
+                    </div>
+                    <div class="field">
+                        <strong># of K9's Assigned: </strong><span style="color: teal;">{{transfer.location_from.total_dogs_deployed}}</span>
+                    </div>
+                </div>
+                <div class="three fields">
+                    <div class="field">
+                        <strong>Transfer to Location: </strong><span style="color: rgb(58, 110, 189);">{{transfer.location_to}}</span>
+                    </div>
+                    <div class="field">
+                        <strong>Team Leader: </strong><span style="color: rgb(58, 110, 189);">{{transfer.location_to.team_leader}}</span>
+                    </div>
+                    <div class="field">
+                        <strong># of K9's Assigned: </strong><span style="color: rgb(58, 110, 189);">{{transfer.location_to.total_dogs_deployed}}</span>
+                    </div>
+                </div>
+        </div>
+
+            {% if matches %}
+        <table class="ui celled small table center aligned">
+                <thead>
+                    <th></th>
+                    <th>Handler</th>
+                    <th>Transfer Request Date</th>
+                    <th>Remarks</th>
+                </thead>
+                <tbody>
+                    {% for data in matches%}
+                    <tr>
+                        <td>
+                            <input type="radio" name="select" value="{{data.handler.id}}" data-match-request="{{data.id}}">
+                        </td>
+                        <td>{{data.handler}}</td>
+                        <td>{{data.date_of_transfer}}</td>
+                        <td>{{data.remarks}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+            {% endif %}
+
+        <div class="five fields">
+            <div class="field"></div>
+            <div class="field"></div>
+            <div class="field">
+                <!--<label for="">Transfer Date</label>-->
+                <!--<input type="date" name="date_input" id="">-->
+                {{date_form}}
+            </div>
+            <div class="field"></div>
+            <div class="field"></div>
+        </div>
+        <div class="ui basic segment">
+                <center>
+                    {% if matches is not None and transfer.location_from.total_dogs_deployed < 2 or matches is None and transfer.location_from.total_dogs_deployed >= 2 %}
+                    <button class="ui green button" type='submit' value="approve" name='approve'>Approve</button>
+                    {% else %}
+                    <button class="ui disabled green button" data-content="Need another handler to swap with current handler to cover port unit requirement." type='submit' value="approve" name='approve'>Approve</button>
+                    {% endif %}
+                    <button class="ui red button" type='submit' value="reject" name='reject'>Reject</button>
+                </center>
+            </div>
+        
+        </form>
+    </div>
+   
+
+<script type="text/javascript">
+    
+    $(document).ready(function() {
+        $('#tabledata2').DataTable();
+        $('#tabledata3').DataTable();
+
+        $('.show').click(function(){
+            $('.incident').slideToggle();
+        });
+      
+
+        $("input[name='select']").change(function () {
+        var url = 'transfer-request-list/ajax_load_handler'; 
+        var handlerId = $("input[name='select']:checked").val();
+
+        var match_request_id = $(this).attr('data-match-request');
+        var original_request_id = {{transfer.id}};
+
+        $.ajax({                       
+            url: url,                  
+            data: {
+            'handler': handlerId,
+            'type_text': 'transfer',     
+            'requester':'{{transfer.handler.id}}',
+            'match_request_id' : match_request_id,
+            'original_request_id' : original_request_id
+            },
+            success: function (data) { 
+            $("#id_handler_data").html(data);
+            }
+        });
+
+        });
+    });
+    
+</script>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+<h2 class="ui header">
+    {{breed}} details
+</h2>
+{% if messages %}
+    {% for message in messages %}
+        <div class="ui green message" > {{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="ui basic segment">
+
+</div>
+    <form class="ui form" action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+    
+		<table class="ui celled table">
+        	<thead>
+          	<tr>
+                <th>Life Span</th>
+                <td>{{breed.life_span}}</td>
+                </tr>
+            <tr>
+              <th>Temperament</th>
+                <td>{{breed.temperament}}</td>
+                </tr>
+            <tr>
+              <th>Colors</th>
+                <td>{{breed.colors}}</td>
+                </tr>
+            <tr>
+              <th>Weight</th>
+                <td>{{breed.weight}}</td>
+                </tr>
+            <tr>
+			  <th>Male Height</th>
+                <td>{{breed.male_height}}</td>
+                </tr>
+            <tr>
+              <th>Female Height</th>
+                <td>{{breed.female_height}}</td>
+                </tr>
+            <tr>
+              <th>Skill Recommendation</th>
+                <td>{{breed.skill_recommendation}}</td>
+                </tr>
+            <tr>
+            <tr>
+              <th>Litter Number</th>
+                <td>{{breed.litter_number}}</td>
+                </tr>
+            <tr>
+              <th>Value</th>
+                <td>{{form.value}}</td>
+                </tr>
+    		</thead>
+        </table>
+
+
+        <div class="ui very basic center aligned segment" style="padding: 0px;">
+          <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Update</button>
+        </div>
+
+      </form>
+        <div class="ui basic segment">
+            <a href="{% url 'planningandacquiring:K9_list'%}" class="ui blue button">Back</a>
+        </div>
+        
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+      if ($("#status").html() == 'For-Deployment'){
+        $('input:radio[name="radio"][value="For-Deployment"]').attr('checked',true);
+      }else{
+        $('input:radio[name="radio"][value="For-Breeding"]').attr('checked',true);
+      }
+    });
+
+</script>
+{% endblock %}

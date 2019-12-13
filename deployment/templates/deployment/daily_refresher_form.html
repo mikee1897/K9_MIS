@@ -1,0 +1,168 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui fluid container">
+
+    {% if dr != 0 %}
+        <div class="ui info message"> 
+            <div class="header">
+                You have already submitted the Daily Refresher for today.
+                Way to Go!
+              </div>
+        </div>
+    {%else%}
+    <h1 class="ui header">Daily Refresher
+        <div class="sub header" id = 'texthelp'>{{ texthelp }}</div>
+    </h1>
+    <div class="ui inverted segment">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="{{ style }}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <form class = "ui inverted form" method="POST">
+                    {% csrf_token %}
+                    <div class="four inline fields">
+                        <div class="field">
+                            {{form.on_leash}}
+                            <label for="">On Leash</label>
+                        </div>
+                        <div class="field">
+                            {{form.off_leash}}
+                            <label for="">Off Leash</label>
+                        </div>
+                        <div class="field">
+                            {{form.obstacle_course}}
+                            <label for="">Obstacle Course</label>
+                        </div>
+                        <div class="field">
+                            {{form.panelling}}
+                            <label for="">Panelling</label>
+                        </div>
+                    </div>
+                    <div class="four inline fields">
+                        <div class="field">
+                            <input type="radio" name="select" value="MARSEC">
+                            <label for="">MARSEC</label>
+                        </div>
+                        <div class="field">
+                            <input type="radio" name="select" value="MARLEN">
+                            <label for="">MARLEN</label>
+                        </div>
+                        <div class="field">
+                            <input type="radio" name="select" value="MARSAR">
+                            <label for="">MARSAR</label>
+                        </div>
+                        <div class="field">
+                            <input type="radio" name="select" value="MAREP">
+                            <label for="">MAREP</label>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                                <label for="">Morning Feed Cups</label>
+                            {{form.morning_feed_cups}}
+                           
+                        </div>
+                        <div class="field">
+                                <label for="">Evening Feed Cups</label>
+                            {{form.evening_feed_cups}}
+                            
+                        </div>
+                    </div>    
+                    <div class="three fields">
+                        <div class="field">
+                                <label for="">Port Plant</label>
+                            {{form.port_plant}}
+                           
+                        </div>
+                        <div class="field">
+                                <label for="">Port Find</label>
+                            {{form.port_find}}
+                          
+                        </div>
+                        <div class="field">
+                                <label for="">Port Time</label>
+
+                            {{form.port_time}}
+                        </div>
+                    </div>         
+                    <div class="three fields">
+                        <div class="field">
+                                <label for="">Building Plant</label>
+                            {{form.building_plant}}
+                           
+                        </div>
+                        <div class="field">
+                                <label for="">Building Find</label>
+                            {{form.building_find}}
+                           
+                        </div>
+                        <div class="field">
+                                <label for="">Building Time</label>
+                            {{form.building_time}}
+                            
+                        </div>
+                    </div>         
+                    <div class="three fields">
+                        <div class="field">
+                                <label for="">Vehicle Plant</label>
+                            {{form.vehicle_plant}}
+                           
+                        </div>
+                        <div class="field">
+                                <label for="">Vehicle Find</label>
+                            {{form.vehicle_find}}
+                           
+                        </div>
+                        <div class="field">
+                                <label for="">Vehicle Time</label>
+                            {{form.vehicle_time}}
+                            
+                        </div>
+                    </div>  
+                    <div class="three fields">
+                        <div class="field">
+                                <label for="">Baggage Plant</label>
+                            {{form.baggage_plant}}
+                            
+                        </div>
+                        <div class="field">
+                                <label for="">Baggage Find</label>
+                            {{form.baggage_find}}
+                            
+                        </div>
+                        <div class="field">
+                                <label for="">Baggage Time</label>
+                            {{form.baggage_time}}
+                            
+                        </div>
+                    </div>       
+                    <div class="three fields">
+                        <div class="field">
+                                <label for="">Others Plant</label>
+                            {{form.others_plant}}
+                            
+                        </div>
+                        <div class="field">
+                                <label for="">Others Find</label>
+                            {{form.others_find}}
+                            
+                        </div>
+                        <div class="field">
+                                <label for="">Others Time</label>
+                            {{form.others_time}}
+                            
+                        </div>
+                    </div>                          
+                    
+                    <div class="ui inverted right aligned segment" style="padding: 0px;">
+                        <button class = "ui button green" type="submit" >Submit</button>
+                    </div>
+            </form>
+      </div>
+
+      {%endif%}
+</div>
+
+{% endblock%}

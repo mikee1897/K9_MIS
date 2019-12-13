@@ -1,0 +1,49 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+
+    {% if messages %}
+        {% for message in messages %} 
+        <div class="ui green message" > {{ message }}</div>        
+        {% endfor %}
+    {% endif %}
+
+</div>
+<div class="ui segment">
+    <table id="tabledata1" class="ui celled table">
+        <thead class="center aligned">
+            <tr>
+                <th class="three wide">K9</th>
+                <th>Port</th>
+                <th class="two wide"> Age</th>
+                <th class="two wide">Retired Date</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data %}
+            <tr>
+                <td>{{data}}</td>
+                <td >{{data.assignment}}</td>
+                <td>{{data.age}} yrs and {{data.month_remainder}} mon</td>
+                <td>{{data.year_retired}}</td>
+                <td style="text-align:center;" class="two wide">
+                    <a href="{% url 'unitmanagement:due_retired_call' data.id %}" class="ui tiny basic red button">Call Back</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    $('#tabledata1').DataTable({
+        "order": [[ 3, "asc" ]]
+    });
+      
+</script>
+ {% endblock %}

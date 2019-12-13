@@ -1,0 +1,445 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+{% load pa_tags %}
+
+<h2 class="ui header">
+  K9 Breeding
+  <div class="sub header">Input K9 breeding data here</div>
+</h2>
+
+<div class="ui ordered steps">
+  <div class="active step">
+    <div class="content">
+      <div class="title">K9 Breeding Selection</div>
+      <div class="description">Select K9 Parents</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <div class="content">
+      <div class="title">Confirm Parents</div>
+      <div class="description">Verify selected parents</div>
+    </div>
+  </div>
+</div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ style }} row"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+  <br>
+    <button class="ui teal button" id="btn">K9's Summmary</button>
+            <div class="ui segment" id='summary' style="display: none;">
+                <table class="ui celled structured table">
+                <thead class="center aligned">
+                    <tr>
+                        <th rowspan="2">Breed</th>
+                        <th colspan="3">Dam (Mother)</th>
+                        <th colspan="3">Sire (Father)</th>
+                        <th rowspan="2">Total K9</th>
+                    </tr>
+                    <tr>
+                        <th>NDD</th>
+                        <th>EDD</th>
+                        <th>SAR</th>
+                        <th>NDD</th>
+                        <th>EDD</th>
+                        <th>SAR</th>
+                    </tr>
+                </thead>
+                <tbody class="right aligned">
+                    <tr>
+                        <td>Belgian Malinois</td>
+                        <td>{{bm_f_ndd}}</td>
+                        <td>{{bm_f_edd}}</td>
+                        <td>{{bm_f_sar}}</td>
+                        <td>{{bm_m_ndd}}</td>
+                        <td>{{bm_m_edd}}</td>
+                        <td>{{bm_m_sar}}</td>
+                        <td style="font-weight: bold;">{{bm}}</td>
+                    </tr>
+                    <tr>
+                        <td>Dutch Sheperd</td>
+                        <td>{{ds_f_ndd}}</td>
+                        <td>{{ds_f_edd}}</td>
+                        <td>{{ds_f_sar}}</td>
+                        <td>{{ds_m_ndd}}</td>
+                        <td>{{ds_m_edd}}</td>
+                        <td>{{ds_m_sar}}</td>
+                        <td style="font-weight: bold;">{{ds}}</td>
+                    </tr>
+                    <tr>
+                        <td>German Sheperd</td>
+                        <td>{{gs_f_ndd}}</td>
+                        <td>{{gs_f_edd}}</td>
+                        <td>{{gs_f_sar}}</td>
+                        <td>{{gs_m_ndd}}</td>
+                        <td>{{gs_m_edd}}</td>
+                        <td>{{gs_m_sar}}</td>
+                        <td style="font-weight: bold;">{{gs}}</td>
+                    </tr>
+                    <tr>
+                        <td>Golden Retriever</td>
+                        <td>{{gr_f_ndd}}</td>
+                        <td>{{gr_f_edd}}</td>
+                        <td>{{gr_f_sar}}</td>
+                        <td>{{gr_m_ndd}}</td>
+                        <td>{{gr_m_edd}}</td>
+                        <td>{{gr_m_sar}}</td>
+                        <td style="font-weight: bold;">{{gr}}</td>
+                    </tr>
+                    <tr>
+                        <td>Jack Russel</td>
+                        <td>{{jr_f_ndd}}</td>
+                        <td>{{jr_f_edd}}</td>
+                        <td>{{jr_f_sar}}</td>
+                        <td>{{jr_m_ndd}}</td>
+                        <td>{{jr_m_edd}}</td>
+                        <td>{{jr_m_sar}}</td>
+                        <td style="font-weight: bold;">{{jr}}</td>
+                    </tr>
+                    <tr>
+                        <td>Labrador Retriever</td>
+                        <td>{{lr_f_ndd}}</td>
+                        <td>{{lr_f_edd}}</td>
+                        <td>{{lr_f_sar}}</td>
+                        <td>{{lr_m_ndd}}</td>
+                        <td>{{lr_m_edd}}</td>
+                        <td>{{lr_m_sar}}</td>
+                        <td style="font-weight: bold;">{{lr}}</td>
+                    </tr>
+
+                    <tr style="font-weight: bold;">
+                        <td>Total</td>
+                        <td>{{ndd_f}}</td>
+                        <td>{{edd_f}}</td>
+                        <td>{{sar_f}}</td>
+                        <td>{{ndd_m}}</td>
+                        <td>{{edd_m}}</td>
+                        <td>{{sar_m}}</td>
+                        <td class="center aligned">{{t_breed}}</td>
+                    </tr>
+                   
+                </tbody>
+                <tfoot class="right aligned">
+                    <tr>
+                        <th><b>Summary</b></th>
+                        <th colspan="2"><b>{{ndd}} NDD</b></th>
+                        <th colspan="2"><b>{{edd}} EDD</b></th>
+                        <th colspan="2"><b>{{sar}} SAR</b></th>
+                      <td></td>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+     
+
+  <div class="ui top attached tabular menu">
+    <a class="active item" data-tab="first">K9 Breeding (In-Heat)</a>
+    <a class="item" data-tab="second">K9 For-Breeding List</a>
+  </div>
+
+  <div class="ui bottom attached active tab segment" data-tab="first">
+      <form class = "ui form" action="" method="post">
+          {% csrf_token %}
+        <div class="ui two column grid">
+          <div class="row">
+              <div class="column">
+                  <center>
+                    <h4 class='ui horizontal divider header'>Dam (Mother)</h4>
+                  </center>
+             
+                   <table id="tabledata1" class="ui nine column inverted pink celled
+                   collapsing small table" style="font-size:12px;">
+                         <thead>
+                             <tr>
+                                 <th></th>
+                                 <th>Name</th>
+                                 <th>Age</th>
+                                 <th>Breed</th>
+                                 <th>Capability</th>
+                                 <th>Birth Success</th>
+                                 <th>Litter</th>
+                                 <th>Sick Record</th>
+                                 <th>Mating Date</th>
+                             </tr>
+                         </thead>
+                 
+                         <tbody>
+                             <!-- {% for m, s, b in hlist %}
+                             <tr class="positive">
+                                 <td class="center aligned"> 
+                                     <input type="radio" id="radiom" name="radiom" value="{{m.id}}">
+                                 </td>
+                                 <td>
+                                     <a href="#" class="show_modal" id='{{m.id}}'
+                                     style="color:green;">{{m.name}}</a>
+                                 </td>
+                                 <td>{{m.age}}</td>
+                                 <td>{{m.breed}}</td>
+                                 <td>{{m.capability}}</td>
+                                 <td>{{b}}%</td>
+                                 <td>{{m.litter_no}}</td>
+                                 <td>{{s}}</td>
+                                 <td>
+                                    <a href="#" class="btn_modal" data-name='{{f}}' id='{{m.id}}'>
+                                        {{m.last_proestrus_date|date:'Y/m/d'}} -
+                                        Mate Today!</a> 
+                                </td>
+                             </tr>
+                             {% endfor %} -->
+                             {% for m, s, b in mlist %}
+                             {% if today.date == m.last_estrus_date  %}
+                             <tr class="positive">
+                                    <td class="center aligned"> 
+                                        <input type="radio" id="radiom" name="radiom" value="{{m.id}}">
+                                    </td>
+                                    <td>
+                                        <a href="#" class="show_modal" id='{{m.id}}'
+                                        style="color:green;">{{m.name}}</a>
+                                    </td>
+                                    <td>{{m.age}}</td>
+                                    <td>{{m.breed}}</td>
+                                    <td>{{m.capability}}</td>
+                                    <td>{{b}}%</td>
+                                    <td>{{m.litter_no}}</td>
+                                    <td>{{s}}</td>
+                                    <td>
+                                       <a href="#" class="btn_modal" data-name='{{f}}' id='{{m.id}}'>
+                                           {{m.last_estrus_date|date:'Y/m/d'}} -
+                                           Mate Today!</a> 
+                                   </td>
+                                </tr>
+                             {% elif today.date > m.last_estrus_date  %}
+                             <tr class="negative">
+                                 <td class="center aligned"> 
+                                     <input type="radio" id="radiom" name="radiom" value="{{m.id}}">
+                                 </td>
+                                 <td>
+                                     <a href="#" class="show_modal" id='{{m.id}}'
+                                     style="color:green;">{{m.name}}</a>
+                                 </td>
+                                 <td>{{m.age}}</td>
+                                 <td>{{m.breed}}</td>
+                                 <td>{{m.capability}}</td>
+                                 <td>{{b}}%</td>
+                                 <td>{{m.litter_no}}</td>
+                                 <td>{{s}}</td>
+                                 <td>
+                                    <a href="#" class="btn_modal" data-name='{{f}}' id='{{m.id}}'>{{m.last_estrus_date|date:'Y/m/d'}}</a> 
+                                </td>
+                             </tr>
+                             {% else %}
+                             <tr>
+                                 <td class="center aligned"> 
+                                     <input type="radio" id="radiom" name="radiom" value="{{m.id}}">
+                                 </td>
+                                 <td>
+                                     <a href="#" class="show_modal" id='{{m.id}}' data-type ='health'
+                                     style="color:powderblue;">{{m.name}}</a>
+                                 </td>
+                                 <td>{{m.age}}</td>
+                                 <td>{{m.breed}}</td>
+                                 <td>{{m.capability}}</td>
+                                 <td>{{b}}%</td>
+                                 <td>{{m.litter_no}}</td>
+                                 <td>{{s}}</td>
+                                 <td>
+                                    <a href="#" id='{{m.id}}' data-name='{{m}}' class="btn_modal" style="color:powderblue;">{{m.last_estrus_date|date:'Y/m/d'}}</a> 
+                                  </td>
+                             </tr>
+                             {% endif %}
+                             {% endfor %}
+                         </tbody>
+                     </table>
+               </div>
+                 
+                 <div class="column" id = 'id_father_data'>
+                   <center>
+                     <h4 class='ui horizontal divider header'>Sire (Father)</h4>
+                   </center>
+                 </div>
+             </div>
+          </div>
+     
+          <div class="ui center aligned basic segment" style="padding: 0px;">
+              <button id = "submit" class = "ui button green" type="submit" >Next Step</button>
+          </div>
+        </form>            
+  </div>
+  <div class="ui bottom attached tab segment" data-tab="second">
+      <div class="ui two column grid">
+        <div class="column">
+                <center>
+                <h4 class='ui horizontal divider header'>Mother (Dam)</h4>
+                </center>
+            <table id="tabledata5" class="ui eight column inverted pink celled collapsing small table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Breed</th>
+                        <th>Capability</th>
+                        <th>Birth Success</th>
+                        <th>Litter</th>
+                        <th>Sick Record</th>
+                        <th>In-Heat Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for f, s, b in mmlist %}
+                    <tr>
+                        <td>
+                            <a href="#" class="show_modal" id='{{f.id}}' style="color:powderblue;">{{f.name}}</a>
+                        </td>
+                        <td>{{f.age}}</td>
+                        <td>{{f.breed}}</td>
+                        <td>{{f.capability}}</td>
+                        <td>{{b}}%</td>
+                        <td>{{f.litter_no}}</td>
+                        <td>{{s}}</td>
+                        <td>
+                            <a href="#" id='{{f.id}}' data-name='{{f}}' class="btn_modal"
+                            style="color:powderblue;">{{f.last_proestrus_date|date:'Y/m/d'}}</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="column">
+            <center>
+              <h4 class='ui horizontal divider header'>Sire (Father)</h4>
+            </center>
+            <table id="tabledata6" class="ui seven column inverted blue celled collapsing small table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Breed</th>
+                        <th>Capability</th>
+                        <th>Birth Success</th>
+                        <th>Litter</th>
+                        <th>Sick Record</th>
+                    </tr>
+                </thead>
+  
+                <tbody>
+                    {% for f, s, b in flist %}
+                    <tr>
+                        <td>
+                            <a href="#" class="show_modal" id='{{f.id}}' style="color:powderblue;">{{f.name}}</a>
+                        </td>
+                        <td>{{f.age}}</td>
+                        <td>{{f.breed}}</td>
+                        <td>{{f.capability}}</td>
+                        <td>{{b}}%</td>
+                        <td>{{f.litter_no}}</td>
+                        <td>{{s}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui small modal" id="mini_modal">
+        <div class="header">Header</div>
+        <div class="content">
+                <div class="ui info message">     
+                    <ul class="list">
+                        <li>Proestrus Stage is the In-Heat Duration</li>
+                    </ul>
+                </div>
+            <form action="{% url 'planningandacquiring:in_heat_change' %}" method="POST" class="ui form">
+                {% csrf_token %}
+                <input type="hidden" name="id_k9" id = 'id_k9'>
+                <div class="field">
+                    <label for="">In-Heat First Date:</label>
+                    <input type="date" name="date_change" id="">
+                </div>
+
+                <center>
+                    <button type="submit" class="ui green button">Submit</button>
+                </center>
+            </form>
+        </div>
+    </div>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+    $('.menu .item').tab();
+
+    $("#summary").hide();
+
+    $("#btn").click(function(){
+        $("#summary").slideToggle();
+    });
+
+    $(".btn_modal").bind('click',function(){
+        var id = $(this).attr('id');
+        var name = $(this).data('name');
+     
+        $('#id_k9').val(id)
+        $('.ui.small.modal').modal('show');
+    });
+
+	$('#tabledata1').DataTable({
+      "order": [[ 8, "asc" ],[ 5, "desc" ],[ 6, "asc" ],[ 7, "asc" ]]
+    });
+    $('#tabledata5').DataTable({
+      "order": [[ 7, "asc" ],[ 6, "asc" ],[ 4, "desc" ],[ 5, "desc" ],[ 1, "desc" ],[ 0, "asc" ]]
+    });
+    $('#tabledata6').DataTable({
+        "order": [[ 6, "asc" ],[ 4, "desc" ],[ 5, "desc" ],[ 1, "desc" ],[ 0, "asc" ]]
+    });
+
+    $('.ui.radiom.checkbox').checkbox();     
+
+    
+  $("input[name='radiom']").change(function () {
+        var url = 'ajax_load_k9_reco';  
+        var id = $("input[name='radiom']:checked"). val();
+        
+        $.ajax({                       
+        url: url,                    
+        data: {
+            'id': id      
+        },
+        success: function (data) {   
+            $("#id_father_data").html(data);  
+        }
+        });
+    });
+
+    $(".show_modal" ).bind('click', function() {
+            var id = $(this).attr('id')
+            var k9 = $(this).text();
+            var type = $(this).data('type');
+         
+            $('#id_health_data').modal('show');
+         
+            var url = 'ajax_load_health';  
+            $('#id_health_data').modal('show');
+
+            $.ajax({                      
+                url: url,                    
+                data: {
+                'id': id,
+                'k9': k9,
+                'type':type,      
+                },
+                success: function (data) {   
+                $("#id_health_data").html(data); 
+                }
+            });
+
+        });
+
+	});
+
+
+</script>
+
+{% endblock %}

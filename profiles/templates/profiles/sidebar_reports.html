@@ -1,0 +1,110 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %}
+
+{% block sidebar_module %}
+      
+<div class="ui fluid container">
+    <div class="ui basic segment">
+        <div class="ui grid">
+            <div class="three wide column">
+                    <div class="ui pointing vertical menu">
+                        <a class="item"> <b>Reports Menu</b></a>
+                        <a href="{% url 'planningandacquiring:demand_supply_date'%}" class="item">
+                            <i class="open folder alternate outline icon"></i>K9
+                            Demand and Supply Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:k9_performance_date'%}" class="item">
+                            <i class="open folder alternate outline icon"></i>K9 Performance Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:supplier_date'%}" class="item">
+                            <i class="open folder alternate outline icon"></i>Supplier Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:fou_accomplishment_date'%}" class="item">
+                            <i class="open folder alternate outline icon"></i>FOU 
+                            Accomplishment Summary Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:fou_acc_date'%}" class="item">
+                            <i class="open folder alternate outline icon"></i>FOU 
+                            Incident Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:training_summary_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Training Summary Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:training_date'%}" class="item">
+                            <i class="open folder alternate outline icon"></i>Training Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:aor_summary_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>AOR Summary Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:port_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Port Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:k9_request_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>K9 Request Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:k9_incident_summary_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>K9 Incident Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:k9_breeding_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>K9 Breeding Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:health_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Health Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:on_leave_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Handler On-leave Summary Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:adoption_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Adoption Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:inventory_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Inventory Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:received_food_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Dog Food Received Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:received_med_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Medicine Received Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:received_misc_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Miscellaneous Received Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:physical_count_food_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Dog Food Physical Count Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:physical_count_med_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Medicine Physical Count Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:physical_count_misc_date'%}" class="item">
+                            <i class="open folder alternate outline
+                            icon"></i>Miscellaneous Physical Count  Report
+                        </a>
+                        <a href="{% url 'planningandacquiring:budget_list'%}" class="item">
+                                <i class="money bill alternate outline icon"></i>Budgeting List
+                        </a>
+                        
+                    </div>
+            </div>
+            <!>
+            <div class="thirteen wide column">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

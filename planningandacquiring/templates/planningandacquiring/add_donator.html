@@ -1,0 +1,83 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+
+<h2 class="ui header">
+ {{Title}}
+  <div class="sub header">Input K9 donation receiving data here</div>
+</h2>
+
+<div class="ui ordered steps">
+  <div class="completed step">
+    <div class="content">
+      <div class="title">K9 Form</div>
+      <div class="description">Provide your received K9 Data</div>
+    </div>
+  </div>
+  <div class="active step">
+    <div class="content">
+      <div class="title">Previous Ownership Form</div>
+      <div class="description">Provide previous owner data</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <div class="content">
+      <div class="title">Confirm Adoption</div>
+      <div class="description">Verify adoption details</div>
+    </div>
+  </div>
+</div>
+
+<div class="ui inverted segment">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ style }} row"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+<form class = "ui inverted form" action="{% url 'planningandacquiring:add_donator_form'%}" method="post">
+    {% csrf_token %}
+    <div class="fields">
+        <div class="six wide field">
+            <label>First Name</label>
+            {{form.first_name}}
+        </div>
+        <div class="four wide field">
+            <label>Middle Name</label>
+            {{form.middle_name}}
+        </div>
+        <div class="six wide field">
+            <label>Last Name</label>
+            {{form.last_name}}
+        </div>
+    </div>
+
+    <div class="four fields">
+        <div class="field">
+            <label>Birthday</label>
+            {{form.birth_date}}
+        </div>
+        <div class="field">
+            <label>Sex</label>
+            {{form.sex}}
+        </div>
+        <div class="field">
+            <label>Email</label>
+            {{form.email}}
+        </div>
+        <div class="field">
+            <label>Contact Number</label>
+            {{form.contact_no}}
+        </div>
+    </div>
+
+    <div class="field">
+        <label>Address</label>
+        {{form.address}}
+    </div>
+
+    <div class="ui inverted right aligned segment" style="padding: 0px;">
+        <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Next Step</button>
+    </div>
+</form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load index %}
+
+{% block content %}
+
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <link rel="stylesheet" type="text/css" href="{'% static 'cal/css/styles.css' %}">
+        Reqeust Schedule for  {{k9}}
+    </h3>
+</div>
+
+
+<table id="tabledata1" class="ui four column celled table">
+    <thead>
+            <tr>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Duration</th>
+                <th>Request</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for schedule in schedules %}
+        <tr>
+            <td>{{schedule.date_start}}</td>
+            <td>{{schedule.date_end}}</td>
+            <td>{{schedule|get_duration:forloop.counter0}} Days</td>
+            <td><a href="{% url 'deployment:request_dog_details' schedule.dog_request.id %}">{{schedule.dog_request}}</a></td>
+        </tr>
+        {% endfor%}
+
+        </tbody>
+</table>
+
+
+{% if team_assignment_id %}
+<a class ="ui red button"href="{% url 'deployment:team_location_details' team_assignment_id %}"><i class="arrow left icon"></i>Go Back</a>
+{% endif %}
+{% if dog_request_id %}
+<a class ="ui red button"href="{% url 'deployment:request_dog_details' dog_request_id %}"><i class="arrow left icon"></i>Go Back</a>
+{% endif %}
+
+<button id = 'calendar_btn' class="ui blue button" type = "button">Toggle Calendar</button>
+<div id = "calendar">
+<div class = "ui segment">
+<div class="ui horizontal segments">
+    <div class = "ui segment">
+
+         <div class="ui segment">
+        <div class="ui statistic">
+  <div class="value">
+    {{date_today}}
+  </div>
+  <div class="label">
+    CURRENT DATE
+  </div>
+</div>
+            </div>
+
+    <a class ="ui left attached large blue button" href="{% url 'deployment:view_schedule' k9.id%}?{{prev_month}}">Previous Month</a>
+    <a class ="right attached ui large blue button" href="{% url 'deployment:view_schedule' k9.id%}?{{next_month}}">Next Month</a>
+        </div>
+    <div class = "ui segment">
+    <form class = "ui form" method="POST">
+        {% csrf_token %}
+        <div class="inline fields">
+        {{monthyearform}}
+        </div>
+        <button class = "ui button green" type="submit" >Select Month/Year</button>
+    </form>
+    </div>
+</div>
+{{calendar}}
+</div>
+</div>
+
+<style>
+
+      .calendar {
+  width: 98%;
+  margin: auto;
+  font-size: 13px;
+}
+
+.calendar tr, .calendar td {
+  border: 1px solid black;
+}
+
+.calendar th {
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.calendar td {
+  width: 200px;
+  height: 150px;
+  padding: 20px 0px 0px 5px;
+}
+
+.month {
+  font-size: 25px;
+}
+
+.date {
+  font-size: 16px;
+}
+
+ul {
+  height: 100%;
+  padding: 0px 5px 0px 20px;
+}
+
+a {
+  color: #17a2b8;
+}
+
+</style>
+
+<script>
+
+     $(document).ready(function(){
+        $('#calendar').show();
+
+        $('#calendar_btn').on("click", function(e){
+               $('#calendar').toggle();
+         });
+     });
+
+
+       $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('#tabledata2').DataTable();
+        $('#tabledata3').DataTable();
+        $('#tabledata4').DataTable();
+        $('.menu .item').tab();
+    });
+</script>
+
+{% endblock %}

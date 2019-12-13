@@ -1,0 +1,62 @@
+{% load static %}
+{% block content %}
+{% if initial == 'True' %}
+<div class="header">{{data}} - {{disease}}</div>
+<div class="content">
+    <form action="{% url 'unitmanagement:vaccine_submit' %}" method="POST" class="ui form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="three column fields">
+            <input type="hidden" name="k9" value="{{data.id}}">
+            <input type="hidden" name="type" value="{{type}}">
+            <input type="hidden" name="disease" value="{{disease}}">
+            <div class="field">
+                <label>Vaccine/Prevention</label>
+                {{form.vaccine}}
+            </div>
+            <div class="field">
+                <label>Date Given</label>
+                {{form.date_vaccinated}}
+            </div>
+            <div class="field">
+                <label>Stamp Image</label>
+                {{form.image}}
+            </div>
+        </div>
+
+        <center>
+            <button class="ui green button" type="submit">Submit</button>
+        </center>
+    </form>
+</div>
+{%else%}
+
+
+<div class="header">{{data}}</div>
+<div class="content">
+    <form action="" method="POST" class="ui form">
+        {% csrf_token %}
+        <div class="three column fields">
+            <input type="hidden" name="k9" value="{{data.id}}">
+            <input type="hidden" name="type" value="{{type}}">
+            <div class="field">
+                <label>Vaccine/Prevention</label>
+                {{form.vaccine}}
+            </div>
+            <div class="field">
+                <label>Date Given</label>
+                {{form.date_vaccinated}}
+            </div>
+            <div class="field">
+                <label>Stamp Image</label>
+                {{form.image}}
+            </div>
+        </div>
+
+        <center>
+            <button class="ui green button" type="submit">Submit</button>
+        </center>
+    </form>
+</div>
+{%endif%}
+
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui inverted segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+    </h2>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="{{style}}" > {{ message }}</div>
+    {% endfor %}
+    {% endif %}
+</div>
+<div class="ui segment">
+        {% if rr.status == 'Confirmed'%}
+        <div class="ui info message">
+            <div class="header">
+                Awaiting confirmation that Items are received.
+            </div>  
+        </div>
+        {%endif%}
+        <form action="" method="POST" class="ui form">
+                {% csrf_token %}
+                <div class="two fields">
+                    <div class="ten wide field">
+                        <label>Requested by</label>
+                        <input type="text" value="{{rr.handler}}" readonly>
+                    </div>
+                    <div class="six wide field">
+                        <label>Date Requested</label>
+                        
+                        <input type="text" value="{{rr.date_requested}}" readonly>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Port</label>
+                    <textarea name="" id="" cols="30" rows="4" readonly>{{ta}}</textarea>
+                </div>
+            
+                <div class="ui basic segment">
+            
+                    <div class="ui three column grid">
+                        <div class="column">
+                            <div class="ui horizontal divider">Dog Food</div>
+                            <table class="ui three column orange celled table">
+                             <thead>
+                                 <th>Item</th>
+                                 <th>Unit</th>
+                                 <th>Quantity</th>
+                             </thead>
+                             <tbody>
+                                {% if food %}
+                                    {% for food in food%}
+                                    <tr>
+                                        <td>{{food.food}}</td>
+                                        <td>{{food.unit}}</td>
+                                        <td>{{food.quantity}}</td>
+                                    </tr>
+                                    {%endfor%}
+                                {% else %}
+                                    <tr class="center aligned">
+                                        <td colspan='3'>No Item Request</td>
+                                    </tr>
+                                {% endif %}
+                             </tbody>
+                            </table>
+                        </div>
+                        <div class="column">
+                            <div class="ui horizontal divider">Medicine</div>
+                            <table class="ui three column green celled table">
+                            <thead>
+                                <th>Item</th>
+                                <th>Unit</th>
+                                <th>Quantity</th>
+                            </thead>
+                            <tbody>
+                                {%if med%}
+                                    {% for med in med%}
+                                    <tr>
+                                        <td>{{med.medicine}}</td>
+                                        <td>{{med.unit}}</td>
+                                        <td>{{med.quantity}}</td>
+                                    </tr>
+                                    {%endfor%}
+                                {% else %}
+                                    <tr class="center aligned">
+                                        <td colspan='3'>No Item Request</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                            </table>
+                        </div>
+                        <div class="column">
+                            <div class="ui horizontal divider">Miscellaneous</div>
+                            <table class="ui three column purple celled table">
+                            <thead>
+                                <th>Item</th>
+                                <th>Unit</th>
+                                <th>Quantity</th>
+                            </thead>
+                            <tbody>
+                                {% if misc %}
+                                {% for misc in misc%}
+                                <tr>
+                                    <td>{{misc.miscellaneous}}</td>
+                                    <td>{{misc.unit}}</td>
+                                    <td>{{misc.quantity}}</td>
+                                </tr>
+                                {%endfor%}
+                                {% else %}
+                                    <tr class="center aligned">
+                                        <td colspan='3'>No Item Request</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+            
+                </div>
+                {% if rr.status == 'Pending'%}
+                <center>
+                    <button  type="submit" class="ui green button">Send</button>
+                </center>
+                {% endif%}
+            </form>            
+</div>
+
+
+<script type="text/javascript">
+    $('.menu .item').tab();
+</script>
+ {% endblock %}

@@ -1,0 +1,87 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+
+<h2 class="ui header">
+ {{Title}}
+  <div class="sub header">Input K9 data here</div>
+</h2>
+
+<div class="ui ordered steps">
+  <div class="completed step">
+    <div class="content">
+      <div class="title">K9 Form</div>
+      <div class="description">Provide your K9 Data</div>
+    </div>
+  </div>
+
+  <div class="active step">
+    <div class="content">
+      <div class="title">Confirm Details</div>
+      <div class="description">Verify details</div>
+    </div>
+  </div>
+</div>
+        <h2 class="ui dividing header">K9 Information</h2>
+      <div class="ui basic segment">
+      
+        <center>
+            <img src="{{k9.image.url}}" alt="" width="280">
+        </center>
+      
+      </div>
+		<table class="ui celled table">
+        	<thead>
+          	<tr>
+                <th>Name</th>
+                <td>{{k9.name}}</td>
+                </tr>
+              <th>Breed</th>
+                <td>{{k9.breed}}</td>
+                </tr>
+            <tr>
+              <th>Sex</th>
+                <td>{{k9.sex}}</td>
+                </tr>
+            <tr>
+			  <th>Color</th>
+                <td>{{k9.color}}</td>
+                </tr>
+            <tr>
+              <th>Birthdate</th>
+                <td>{{k9.birth_date}}</td>
+                </tr>
+            <tr>
+              <th>Age</th>
+                <td>{{k9.age}}</td>
+                </tr>
+            <tr>
+              <th>Source</th>
+                <td>{{k9.source}}</td>
+                </tr>
+            <tr>
+            <tr>
+              <th>Date Procured</th>
+                <td>{{k9.date_created}}</td>
+                </tr>
+            <tr>
+
+    		</thead>
+        </table>
+
+
+
+<form action="{% url 'planningandacquiring:donation_confirmed' %}" method="post">
+ {% csrf_token %}
+
+ 
+ <div class="ui center aligned basic segment">
+    <div class="ui buttons">
+        <button class="ui button" name="redo" onclick="return confirm('Are you sure?')">Start Over</button>
+        <div class="or"></div>
+        <button class="ui positive button" name="ok" onclick="return confirm('Are you sure?')">Confirm</button>
+      </div>
+</div>
+  
+
+</form>
+
+{% endblock %}

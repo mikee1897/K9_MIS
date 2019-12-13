@@ -1,0 +1,121 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+ <h3 class="ui header">{{ title }}</h3>
+<div class="ui top attached tabular menu">
+    <a class="item{{active_1}}" data-tab="first">Medicine</a>
+    <a class="item{{active_2}}" data-tab="second">Food</a>
+    <a class="item{{active_3}}" data-tab="third">Equipment</a>
+</div>
+
+<div class="ui tab segment active" data-tab="first">
+<form action="" method="POST" class="ui form" enctype="multipart/form-data" id='myForm1'>
+            {% csrf_token %}
+    {% for form in formset1 %}
+    <div class="formset_class" id="{{ form.prefix }}-row">
+        <div class="two fields">
+            <div class="field">
+                <label>Medicine</label>
+                {{form.medicine}}
+            </div>
+            <div class="field">
+                <label>Quantity</label>
+                {{form.quantity}}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <center>
+        <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button></center>
+    {{formset1.management_form}}
+</form>
+</div>
+
+<div class="ui tab segment" data-tab="second">
+<form action="" method="POST" class="ui form" enctype="multipart/form-data" id='myForm2'>
+            {% csrf_token %}
+            {% for form in formset2 %}
+    <div class="formset_class" id="{{ form.prefix }}-row">
+        <div class="two fields">
+            <div class="field">
+                <label>Food</label>
+                {{form.food}}
+            </div>
+            <div class="field">
+                <label>Quantity</label>
+                {{form.quantity}}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <center><button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button></center>
+
+    {{formset2.management_form}}
+            </form>
+</div>
+
+<div class="ui tab segment" data-tab="third">
+   <form action="" method="POST" class="ui form" enctype="multipart/form-data" id='myForm3'>
+            {% csrf_token %}
+            {% for form in formset3 %}
+    <div class="formset_class" id="{{ form.prefix }}-row">
+        <div class="two fields">
+            <div class="field">
+                <label>Equipment</label>
+                {{form.equipment}}
+            </div>
+            <div class="field">
+                <label>Quantity</label>
+                {{form.quantity}}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <center><button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button></center>
+    {{formset3.management_form}}
+            </form>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('#tabledata2').DataTable();
+        $('#tabledata3').DataTable();
+        $('#tabledata4').DataTable();
+        $('.menu .item').tab();
+    });
+
+     $(document).ready(function() {
+        $('#tabledata').DataTable();
+
+        $(function() {
+            $('#myForm1 .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });
+        })
+    });
+
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+
+        $(function() {
+            $('#myForm2 .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });
+        })
+    });
+
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+
+        $(function() {
+            $('#myForm3 .formset_class').formset({
+                prefix: '{{ formset.prefix }}'
+            });
+        })
+    });
+
+</script>
+
+{% endblock%}

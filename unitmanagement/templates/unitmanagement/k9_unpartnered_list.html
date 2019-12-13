@@ -1,0 +1,54 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load static %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<table id="tabledata1" class="ui seven column celled table">
+    <thead>
+        <tr>
+            <th>K9</th>
+            <th>Serial Number</th>
+            <th>Breed</th>
+            <th>Age (yrs & mons)</th>
+            <th>Age (days)</th>
+            <th>Capability</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in data %}
+            <tr>
+                
+                <td>{{data.name}}</td>
+                <td>{{data.serial_number}}</td>
+                <td>{{data.breed}}</td>
+                <td>{{data.age}} years and {{data.month_remainder}} months</td>
+                <td>{{data.age_days}}</td>
+                <td>{{data.capability}}</td>
+                <td class="ui center aligned">
+                    <a class = 'ui blue tiny basic button' href="{% url 'unitmanagement:reassign_assets' data.id %}">Select</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+         
+<script type="text/javascript">
+        
+   
+    $('#tabledata1').DataTable({
+        "order": [[ 0, "asc" ]]
+    });
+    $('.menu .item').tab();
+  
+    
+</script>
+
+{% endblock %}

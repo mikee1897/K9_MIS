@@ -1,0 +1,163 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load index %}
+{% block content %}
+<div class="ui segment" style="padding:20px;">
+    <h1 class="ui header">Schedule Deployment
+    <div class="sub header">Schedule units for deployment</div>
+    </h1>
+
+</div>
+
+ <div class="ui inverted placeholder segment">
+  <div class="ui two column stackable center aligned grid">
+    <div class="ui vertical divider"></div>
+    <div class="top aligned row">
+      <div class="column">
+
+          <div class = "ui inverted segment">
+
+
+		<table id="tabledata" class="ui celled table">
+        	<thead>
+          	<tr>
+                <th rowspan="2"></th>
+				<th rowspan="2">Priority</th>
+                <th rowspan="2">Port</th>
+                <th rowspan="2">Area</th>
+                <th rowspan="2">Maritime Count</th>
+                <th rowspan="2">Incident Count</th>
+          	</tr>
+
+    		</thead>
+    		<tbody>
+            {% for idx, location in locations.iterrows %}
+            <tr>
+                        <td>{{ location.Location|render_location_radio }}</td>
+                        <td> {{idx|add_one}}</td>
+		                <td> {{location.Location}} </td>
+                        <td> {{location.Location.area}} </td>
+                        <td> {{location.Maritime}}</td>
+                        <td> {{location.Incident}}</td>
+
+            </tr>
+             {% endfor %}
+
+
+        </tbody>
+    </table>
+</div>
+
+
+      </div>
+      <div class="column">
+
+          <div class="ui segment" id='id_unit_data' > No Port Selected</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+ <div class="ui segment" id='id_unit_selected_data' > No Units Selected</div>
+
+
+
+
+<script type="text/javascript">
+
+	 $('#tabledata').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+     $('#tabledata2').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+     $('#tabledata3').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+     $('#tabledata4').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+
+		$('.menu .item').tab();
+
+</script>
+
+<script>
+
+    function getCheckboxesValues(){
+    return [].slice.apply(document.querySelectorAll("input[type=checkbox]"))
+           .filter(function(c){ return c.checked; })
+           .map(function(c){ return c.value; });
+            }
+
+    function toObject(arr) {
+        var rv = {};
+        for (var i = 0; i < arr.length; ++i)
+        rv[i] = arr[i];
+        return rv;
+        }
+
+
+    $("input[name='location']").change(function () {
+      var url = 'ajax_load_units';
+      var locationId = $("input[name='location']:checked").val();
+      var stringified = "";
+
+        try {
+            var k9 = getCheckboxesValues();
+            var arrayLength = k9.length;
+            var json = toObject(k9);
+            var stringified = JSON.stringify(json);
+
+            }
+            catch(err) {
+            alert(err);
+            }
+
+      $.ajax({
+        url: url,
+        data: {
+          'location': locationId,
+          'fullstring': stringified,
+        },
+        success: function (data) {
+         $("#id_unit_data").html(data); //The solution lies on the checkbox initial values
+
+         $("#id_unit_data").transition('glow');
+
+        }
+      });
+
+    });
+  </script>
+
+
+<script>
+
+    $(document).on('click', 'input[type="checkbox"][value]', function(event) {
+  // The checkbox that was clicked
+  var actor = $(this);
+
+  // The status of that checkbox
+  var checked = actor.prop('checked');
+
+  // The value of the checkbox
+  var group = actor.val();
+
+  // All checkboxes of the same value
+  var checkboxes = $('input[type="checkbox"][value="' + group + '"]');
+
+  // All checkboxes excluding the one that was clicked
+  var otherCheckboxes = checkboxes.not(actor);
+
+  // Check those checkboxes
+  otherCheckboxes.prop('checked', checked);
+});
+
+</script>
+
+
+
+{% endblock%}

@@ -1,0 +1,388 @@
+{% extends "profiles/sidebar_pa.html" %}  
+{% load humanize %}
+{% block content %}
+
+{% if generate == True  %}
+<div class="ui segment">
+    <center>
+        <div class="ui inverted segment">
+            <h2>Generate a Budget Proposal for the Year {{next_year}}</h2>
+        </div>
+    </center>
+    <br>
+
+    <div class="ui two column grid">
+        <div class="six wide column">
+            <div class="ui grid">
+                <div class="sixteen wide column">
+                    <table class="ui three column celled table">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Estimated K9 Born</th>
+                                <td colspan="1" class="right aligned" id='born_ny'>{{born_ny|intcomma}}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Estimated Current K9 (Alive)</th>
+                                <td colspan="1" class="right aligned" id='k9_ny'>{{k9_ny|intcomma}}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Number of Procured k9</th>
+                                <td colspan="1" class="right aligned" id='p_count' name='p_count'>0</td>
+                            </tr>
+                            <tr style="font-weight: bold;" class="right aligned">
+                                <th colspan="2">Total K9</th>
+                                <td colspan="1" id='total_k9'>{{total_k9|intcomma}}</td>
+                            </tr>
+                        </thead>    
+                    </table>      
+                </div>
+                <div class="sixteen wide column">
+                    <table class="ui structured celled table right aligned">
+                        <thead>
+                            <tr>
+                                <th>Breed</th>
+                                <th class="six wide">Deceased (count)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if dead_list%}
+                                {% for a,b in dead_list%}
+                                <tr>
+                                    <td>{{a}}</td>
+                                    <td>{{b}}</td>
+                                </tr>
+                                {% endfor %}
+                            {%else%}
+                                <tr>
+                                    <td colspan="2" class="center aligned">No K9 Predicted to Die Next Year</td>
+                                </tr>
+                            {%endif%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ten wide column">
+                <table class="ui structured celled table right aligned">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Current/Required</th>
+                                <th>Recommended Breed</th>
+                            </tr>
+                        </thead>
+                        <tbody>    
+                            <tr>
+                                <td>NDD</td>
+                                <td>{{NDD_count|intcomma}}/{{NDD_demand|intcomma}}</td>
+                                <td>
+                                    {% for data in ndd %}
+                                        {{data.breed}}<br>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>EDD</td>
+                                <td>{{EDD_count|intcomma}}/{{EDD_demand|intcomma}}</td>
+                                <td>
+                                    {% for data in edd %}
+                                        {{data.breed}}<br>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SAR</td>
+                                <td>{{SAR_count|intcomma}}/{{SAR_demand|intcomma}}</td>
+                                <td>
+                                    {% for data in sar %}
+                                        {{data.breed}}<br>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+        </div>
+              
+    </div>
+
+        <table class="ui four column celled table right aligned">
+            <thead>
+                <th class="four wide column">This Year's Budget</th>
+                <th class="four wide column" style="color: teal">
+                    {% if abb != None %}
+                        {{abb.grand_total|intcomma}}
+                    {%else%}
+                        No saved budget for this year
+                    {%endif%}
+                </th>
+                <th class="four wide column">Budget Proposal</th>
+                <th class="four wide column"id='bp_show' style="color: green;"></th>
+            </thead>
+        </table>
+        <br>
+    <form action="" method="POST" class="ui form" enctype="multipart/form-data" id="myForm">
+        {% csrf_token %}
+
+        <input type="hidden" id='id_need' name='id_need'>
+        <input type="hidden" id='id_need_total' name='id_need_total' step="0.01">
+        <div class="four fields">
+                <div class="field">
+                   <label for="">Breed and Sex</label>
+                </div>    
+                <div class="field">
+                    <label for="">Value</label>
+                </div>  
+                <div class="field">
+                    <label for="">Quantity</label>
+                </div>  
+                <div class="field">
+                    <label for="">Amount</label>
+                </div> 
+            </div>  
+        {% for form in formset %}
+        <div class="formset_class " id="{{ form.prefix }}-row">
+            <div class="four fields">
+                <div class="field">
+                    {{form.item}}
+                </div>    
+                <div class="field">
+                    {{form.price}}
+                </div>  
+                <div class="field">
+                    {{form.quantity}}
+                </div>  
+                <div class="field">
+                    {{form.total}}
+                </div> 
+            </div>  
+        </div>
+        {% endfor %}
+
+        <table class="ui three column celled table" style="width:50%;">
+            <thead>
+                
+                <tr style="font-weight: bold;">
+                    <th colspan="2">Procured K9 Total Amount</th>
+                    <td colspan="1" id='p_amount'>0</td>
+                </tr>
+                
+                    
+               
+            </thead>
+            
+        </table>
+        <div id="id_data_all"></div>
+        {{formset.management_form}}
+   
+    </form>
+</div>
+{% else %}
+
+    <center>
+        <div class="ui negative message">
+            <div class="header">
+              Additional Information is Required
+            </div>
+            <ul class="list">
+                <li>Make sure you have K9's in your database.</li>
+                <li>Make sure the Dog Breed database details is complete.</li>
+                <li>Make sure you have inventory.</li>
+                <li>Make sure you have inventory associated below.
+                    <ul class="list">
+                        <li>Anti-Rabies</li>
+                        <li>Bordetella Bronchiseptica Bacterin</li>
+                        <li>Deworming</li>
+                        <li>DHPPiL+CV</li>
+                        <li>DHPPiL4</li>
+                        <li>Heartworm</li>
+                        <li>Tick and Flea</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </center>
+
+
+   
+{% endif %}
+
+<script>
+    $(document).ready(function() {
+        $('#btn').click(function(){
+            var id_val = parseInt($( "#p_amount" ).text())
+            var url = 'ajax_load_budget';  
+            $.ajax({                      
+                url: url,    
+                data: {
+                'total_k9': parseInt($( "#total_k9" ).text()),      
+                'p_count':parseInt($( "#p_count" ).text()),
+                'p_amount':id_val,
+                'k9_ny':parseInt($( "#k9_ny" ).text()),
+                'born_ny':parseInt($( "#born_ny" ).text()),
+                },
+                success: function (data) {  
+                    $("#id_data_all").html(data); 
+                    var gt = $( "#gt_show" ).text();
+
+                    $( "#bp_show" ).text(gt);
+                }
+            });             
+        });
+        $(function() {
+                $('#myForm .formset_class').formset({
+                    prefix: '{{ formset.prefix }}'
+                });            
+            });
+            
+        function addCommas(nStr)
+        {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+        $(".select_breed" ).bind('change', function() {
+            var id = $(this).val();
+            var id_val = $(this).attr('id');
+            
+            var url = 'ajax_load_budget_data';  
+            $.ajax({                      
+                url: url,    
+                type : 'GET',           
+                dataType : 'json',     
+                data: {
+                'id': id,   
+                },
+                success: function (data) {
+                    var res = id_val.split("-"); 
+                    $('#id_form-'+res[1]+'-price').val(data.value);
+                    var quantity = $('#id_form-'+res[1]+'-quantity').val();   
+
+                    if (quantity == null){
+                        quantity = 0
+                    }
+
+                    var total = value * quantity
+
+                    $('#id_form-'+res[1]+'-total').val(total);
+
+                    var gt = $( "#gt_show" ).text();
+
+                    $( "#bp_show" ).text(gt);
+                }
+            });
+
+        });
+
+        $(".select_value" ).keyup('change', function() {
+            var id = $(this).val();
+            var id_val = $(this).attr('id');
+            var res = id_val.split("-");
+
+            var value = $('#id_form-'+res[1]+'-price').val(); 
+            var quantity = $('#id_form-'+res[1]+'-quantity').val();            
+            
+            
+            if (quantity == null){
+                quantity = 0
+            }
+
+            var total = value * quantity
+
+            $('#id_form-'+res[1]+'-total').val(total);
+            formset_sum()
+
+            if($( "#p_amount" ).text() == '0'){
+           
+            }else{
+
+            }
+        });
+
+        $(".select_quantity" ).keyup('change', function(){    
+
+            var id = $(this).val();
+            var id_val = $(this).attr('id');
+            var res = id_val.split("-");
+
+            var value = $('#id_form-'+res[1]+'-price').val(); 
+            var quantity = $('#id_form-'+res[1]+'-quantity').val();            
+            
+            if (quantity == null){
+                quantity = 0;
+            }
+
+            var total = value * quantity;          
+
+            $('#id_form-'+res[1]+'-total').val(total);
+
+            formset_sum()
+
+            $( "#p_amount" ).focus();
+
+            if($( "#p_amount" ).text() == '0'){
+           
+            }else{
+                var id_val = parseInt($( "#p_amount" ).text())
+                var url = 'ajax_load_budget';  
+                $.ajax({                      
+                    url: url,    
+                    data: {
+                    'p_amount': id_val,      
+                    'p_count':parseInt($( "#p_count" ).text()),
+                    'k9_ny':parseInt($( "#k9_ny" ).text()),
+                    'born_ny':parseInt($( "#born_ny" ).text()),
+                    },
+                    success: function (data) {  
+                        $("#id_data_all").html(data); 
+                        var gt = $( "#gt_show" ).text();
+
+                        $( "#bp_show" ).text(gt);
+                    }
+                });
+            }
+        });
+        
+        var t_k9 = '{{total_k9}}'
+        function formset_sum(){
+            a = $(".formset_class").length;
+
+            arr = []
+            arr_amount = []
+            for (i = 0; i < a; i++) { 
+                b = $('#id_form-'+i+'-quantity').val();
+                arr.push(b)  
+
+                c = $('#id_form-'+i+'-price').val();
+                arr_amount.push(b*c)
+            }
+            sum_q = 0;
+            $.each(arr,function(){sum_q+=parseFloat(this) || 0; });
+            $("#p_count").text(sum_q);
+
+            sum_a = 0;
+            $.each(arr_amount,function(){sum_a+=parseFloat(this) || 0; });
+            $("#p_amount").text(sum_a);
+            
+            d = parseInt(t_k9) + sum_q;
+            $("#total_k9").text(d);
+
+            $("#id_need").val(sum_q);
+            $("#id_need_total").val(sum_a);
+
+            var gt = $( "#gt_show" ).text();
+
+            $( "#bp_show" ).text(gt);
+        }
+      
+    });
+</script>
+{% endblock%}

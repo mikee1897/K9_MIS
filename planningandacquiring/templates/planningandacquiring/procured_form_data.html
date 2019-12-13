@@ -1,0 +1,80 @@
+
+{% load static %}
+{% block content %}
+
+<div class="six fields center aligned">
+    <div class="field">
+        <label>Name</label>
+    </div>    
+    <div class="field">
+        <label>Birthdate</label>
+    </div> 
+    <div class="field">
+        <label>Breed</label>
+    </div> 
+    <div class="field">
+        <label>Color</label>
+    </div> 
+    <div class="field">
+        <label>Sex</label>
+    </div> 
+    <div class="field">
+        <label>Image</label>
+    </div>    
+</div>
+    {% for form in formset %}
+
+    <div class="ui inverted raised segment">
+    <div class="formset_class " id="{{ form.prefix }}-row">
+            <div class="six fields">
+            <div class="field">
+                {{form.name}}
+            </div>    
+            <div class="field">
+                {{form.birth_date}}
+            </div> 
+            <div class="field">
+                {{form.breed}}
+            </div> 
+            <div class="field">
+                {{form.color}}
+            </div> 
+            <div class="field">
+                {{form.sex}}
+            </div> 
+            <div class="field">
+                {{form.image}}
+            </div>    
+            </div>
+        </div>
+        <div class="six fields">
+            <div class="field">
+                <label for="">Height(cm)</label>
+                {{form.height}}
+            </div>   
+            <div class="field">
+                <label for="">Weight(kg)</label>
+                {{form.weight}}
+            </div>   
+            <div class="field">
+                <label for="">DHPP</label>
+                {{form.date_dhhp}}
+            </div>   
+            <div class="field">
+                <label for="">ANTI RABIES</label>
+                {{form.date_rabies}}
+            </div>   
+            <div class="field">
+                <label for="">DEWORMING</label>
+                {{form.date_deworm}}
+            </div>   
+            <div class="field">
+                <label for="">BORDERTELLA</label>
+                {{form.date_bordertela}}
+            </div>    
+        </div>
+    </div>
+  
+    {% endfor %}
+    {{formset.management_form}}
+{% endblock %}

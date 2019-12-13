@@ -1,0 +1,170 @@
+{% load index %}
+{% load widget_tweaks %}
+
+<h1 class="ui header">Available units
+                        <div class="sub header">for {{location}}</div>
+                    </h1>
+
+
+<div class = "ui inverted segment">
+
+        <table id="tabledata2" class="ui celled table">
+        	<thead>
+          	<tr>
+                <th colspan="3" class="center aligned"> <h3>Deployed / Demand </h3></th>
+          	</tr>
+            <tr>
+                <th class="center aligned"><h4>SAR</h4> </th>
+                <th class="center aligned"><h4>NDD</h4></th>
+                <th class="center aligned"><h4>EDD</h4></th>
+            </tr>
+
+    		</thead>
+        <tbody>
+            <tr>
+                {% if sar <= 0%}
+                <td class="center aligned"><h4> {{team.SAR_deployed}} / {{team.SAR_demand}} </h4> </td>
+                {% else %}
+                <td class="center aligned"><h4> {{team.SAR_deployed}} <span style="color:blue">+  {{sar}}</span> / {{team.SAR_demand}} </h4> </td>
+                {% endif %}
+
+                {% if ndd <= 0%}
+                <td class="center aligned"><h4> {{team.NDD_deployed}} / {{team.NDD_demand}} </h4> </td>
+                {% else %}
+                <td class="center aligned"><h4> {{team.NDD_deployed}} <span style="color:blue">+  {{ndd}}</span> / {{team.NDD_demand}} </h4> </td>
+                {% endif %}
+
+                {% if edd <= 0%}
+                <td class="center aligned"><h4> {{team.EDD_deployed}} / {{team.EDD_demand}} </h4> </td>
+                {% else %}
+                <td class="center aligned"><h4> {{team.EDD_deployed}} <span style="color:blue">+  {{edd}}</span> / {{team.EDD_demand}} </h4> </td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+
+
+
+		<table class="ui celled table">
+        	<thead>
+          	<tr>
+                <th></th>
+                <th>Name</th>
+                <th>Handler</th>
+                <th>Capability</th>
+          	</tr>
+
+    		</thead>
+    		<tbody>
+            {% for item in can_deploy %}
+            <tr data-group = "load_unit" id = {{forloop.counter0}}-unit-row >
+                <td> {{item|render_k9_checkbox:selected_list}}</td>
+                <td>{{ item }}</td>
+                <td>{{ item.handler }}</td>
+                <td>{{ item.capability}} </td>
+            </tr>
+             {% endfor %}
+
+
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $( document ).ready(function() {
+
+    var checkboxes = $("input[name='k9']:checked");
+
+    checkboxes.each(function( ) {
+                        if($(this).closest("tr").attr("data-group") == "load_unit"){
+                            $(this).closest("tr").hide();}
+        });
+
+    });
+</script>
+
+
+
+<script>
+
+
+    function getCheckboxesValues(){
+    return [].slice.apply(document.querySelectorAll("input[type=checkbox]"))
+           .filter(function(c){ return c.checked; })
+           .map(function(c){ return c.value; });
+            }
+
+
+    function toObject(arr) {
+        var rv = {};
+        for (var i = 0; i < arr.length; ++i)
+        rv[i] = arr[i];
+        return rv;
+        }
+
+    $("input[name='k9']").change(function () {
+
+      var url = 'ajax_load_units_selected';
+      var k9 = getCheckboxesValues();
+      var arrayLength = k9.length;
+      var json = toObject(k9);
+      var stringified = JSON.stringify(json);
+
+
+      $.ajax({
+        url: url,
+        data: {
+         'location' : {{ location.id }},
+           'fullstring': stringified,
+        },
+        success: function (data) {
+         $("#id_unit_selected_data").html(data);
+
+
+        //Put another ajax to reload units
+
+      $.ajax({
+        url: 'ajax_load_units',
+        data: {
+         'location' : {{ location.id }},
+           'fullstring': stringified,
+        },
+        success: function (data) {
+         $("#id_unit_data").html(data);
+
+        }
+      });
+
+
+        }
+      });
+
+
+    });
+
+  </script>
+
+
+<script>
+
+$("input[name='k9']").change(function(){
+
+try{
+    var attr = $(this).closest("tr").attr("data-group");
+
+    if(attr=="load_unit" && $(this).is(':checked')){
+        $(this).closest("tr").hide();}
+
+  }
+catch(err){alert(err);}
+
+
+});
+</script>
+
+
+
+
+
+

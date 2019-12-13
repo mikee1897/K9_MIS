@@ -1,0 +1,97 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load index %}
+
+{% block content %}
+<h1>FOU Details</h1>
+<div class='ui grid'>
+    {% for data, pi in data_list %}
+    <div class="five wide column">
+        <div class="ui raised segment">
+            <div class="ui people shape" id = 'shape_{{data.id}}'>
+                <div class="sides">
+                  <div class="active side">
+                    <div class="ui card">
+                      <div class="image">
+                        <center>
+                            <img src="{{data.handler.image.url}}" style="width:200px;">
+                        </center>
+                      </div>
+                      <div class="content">
+                        <div class="header">{{data.handler.fullname}}</div>
+                        <div class="meta">
+                          <a>{{data.handler.rank}}</a>
+                        </div>
+                        <div class="description">
+                            <strong>Nickname: </strong><span>{{data.handler.nickname}}</span><br>
+                            <strong>Age: </strong><span>{{data.handler.age}}</span><br>
+                            <br>
+                        </div>
+                      </div>
+                      <div class="extra content">
+                        <span class="right floated">
+                          <i class="phone icon"></i>
+                          {{pi.mobile_number}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="side">
+                    <div class="ui card">
+                      <div class="image">
+                            <center>
+                                <img src="{{data.k9.image.url}}" style="width:200px;height:200px;%">
+                            </center>
+                      </div>
+                      <div class="content">
+                        <a class="header">{{data.k9}}</a>
+                        <div class="meta">
+                          <span class="date">{{data.k9.capability}}</span>
+                        </div>
+                        <div class="description">
+                        <strong>Age: </strong><span>{{data.k9.age}}</span><br>
+                        <strong>Breed: </strong><span>{{data.k9.breed}}</span><br>
+                        <strong>Sex: </strong><span>{{data.k9.sex}}</span>
+                        </div>
+                      </div>
+                      <div class="extra content">
+                        <span class="right floated">
+                            <i class="date icon"></i>
+                            Joined on {{data.date_added}}
+                        </span>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+
+              <div class="ui right aligned basic segment" style="padding: 0%;">
+                    <button class="ui button flip" id = "{{data.id}}" ><i class="exchange icon"></i></button>
+                </div> 
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('.menu .item').tab();
+
+        $('.shape').shape();
+
+        $( ".flip" ).bind('click', function() {
+            a = $(this).attr('id')
+            v = '#shape_' + a
+            $(v).shape('flip right');
+        });
+        
+        var l = parseInt("{{tdd|length}}");
+        console.log(l);
+
+    
+    });
+
+</script>
+{% endblock %}

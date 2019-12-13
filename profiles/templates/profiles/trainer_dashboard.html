@@ -1,0 +1,143 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %} 
+<!-- <p>k9 performance</p>
+  <p>Request = on leave, medicine, phyx, vaccine, equipment</p>
+  <p>refresher</p> -->
+{% block dashboard %}
+  <div class="container fluid">
+    <div class="ui basic segment">
+        <div class="ui two column equal height grid">
+            <div class="row">
+                <div class="column">
+                  <div class="ui raised segment  center aligned">
+                      <div class="ui violet statistic">
+                          <div class="value">
+                            <i class="tags icon"></i> {{unclassified}}
+                          </div><br>
+                          <div class="label">
+                              <a href="{% url 'training:classify_k9_list'%}?type=unclassified">
+                                  UNCLASSIFIED K9's
+                                </a>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+                <div class="column">
+                    <div class="ui raised segment center aligned">
+                        <div class="ui green statistic">
+                            <div class="value">
+                              <i class="pencil alternate icon"></i> {{grade}}
+                            </div><br>
+                            <div class="label">
+                                <a href="{% url 'training:classify_k9_list'%}?type=grading">
+                                    FOR-GRADING
+                                  </a>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                  <div class="ui raised segment">
+                      <canvas id="myChart"></canvas>
+                  </div>
+              </div>
+              <div class="column">
+                  <div class="ui raised segment">
+                      <canvas id="myChart2"></canvas>
+                  </div>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+<script>
+$(document).ready(function() {
+    var endpoint = '../../unitmanagement/trainer/api'
+    var performance = []
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function(data){
+          current = data.current
+          demand = data.demand
+          pie_data = data.pie_data
+          setChart()         
+        },
+        error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+        }
+    })
+
+    function setChart(){
+        var ctx = document.getElementById('myChart');
+        var ctx2 = document.getElementById('myChart2');
+        //Chart1
+        var myChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+              labels: ["EDD", "NDD", "SAR"],
+              datasets: [
+                {
+                label: "Current",
+                backgroundColor: "#3e95cd",
+                data: current,
+                }, {
+                label: "Required",
+                backgroundColor: "#8e5ea2",
+                data: demand,
+                }]
+            },
+            options: {
+            animation: {
+                animateScale: true,
+            },
+            title: {
+                display: true,
+                text: "Current and Required K9"
+            }, 
+            scales: {
+                xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    step:1,
+                }
+                }],
+                yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                }
+                }]
+            },
+          }
+        });
+
+        //chart 2
+        var myChart2 = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['NDD','EDD','SAR'],
+                datasets: [{
+                    data: pie_data,
+                    backgroundColor: ['#F13C20','#16a085','#2980b9','#33266E',],
+                    borderColor: ['rgba(255, 99, 132, 1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)',],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+            cutoutPercentage: 40,
+            animation: {
+                animateScale: true,
+            },
+            title: {
+                display: true,
+                text: "On-Training K9's"
+            },
+            }
+        });
+      }
+    
+});
+</script>
+{% endblock%}

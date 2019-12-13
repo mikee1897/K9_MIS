@@ -1,0 +1,178 @@
+{% extends "profiles/sidebar_training.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="{{style}}" > {{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+</div>
+
+<!--{% if request.session.session_user_position == "Trainer"%}-->
+<!--<center>-->
+        <!--<div class="ui three statistics">-->
+      <!--<div class="statistic">-->
+        <!--<div class="value">-->
+          <!--{{NDD_count}} / {{NDD_demand}}-->
+        <!--</div>-->
+        <!--<div class="label">-->
+          <!--NDD Count / NDD Required-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="statistic">-->
+        <!--<div class="value">-->
+          <!--{{EDD_count}} / {{EDD_demand}}-->
+        <!--</div>-->
+        <!--<div class="label">-->
+          <!--EDD Count / EDD Required-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="statistic">-->
+        <!--<div class="value">-->
+          <!--{{SAR_count}} / {{SAR_demand}}-->
+        <!--</div>-->
+        <!--<div class="label">-->
+          <!--SAR Count / SAR Required-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--</center>-->
+<!--{% endif %}-->
+
+<div class="ui top attached tabular menu">
+    {%if type_text%}
+        {%if type_text == 'grading'%}
+            <a class="item" data-tab="first">Unclassified</a>
+            <a class="item active" data-tab="third">For-Grading</a>
+            {% else %}
+            <a class="item active" data-tab="first">Unclassified</a>
+            <a class="item" data-tab="third">For-Grading</a>
+        {% endif %}
+    {%else%}
+        <a class="item active" data-tab="first">Unclassified</a>
+        <a class="item" data-tab="third">For-Grading</a>
+    {% endif %}
+</div>
+
+{%if type_text%}
+    {%if type_text == 'grading'%}
+    <div class="ui tab segment" data-tab="first">
+    {%else%}
+    <div class="ui tab segment active" data-tab="first">
+    {%endif%} 
+{%else%}
+<div class="ui tab segment active" data-tab="first">
+{%endif%}  
+
+    <table id="tabledata1" class="ui five column celled table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age (yrs & mons)</th>
+                <th>Age (days)</th>
+                <th>Source</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data_unclassified in data_unclassified %}
+            <tr>
+                <td>{{data_unclassified}}</td>
+                <td class="three wide">{{data_unclassified.age}} years and {{data_unclassified.month_remainder}} months</td>
+                <td class="two wide" class="right
+                aligned">{{data_unclassified.age_days}}</td>
+                <td>{{data_unclassified.source}}</td>
+                <td style="text-align:center;" class="two wide">
+                    <a href="{% url 'training:classify_k9_select' data_unclassified.id %}" class = "tiny ui blue basic button">Select</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{%if type_text%}
+    {%if type_text == 'grading'%}
+    <div class="ui tab segment active" data-tab="third">
+    {%else%}
+    <div class="ui tab segment" data-tab="third">
+    {%endif%} 
+{%else%}
+<div class="ui tab segment" data-tab="third">
+{%endif%}  
+
+
+<table id="tabledata3" class="ui celled table">
+    <thead>
+        <tr>
+            <th>K9</th>
+            <th>Handler</th>
+            <th>Breed</th>
+            <th>Age (yrs & mons)</th>
+            <th>Age (days)</th>
+            <th>Capability</th>
+            <th>Current Stage</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data_ontraining in data_ontraining %}
+        <tr>
+            <td>{{data_ontraining}}</td>
+            <td>{{data_ontraining.handler}}</td>
+            <td >{{data_ontraining.breed}}</td>
+            <td>{{data_ontraining.age}} years and {{data_ontraining.month_remainder}} months</td>
+            <td class="right aligned">{{data_ontraining.age_days}}</td>
+            <td>{{data_ontraining.capability}}</td>
+            
+            {% if data_ontraining.training_level == "Stage 0" %}
+            <td>Stage 1.1 </td>
+            {% elif data_ontraining.training_level == "Stage 1.1" %}
+            <td>Stage 1.2 </td>
+            {% elif data_ontraining.training_level == "Stage 1.2" %}
+            <td>Stage 1.3 </td>
+
+            {% elif data_ontraining.training_level == "Stage 1.3" %}
+            <td>Stage 2.1 </td>
+            {% elif data_ontraining.training_level == "Stage 2.1" %}
+            <td>Stage 2.2 </td>
+            {% elif data_ontraining.training_level == "Stage 2.2" %}
+            <td>Stage 2.3 </td>
+
+            {% elif data_ontraining.training_level == "Stage 2.3" %}
+            <td>Stage 3.1 </td>
+            {% elif data_ontraining.training_level == "Stage 3.1" %}
+            <td>Stage 3.2 </td>
+            {% elif data_ontraining.training_level == "Stage 3.2" %}
+            <td>Final Stage</td>
+            {% endif %}
+
+
+            <td class="ui center aligned" class="two wide">
+              {% if data_ontraining.training_count == 2%}
+              <a href="{% url 'training:training_update_form' data_ontraining.id %}" class = "tiny ui blue basic button">Select</a>
+              {% else %}
+
+              <a href="{% url 'training:training_update_form' data_ontraining.id %}" class = "tiny ui blue basic button">Select</a>
+              {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<script type="text/javascript">
+
+    $('#tabledata1').DataTable({ "order": [[ 2, "desc" ],[ 0, "asc" ]]  });
+    $('#tabledata3').DataTable({ "order": [[ 4, "desc" ],[ 0, "asc" ]]  });
+    $('.menu .item').tab();
+
+</script>
+ {% endblock %}

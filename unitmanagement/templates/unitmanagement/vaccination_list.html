@@ -1,0 +1,277 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+{% load static %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">Health Program Prevention</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui top attached tabular menu">
+    <a class="active item" data-tab="first">Deworming <span class="ui orange circular label">{{count_dw}}</span></a>
+    <a class="item" data-tab="second">DHPPIL+CV<span class="ui orange circular label">{{count_dh}}</span></a>
+    <a class="item" data-tab="third">Anti-Rabies <span class="ui orange circular label">{{count_ar}}</span></a>
+    <a class="item" data-tab="fourth">Bordertella <span class="ui orange circular label">{{count_br}}</span></a>
+    <a class="item" data-tab="fifth">DHPPIL4 <span class="ui orange circular
+    label">{{count_d4}}</span></a>
+    <a class="item" data-tab="sixth">Heartworm <span class="ui orange circular
+    label">{{count_hw}}</span></a>
+    <a class="item" data-tab="seventh">Tick and Flea <span class="ui orange circular label">{{count_tf}}</span></a>
+</div>
+
+
+<div class="ui bottom attached active tab segment" data-tab="first">
+    <h4>Deworming</h4>
+    <table id="tabledata1" class="ui four column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>K9</th>
+                <th class="two wide">Age (yrs & mons)</th>
+                <th class="two wide">Age (days)</th>
+                <th>Vaccination</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_dw %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.age}} years and {{data.0.month_remainder}} months</td>
+                <td class="right aligned">{{data.0.age_days}}</td>
+                <td>{{data.1.disease}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}'
+                data-type='Deworming' data-vac='{{data.1.disease}}'>Select</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="second">
+    <h4>DHPPIL+CV</h4>
+    <table id="tabledata2" class="ui four column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>K9</th>
+                <th class="two wide">Age (yrs & mons)</th>
+                <th class="two wide">Age (days)</th>
+                <th>Vaccination</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_dh %}
+            {% if data.1.disease == '2nd dose DHPPiL+CV'%}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.age}} years and {{data.0.month_remainder}} months</td>
+                <td>{{data.0.age_days}}</td>
+                <td>{{data.1.disease}} Vaccination</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-vac='{{data.1.disease}}' data-type='DHPP'>Select</a></td>
+            </tr>
+            {%else%}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.age}} years and {{data.month_remainder}} months</td>
+                <td class="right aligned">{{data.age_days}}</td>
+                <td>{{data.1.disease}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-vac='{{data.1.disease}}' data-type='DHPP'>Select</a></td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="third">
+    <h4>Anti Rabies</h4>
+    <table id="tabledata3" class="ui four column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>K9</th>
+                <th class="two wide">Age (yrs & mons)</th>
+                <th class="two wide">Age (days)</th>
+                <th>Vaccination</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_ar %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.age}} years and {{data.0.month_remainder}} months</td>
+                <td class="right aligned">{{data.0.age_days}}</td>
+                <td >{{data.1.disease}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-vac='{{data.1.disease}}' data-type='Anti-Rabies'>Select</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="fourth">
+    <h4>Bordertella</h4>
+    <table id="tabledata4" class="ui four column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>K9</th>
+                <th class="two wide">Age (yrs & mons)</th>
+                <th class="two wide">Age (days)</th>
+                <th>Vaccination</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_br %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.age}} years and {{data.0.month_remainder}} months</td>
+                <td class="right aligned">{{data.0.age_days}}</td>
+                <td>{{data.0.1.disease}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-vac='{{data.1.disease}}' data-type='Bordertella'>Select</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="fifth">
+    <h4>DHPPIL4</h4>
+    <table id="tabledata5" class="ui four column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>K9</th>
+                <th class="two wide">Age (yrs & mons)</th>
+                <th class="two wide">Age (days)</th>
+                <th>Vaccination</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_d4 %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.age}} years and {{data.0.month_remainder}} months</td>
+                <td class="right aligned">{{data.0.age_days}}</td>
+                <td>{{data.1.disease}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-vac='{{data.1.disease}}' data-type='DHPPIL4'>Select</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="ui bottom attached tab segment" data-tab="sixth">
+        <h4>Heartworm</h4>
+        <table id="tabledata6" class="ui four column celled table">
+            <thead class="ui center aligned">
+                <tr>
+                    <th>K9</th>
+                    <th class="two wide">Age (yrs & mons)</th>
+                    <th class="two wide">Age (days)</th>
+                    <th>Vaccination</th>
+                    <th class="two wide"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in k9_hw %}
+                <tr>
+                    <td>{{data.0}}</td>
+                    <td>{{data.0.age}} years and {{data.0.month_remainder}} months</td>
+                    <td class="right aligned">{{data.0.age_days}}</td>    
+                    <td>{{data.1.disease}}</td>
+                    <td class="three wide column center aligned"><a href="#"
+                    class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-vac='{{data.1.disease}}' data-type='Heartworm'>Select</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="ui bottom attached tab segment" data-tab="seventh">
+            <h4>Tick and Flee</h4>
+            <table id="tabledata7" class="ui four column celled table">
+                <thead class="ui center aligned">
+                    <tr>
+                        <th>K9</th>
+                        <th class="two wide">Age (yrs & mons)</th>
+                        <th class="two wide">Age (days)</th>
+                        <th>Vaccination</th>
+                        <th class="two wide"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in k9_tf %}
+                    <tr>
+                        <td>{{data.0}}</td>
+                        <td>{{data.0.age}} years and {{data.0.month_remainder}} months</td>
+                        <td class="right aligned">{{data.0.age_days}}</td>    
+                        <td>{{data.1.disease}}</td>
+                        <td class="three wide column center aligned"><a href="#"
+                        class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-vac='{{data.1.disease}}' data-type='TickFlee'>Select</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+<div class="ui modal" id='id_modal_data'></div>
+<script>
+
+
+
+    $('.menu .item').tab();
+
+    $('#tabledata1').DataTable({
+        "order": [[ 2, "desc" ],[ 3, "asc" ]]
+    });
+    $('#tabledata2').DataTable({
+        "order": [[ 2, "desc" ],[ 3, "asc" ]]
+    });
+    $('#tabledata3').DataTable({
+        "order": [[ 2, "desc" ],[ 3, "asc" ]]
+    });
+    $('#tabledata4').DataTable({
+        "order": [[ 2, "desc" ],[ 3, "asc" ]]
+    });
+    $('#tabledata5').DataTable({
+        "order": [[ 2, "desc" ],[ 3, "asc" ]]
+    });
+    $('#tabledata6').DataTable({
+        "order": [[ 2, "desc" ],[ 3, "asc" ]]
+    });
+    $('#tabledata7').DataTable({
+        "order": [[ 2, "desc" ],[ 3, "asc" ]]
+    });
+    $( ".btn_modal" ).bind( "click", function() {
+        var url = 'yearly-vaccine-list/ajax_load_yearly_vac';  
+        id = $(this).attr('id');
+        type = $(this).data('type');
+        disease = $(this).data('vac');
+        intial = 'True'
+        
+        $.ajax({                      
+            url: url,                    
+            data: {
+            'id': id,   
+            'type': type,
+            'intial': intial,  
+            'disease': disease      
+            },
+            success: function (data) {   
+            $("#id_modal_data").html(data); 
+            }
+        });
+        $('#id_modal_data').modal('show');
+    });
+    
+</script>
+
+{% endblock %}
+

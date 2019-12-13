@@ -1,0 +1,190 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %}
+
+{% block sidebar_module %}
+    <div class="ui fluid container">
+        <div class="ui basic segment">
+            <div class="ui grid">
+                <div class="three wide column">
+                        <div class="ui pointing vertical menu">
+                            <a class="item"> <b>Unit Management Menu</b></a>
+                            {% if request.session.session_user_position == "Administrator" %}
+                            <a href="{% url 'profiles:add_User_form'%}" class="item">
+                                <i class="user plus icon"></i>Add User Form
+                            </a>
+                            <a href="{% url 'profiles:user_list'%}" class="item">
+                                <i class="address book icon"></i>User List
+                            </a>
+                            <a href="{% url 'unitmanagement:classified_list'%}" class="item">
+                                <i class="clipboard list icon"></i>Classified List
+                            </a>
+                            <a href="{% url 'unitmanagement:k9_unpartnered_list'%}" class="item">
+                                <i class="retweet icon"></i>Reallocate Assets
+                            </a>
+                            <a href="{% url 'unitmanagement:on_leave_list'%}" class="item">
+                                <i class="clipboard list icon"></i>On-Leave Request list
+                            </a>
+                            <a href="{% url 'unitmanagement:transfer_request_list'%}" class="item">
+                                <i class="clipboard list icon"></i>Transfer Request list
+                            </a>
+                            <a href="{% url 'unitmanagement:k9_incident_list'%}" class="item">
+                                <i class="clipboard list icon"></i>K9 Incident List
+                            </a>
+                            <a href="{% url 'unitmanagement:due_retired_list'%}" class="item">
+                                    <i class="clipboard list icon"></i>Due for
+                                    Retirement List
+                                </a>
+                            <a href="{% url 'unitmanagement:k9_mia_list'%}" class="item">
+                                    <i class="clipboard list icon"></i>MIA List
+                                </a>
+                            <a href="{% url 'unitmanagement:emergency_leave_list'%}" class="item">
+                                <i class="clipboard list icon"></i>Emergency Leave List
+                            </a>
+
+
+                            {% elif request.session.session_user_position == "Veterinarian" %}
+                            <!-- <a href="{% url 'profiles:add_User_form'%}" class="item">
+                                <i class="user plus icon"></i>Add User Form
+                            </a>
+                            <a href="{% url 'profiles:user_list'%}" class="item">
+                                <i class="address book icon"></i>User List
+                            </a> -->
+                            <a href="{% url 'unitmanagement:health_form'%}" class="item">Health Form
+                                <i class="first aid icon"></i>
+                            </a>
+                            <a href="{% url 'unitmanagement:physical_exam_form'%}" class="item">
+                                <i class="heartbeat icon"></i>Physical Exam Form
+                            </a>
+                            <a href="{% url 'unitmanagement:trained_list'%}" class="item">
+                                <i class="clipboard list icon"></i>Trained K9 List
+                            </a>
+
+                            <a href="{% url 'unitmanagement:unfit_list'%}" class="item">
+                                <i class="clipboard list icon"></i>Unfit K9 List
+                            </a>
+                            <a href="{% url 'unitmanagement:yearly_vaccine_list'%}" class="item">
+                                <i class="clipboard list icon"></i>Yearly Vaccine K9 List
+                            </a>
+                            <a href="{% url 'unitmanagement:k9_sick_list'%}" class="item">
+                                <i class="ambulance icon"></i>Sick K9's List
+                            </a>
+                            <a href="{% url 'unitmanagement:k9_incident_list'%}" class="item">
+                                <i class="clipboard list icon"></i>K9 Incident List
+                            </a>
+                            <a href="{% url 'unitmanagement:health_record'%}" class="item">
+                                <i class="h square icon"></i>Health Records
+                            </a>
+                            <a href="{% url 'unitmanagement:reproductive_list'%}" class="item">
+                                <i class="venus icon"></i>Reproductive Cycle
+                            </a>
+                             <a href="{% url 'unitmanagement:k9_checkup_pending'%}" class="item">
+                                <i class="calendar icon"></i>Schedule K9 Checkups for Initial Deployment
+                            </a>
+                            <a href="{% url 'unitmanagement:k9_checkup_list_today'%}" class="item">
+                                <i class="clipboard list icon"></i>K9s for Checkup
+                            </a>
+
+
+                            {% elif request.session.session_user_position == "Handler" %}
+
+                            {% if request.session.partnered == True %}
+                                <a href="{% url 'deployment:daily_refresher_form'%}" class="item">
+                                    <i class="sync alternate icon"></i>Daily Refresher Form
+                                </a>
+                                <a href="{% url 'unitmanagement:k9_sick_form'%}" class="item">
+                                    <i class="medkit icon"></i>K9 Health Form
+                                </a>
+                                <a href="{% url 'unitmanagement:k9_incident'%}" class="item">
+                                    <i class="exclamation icon"></i>
+                                    <i class="paw icon"></i>K9-Incident Form
+                                </a>
+                                <a href="{% url 'unitmanagement:health_history_handler'%}" class="item">
+                                    <i class="h square icon"></i>Health Records
+                                </a>
+
+                                <a href="{% url 'unitmanagement:health_list_handler'%}" class="item">
+                                    <i class="clipboard list icon"></i>Health Concern List
+                                </a>
+                            {% endif %}
+                            <a href="{% url 'unitmanagement:on_leave_request'%}" class="item">
+                                <i class="share square icon"></i>Apply for Leave
+                            </a>
+                            <a href="{% url 'unitmanagement:transfer_request_form'%}" class="item">
+                                <i class="globe icon"></i>Request for Transfer
+                            </a>
+
+
+                            {% elif request.session.session_user_position == "Team Leader" %}
+                            <a href="{% url 'unitmanagement:replenishment_form'%}" class="item">
+                                <i class="exclamation icon"></i>Replenish Assets
+                            </a>
+                            <a href="{% url 'unitmanagement:handler_incident_form'%}" class="item">
+                                <i class="id badge icon"></i>
+                                <i class="exclamation icon"></i>Handler Incident Form
+                            </a>
+                            <a href="{% url 'unitmanagement:on_leave_request'%}" class="item">
+                                <i class="share square icon"></i>Apply for Leave
+                            </a>
+                            <a href="{% url 'unitmanagement:transfer_request_form'%}" class="item">
+                                <i class="globe icon"></i>Request for Transfer
+                            </a>
+
+                            {% elif request.session.session_user_position == "Operations" %}
+
+                            {% else %}
+                            <a href="{% url 'deployment:deployment_area_details'%}" class="item">
+                                <i class="building icon"></i>Assigned Area Details
+                            </a>
+                            <a href="{% url 'deployment:fou_details'%}" class="item">
+                                    <i class="id card icon"></i>FOU's Details
+                            </a>
+                            <a href="{% url 'unitmanagement:k9_incident_list'%}" class="item">
+                                <i class="clipboard list icon"></i>K9 Incident List
+                            </a>
+                            <a href="{% url 'deployment:add_incident'%}" class="item">
+                                <i class="pen square icon"></i>
+                                <i class="exclamation icon"></i>Incident Form
+                            </a>
+                            <a href="{% url 'unitmanagement:handler_incident_form'%}" class="item">
+                                <i class="id badge icon"></i>
+                                <i class="exclamation icon"></i>Handler Incident
+                                Form
+                            </a>
+
+                            {% endif %}
+
+                        </div>
+                </div>
+                <!>
+                <div class="thirteen wide column">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+</div>
+
+      <style>
+          .submenu{
+                color: #666666;
+                display: block;
+                font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+                display: list-item;
+                table-layout: fixed;
+                background-color: transparent;
+                list-style-type: none;
+                list-style-position: outside;
+                line-height: 1.14285714em;
+
+            }
+            .submenu:hover{
+                color: black;
+            }
+            .subdiv{
+                display: flex;
+                padding: 8px;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+      </style>
+{% endblock%}

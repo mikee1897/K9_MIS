@@ -1,0 +1,57 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %}
+
+{% block sidebar_module %}
+        
+<div class="ui fluid container">
+    <div class="ui basic segment">
+        <div class="ui grid">
+            <div class="three wide column">
+                <div class="ui pointing vertical menu">
+                    {% if request.session.session_user_position == "Administrator" %}
+                        <a class="item"> <b>Training Menu</b></a>
+                        <a href="{% url 'training:training_records'%}" class="item">
+                            <i class="folder open icon"></i>Training Records
+                        </a>
+                    {% endif %}
+                    {% if request.session.session_user_position == "Trainer" %}
+                        <a class="item"> <b>Training Menu</b></a>
+                        <a href="{% url 'training:classify_k9_list'%}" class="item">
+                            <i class="clipboard check icon"></i>K9 Classifications
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <!>
+            <div class="thirteen wide column">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+
+      <style>
+          .submenu{
+                color: #666666;
+                display: block;
+                font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+                display: list-item;
+                table-layout: fixed;
+                background-color: transparent;
+                list-style-type: none;
+                list-style-position: outside;
+                line-height: 1.14285714em;
+
+            }
+            .submenu:hover{
+                color: black;
+            }
+            .subdiv{
+                display: flex;
+                padding: 8px;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+      </style>
+{% endblock%}

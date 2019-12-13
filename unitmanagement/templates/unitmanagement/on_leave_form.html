@@ -1,0 +1,173 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+{%if num > 0 %}
+
+    {% for data in data %}
+        <div class="ui info icon message">
+            <i class="question icon"></i>
+            <div class="content">
+                <div class="header">
+                    You have already Filed a Leave Request at {{data.date}}.
+                    Request is currently being evaluated. 
+                </div>
+                <p>Your Request Leave is from {{data.date_from}} to {{data.date_to}}</p>
+            </div>
+        </div>
+    {% endfor %}
+
+{%else%}
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Apply for Leave Here</div>
+    </h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui info message">
+  <i class="close icon"></i>
+  <div class="header">
+    Steps
+  </div>
+  <ol class="ui ordered list">
+    <li>You must render atleast 90 days of service after last leave before filing another leave.</li>
+    <li>You cannot apply for leave on when there is an ongoing deployment on the supposedly date of leave.</li>
+      <li>View calendar the select an empty date to select it as the start date for the leave.</li>
+  </ol>
+</div>
+
+<div><button class = "ui blue button" id = "view_calendar">View Calendar</button></div>
+<div class="ui inverted segment">
+    <form class="ui inverted form" method="POST" id='myForm'>
+        {% csrf_token %}
+        <div class="four fields">
+            <div class="field">
+                <label>Handler</label>
+                {{form.handler}}
+            </div>
+            <div class="field">
+                <label>Request</label>
+                {{form.incident}}
+            </div>
+            <div class="field">
+                <label>From Date:</label>
+                {{form.date_from}}
+            </div>
+            <div class="field">
+                <label>To Date:</label>
+                {{form.date_to}}
+            </div>
+        </div>
+        <div class="field">
+            <label>Reason / Additional Information</label>
+            {{form.description}}
+        </div>
+
+        <div class="ui inverted right aligned segment" style="padding: 0px;">
+            <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >{{ actiontype }}</button>
+        </div>
+    </form>    
+</div>
+
+<div class="ui longer modal" id ="calendar_modal">
+  <div class="header">Current Deployment Requests</div>
+  <div class="content">
+                       <div id = "calendar"></div>
+  </div>
+</div>
+
+{%endif%}
+<script type="text/javascript">
+        
+    $(document).ready(function() {
+        $("#id_incident").prop('readonly', true);
+        $("#id_handler").prop('readonly', true);
+
+        function treatAsUTC(date) {
+            var result = new Date(date);
+            result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+            return result;
+        }
+
+        function daysBetween(startDate, endDate) {
+            var millisecondsPerDay = 24 * 60 * 60 * 1000;
+            return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
+        }
+
+        $("#myForm").submit(function(e){
+            var date = new Date($("input[name='date_from']").val());
+            var date2 = new Date($("input[name='date_to']").val());
+            a = daysBetween(date, date2)
+
+            if (a>21){
+                e.preventDefault();
+                alert('Maximum Leave is 21 Days. Please Adjust Accordingly.');
+            }
+
+            if (a<0){
+                e.preventDefault();
+                alert('"Date From" must be on or before "Date To". ');
+            }
+        });
+            
+    });
+    
+</script>
+
+<script>
+
+$( "#view_calendar" ).click(function() {
+   $('#calendar_modal').modal('show');
+   $('.fc-today-button.fc-button ').click();
+});
+
+
+
+     $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+
+          defaultView: 'month',
+          weekNumbers: 'true',
+          editable: true,
+          selectable: true,
+          eventLimit: true,
+          showNonCurrentDates: true,
+
+          eventTextColor: "white",
+
+
+          events: [
+                {% for i in events %}
+                {
+                     id: '{{ i.id }}',
+                    title: '{{i.k9}}',
+                    start: '{{ i.date_start|date:"Y-m-d" }}',
+                    end: '{{ i.date_end|date:"Y-m-d" }}',
+                    allDay: 'true',
+                },
+                {% endfor %}
+
+            ],
+
+            dayClick: function(date, jsEvent, view, resourceObj) {
+                    var formatted = date.format("YYYY-MM-DD");
+                    $("input[name='date_from']").val(formatted);
+                    $("input[name='date_from']").trigger("change");
+                    $('#calendar_modal').modal('hide');
+                  }
+          }); // end #calendar
+
+
+</script>
+
+
+ {% endblock %}

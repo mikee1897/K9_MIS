@@ -1,0 +1,63 @@
+{% extends "profiles/sidebar_inventory.html" %}
+
+{% block content %}
+<div class="ui fluid container">
+    <div class="ui grid">
+        <div class="three column row">
+            <div class="four wide column"></div>
+            <div class="eight wide column">
+                    <h1 class="ui header">{{ title }}
+                            <div class="sub header">{{ texthelp }}</div>
+                        </h1>
+
+                        <div class="ui inverted segment">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="{{ style }} row"> {{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <form class = "ui inverted form" method="POST">
+                                {% csrf_token %}
+                                <div class = "field">
+                                        <div class="field">
+                                            <label>Handler</label>
+                                            <input type="text" value="{{data.handler}}" readonly>
+                                        </div>
+                                </div>
+                                <div class="field">
+                                    <label>Equipment</label>
+                                    <input type="text" value="{{data.equipment}}" readonly>
+                                </div>
+                                
+                             <div class="ui inverted center aligned segment" style="padding: 0px;">
+                                <form action="" method="post">
+                                    {% csrf_token %}
+
+                                    {% if data.request_status == 'Pending'%}
+
+                                    <div class="ui buttons">
+                                        <button class="ui red button" name="redo" onclick="return confirm('Are you sure?')">Deny</button>
+                                        <div class="or"></div>
+                                        <button class="ui positive button" name="ok" onclick="return confirm('Are you sure?')">Approve</button>
+                                    </div>
+                                    {%else%}
+
+                                    <div class="ui buttons">
+                                        <button class="ui red button" name="redo" onclick="return confirm('Are you sure?')" disabled>Deny</button>
+                                        <div class="or"></div>
+                                        <button class="ui positive button" name="ok" onclick="return confirm('Are you sure?')" disabled>Approve</button>
+                                    </div>
+
+                                    {%endif%}
+                                </form>
+                             </div>
+                        </div>
+
+            </div>
+            <div class="four wide column"></div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock%}

@@ -1,0 +1,42 @@
+{% extends "profiles/sidebar_training.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+</div>
+
+    <table id="tabledata1" class="ui seven column celled table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Capability</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data_unclassified in data_unclassified %}
+            <tr>
+                <td>{{data_ontraining.name}}</td>
+                <td>{{data_ontraining.capability}}</td>
+                <td style="text-align:center;">
+                    <a href="{% url 'training:classify_k9_select' data_ontraining.id %}" class = "tiny ui blue basic button">Select</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('#tabledata2').DataTable();
+        $('#tabledata3').DataTable();
+        $('#tabledata4').DataTable();
+        $('.menu .item').tab();
+    });
+
+</script>
+ {% endblock %}

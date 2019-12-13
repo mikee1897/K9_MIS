@@ -1,0 +1,111 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ Title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui segment">
+   <div class='ui centered grid'>
+        <div class='two column row'>
+            <div class='column center aligned'>
+               
+            <div class="image">
+                <center>
+                    <img src="{{k9.image.url}}" style="max-width: 280px;">
+                </center>
+                    
+            </div>
+            <div class="content">
+                    <a class="header">{{k9}}</a>
+                    <div class="meta">
+                        <strong>Age: {{k9.age}}</strong><br>
+                        <strong>Breed: {{k9.breed}}</strong><br>
+                        <strong>Sex: {{k9.sex}}</strong>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <h3>{{k9.capability}}</h3>
+                </div>
+            </div>
+            <div class='column center aligned' id='id_handler_data'> 
+            </div>
+
+        </div>
+   </div>
+
+   <h4 class="ui horizontal divider header">
+        <i class="user icon"></i>
+        Handler
+    </h4>
+
+    <form class = "ui fluid form" method="POST">
+        {% csrf_token %}
+        <div class="ui horizontal segments">
+            <div class="ui segment">
+                <table class="ui column celled inverted orange table" id = 'tabledata'>
+                    <thead class="center aligned">
+                        <th class="two wide"></th>
+                        <th >Name</th>
+                        <th class="three wide">Rank</th>
+                        <th class="three wide">Passed/All K9 Trained</th>
+                        <th class="three wide">{{k9.capability}} Success Rating</th>
+                    </thead>
+                    <tbody>
+                        {% for a in form.handler %}
+                        {% for g in g%} {% if forloop.counter == forloop.parentloop.counter %}
+                        <tr>
+                            <td class="center aligned">{{a.tag}}</td>
+                            <td>{{a.choice_label}}</td>
+                            <td  class="center aligned">{{g.3}}</td>
+                            <td  class="center aligned">{{g.0}}/{{g.1}}</td>
+                            <td  class="center aligned">{{g.2}}%</td>
+                        </tr>
+                        {%endif%}{% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        
+        </div>
+
+        <div class="ui center aligned basic segment" style="padding: 0px;">
+            <button id = "submit" class = "ui button green" type="submit" >Submit</button>
+        </div>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+        $('#tabledata').DataTable({
+        "order": [[ 3, "desc" ]]
+        });
+    });
+  
+
+    $("input[name='handler']").change(function () {
+    var url = 'ajax_load_handler';  // get the url of the `load_handler` view
+    var handlerId = $("input[name='handler']:checked"). val(); // get the selected handler ID from the HTML input
+
+    $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-handler/)
+        data: {
+        'handler': handlerId       // add the handler id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_handler` view function
+        $("#id_handler_data").html(data);  // replace the contents of the #id_handler_data input with the data that came from the server
+        }
+    });
+
+    });
+  
+</script>
+
+ {% endblock %}

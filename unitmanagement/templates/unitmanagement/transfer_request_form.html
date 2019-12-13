@@ -1,0 +1,152 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load um_tags %}
+
+{% block content %}
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Input data of Transfer Here</div>
+    </h2>
+</div>
+
+<div class="ui info message">
+  <i class="close icon"></i>
+  <div class="header">
+    Transfer Requests
+  </div>
+  <ul class="list">
+    <li>You can request a port transfer if you have atleast 2 years of duty on your current port by the time of your requested date.</li>
+    <li>The approval of your request is subjected to the discretion of the administrator and the date of your transfer may be changed.</li>
+  </ul>
+</div>
+
+<div class = "ui segment"><button class = "ui blue button" id = "view_calendar">View Calendar</button></div>
+<div class="ui two column centered grid">
+    <div class="fourteen wide column">
+            <div class="ui inverted segment">
+                    {% if messages %}
+                    {% for message in messages %}
+                        <div class="{{style}}" > {{ message }}</div>
+                    {% endfor %}
+                    {% endif %}
+                    <form class="ui inverted form" method="POST">
+                        {% csrf_token %}
+                        <div class="three fields">
+                           <div class="field">
+                                <label for="">Handler</label>
+                                {{form.handler}}
+                           </div>
+                           <div class="field">
+                                <label for="">Date of Transfer</label>
+                                {{form.date_of_transfer}}
+                           </div>
+                           <div class="field"><label for="">From Location</label>
+                                    {{form.location_from}}</div>
+                        </div>
+                        <div class="two fields">
+                            <div class="field">
+                            <label for="">To Location</label>
+                            </div>
+                            <div class="field">
+                            </div>
+                        </div>
+
+                        <table id="tabledata1" class="ui inverted three column celled table">
+                            <thead>
+                            <tr>
+                            <th></th>
+                                <th>Team</th>
+                                <th>Current No. of Units in Port</th>
+                            </tr>
+                            </thead>
+                            {% for choice in team_form.location_to %}
+                             <tr>
+                                 <td>{{ choice.tag }}</td>
+                                 <td>{{ choice.choice_label }}</td>
+                                 <td>{{ choice|get_number_of_units }}</td>
+                                 </tr>
+                            {% endfor %}
+
+                             </table>
+
+
+                        <div class="ui inverted right aligned segment" style="padding: 0px;">
+                            <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+                </div>
+
+    </div>
+
+<div class="ui longer modal" id ="calendar_modal">
+  <div class="header">Current Deployment Requests</div>
+  <div class="content">
+                       <div id = "calendar"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#tabledata1').DataTable( {
+        "order": [[ 2, "asc" ]]
+        } );
+		$('.menu .item').tab();
+	});
+
+</script>
+
+<script>
+
+$( "#view_calendar" ).click(function() {
+   $('#calendar_modal').modal('show');
+   $('.fc-today-button.fc-button ').click();
+});
+
+
+
+     $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+
+          defaultView: 'month',
+          weekNumbers: 'true',
+          editable: true,
+          selectable: true,
+          eventLimit: true,
+          showNonCurrentDates: true,
+
+          eventTextColor: "white",
+
+
+          events: [
+                {% for i in events %}
+                {
+                     id: '{{ i.id }}',
+                    title: '{{i.k9}}',
+                    start: '{{ i.date_start|date:"Y-m-d" }}',
+                    end: '{{ i.date_end|date:"Y-m-d" }}',
+                    allDay: 'true',
+                },
+                {% endfor %}
+            ],
+            dayClick: function(date, jsEvent, view, resourceObj) {
+                    var formatted = date.format("YYYY-MM-DD");
+                    $("input[name='date_of_transfer']").val(formatted);
+                    $("input[name='date_of_transfer']").trigger("change");
+                    $('#calendar_modal').modal('hide');
+                  }
+          }); // end #calendar
+
+
+</script>
+
+
+
+
+ {% endblock %}

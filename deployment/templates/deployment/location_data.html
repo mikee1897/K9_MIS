@@ -1,0 +1,66 @@
+
+{% if locations %}
+<div class = "ui segment" style="overflow:scroll; height:410px;">
+<div class="ui link one cards" >
+				{% for location in locations %}
+  <div class="card">
+       <div class="content">
+            <div class="header">{{location}}</div>
+            <div class="meta">({{location.latitude}} , {{location.longitude}})</div>
+            <div id="id_location-{{forloop.counter0}}" class="ui bottom attached button" data-lat="{{location.latitude}}" data-lng="{{location.longitude}}" data-address="{{location.address}}">
+            Select Location
+            </div>
+       </div>
+  </div>
+				{% endfor %}
+</div>
+    </div>
+
+{% else %}
+<div class="ui floating message">
+  <p>No Results</p>
+</div>
+
+{% endif %}
+
+
+<script>
+$(document).ready(function() {
+  var locationCount = {{locations|length}};
+
+    for (var i = 0; i < locationCount; i++){
+    $(`#id_location-${i}`).click(useLocation);}
+
+  function useLocation() {
+    var lat = $(this).attr("data-lat");
+    var lng = $(this).attr("data-lng");
+    var address = $(this).attr("data-address");
+
+     $(`#id_place`).val(address);
+     $(`#id_location`).val(address);
+
+         var url = 'ajax_load_map';  // get the url of the `load_map` view
+       $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request
+        data: {
+          'lng': lng,
+          'lat': lat , // add the coordinates to the GET parameters
+          'width' : {{width}}
+        },
+        success: function (data) {   // `data` is the return of the `load_locations` view function
+          $("#id_geomap").html(data);  // replace the contents of the #id_geomap input with the data that came from the server
+        },
+            error:
+         function(xhr){
+             alert("Error: " + xhr.statusText);
+             //alert(xhr.responseText) --> to get the full details of error
+             return false;
+             }
+      });
+
+    }
+
+
+});
+</script>
+

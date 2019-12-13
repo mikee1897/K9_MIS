@@ -1,0 +1,53 @@
+{% extends "profiles/sidebar_reports.html" %}
+
+{% block content %}
+<h2 id='title'>Generate Inventory Report</h2>
+
+    <div class="ui two column centered grid">
+        <div class="column">
+            <div class="ui form" >
+                <div class="ui basic segment">
+                    <div class="ui two column very relaxed grid">
+                        <div class="column">
+                            {{form.date_from}}
+                        </div>
+                        <div class="column">
+                            {{form.date_to}} 
+                        </div>
+                    </div>
+                    <div class="ui vertical divider">
+                    TO
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <center>
+        <button onclick=submit_function() id = "btn" class = "ui button green">Submit</button>  
+    </center>
+    <div class="ui divider"></div>
+    <br>
+    <div id="div_data">
+
+    </div>
+<script>
+
+    function submit_function(){
+        var url = 'inventory_report';  
+        var date_from =  $('#id_date_from').val();
+        var date_to = $('#id_date_to').val();
+        $.ajax({                       
+            url: url,                    
+            data: {
+                'date_from': date_from, 
+                'date_to': date_to,      
+            },
+            success: function (data) {   
+                $("#div_data").html(data);  
+            }
+        });
+    }
+        
+</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+
+{% load static %}
+{% block content %}
+
+{% for form in formset %}
+<div class="formset_class" id="{{ form.prefix }}-row">
+    <div class="four fields">
+        <div class="field">
+            <label>Name</label>
+            {{form.name}}
+        </div>    
+        <div class="field">
+            <label>Color</label>
+            {{form.color}}
+        </div> 
+        <div class="field">
+            <label>Sex</label>
+            {{form.sex}}
+        </div> 
+        <div class="field">
+            <label>Image</label>
+            {{form.image}}
+        </div>    
+    </div>
+</div>
+
+{{formset.management_form}}
+
+{% endfor %}
+
+{% endblock %}

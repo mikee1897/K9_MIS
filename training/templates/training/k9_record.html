@@ -1,0 +1,43 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<table id="tabledata" class="ui six column celled table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Breed</th>
+            <th>Sex</th>
+            <th>Age</th>
+            <th>Status</th>
+            <th>Daily Record</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in data %}
+        <tr>
+            <td>{{data.name}}</td>
+            <td>{{data.breed}}</td>
+            <td>{{data.sex}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.training_status}}</td>
+            <td><a href="{% url 'training:choose_date' data.id %}" class="ui blue button">Select</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+    } );
+
+</script>
+ {% endblock %}

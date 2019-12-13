@@ -1,0 +1,165 @@
+{% load static %}
+{% block content %}
+{%if k9%}
+
+    <div class="header">{{k9}}</div>
+    <div class="image scrolling content">
+        
+        <img class="image" src="{{k9.image.url}}" style="position:relative; width: 350px;height: 300px;" >
+        <div class="description">
+                <form action="{% url 'training:assign_k9_duty' k9.id %}" class="ui form" method="POST">
+                {% csrf_token %}
+                <div class="ui tiny info message">
+                    <header>Priority</header>
+                    <ol>
+                        <li>Check For-Breeding Count and Number of K9s per Skill.</li>
+                        <li>Check Sick Record of K9</li>
+                        <li>Check Training Record of K9</li>
+                    </ol>
+                    <header>Note</header>
+                    <ul>
+                        <li>Less Sickly K9 would be prefered For-Breeding</li>
+                        <li>Training Score 85 and above would be ideal for For-Deployment.</li>
+                        <li>Dont forget to check the remarks!</li>
+                        <li>If sick record needs validation, check phsique of k9.</li>
+                    </ul>
+                </div>
+                <div class="four fields">
+                    <div class="field">
+                        <label>Name</label>
+                        <input type="text" value="{{k9.name}}" readonly>
+                    </div>
+                    <div class="field">
+                        <label>Breed</label>
+                        <input type="text" value="{{k9.breed}}" readonly>
+                    </div>
+                    <div class="field">
+                        <label>Sex</label>
+                        <input type="text" value="{{k9.sex}}" readonly>
+                    </div>
+                    <div class="field">
+                        <label>Age</label>
+                        <input type="number" value="{{k9.age}}" readonly>
+                    </div>
+                </div>
+                <div class="two fields">
+                        <div class="field">
+                            <label>Capability</label>
+                            <input type="text" value="{{k9.capability}}" readonly>
+                        </div>
+                    
+                        <div class="field">
+                            <label>Training Score</label>
+                            <input type="text" value="{{train.grade}}" readonly>
+                        </div>
+                    </div>
+                    <div class="two fields">
+
+                      <div class="field">
+                        <label for="">Dam (Female) {{k9.capability}} {{k9.breed}} Breeders</label>
+                        <input type="text" value="{{female}}" readonly>
+                      </div>
+                      <div class="field">
+                            <label for="">Sire (Male) {{k9.capability}} {{k9.breed}} Breeders</label>
+                            <input type="text" value="{{male}}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <label for="">Total {{k9.breed}} Breeders</label>
+                        <input type="text" value="{{breeder_count_by_breed}}" readonly>
+                        </div>
+                        <div class="field">
+                            <label for="">Total Breeders </label>
+                            <input type="text" value="{{total_breeders}}" readonly>
+                        </div>
+                    </div>
+                    <div class="field">
+                            <div class="ui large red label">
+                                <a class="detail" href="#" id='btn2'>Sick Record: {{h_count}}</a>
+                            </div>
+                      </div>
+
+                    <div id = 'sick' class="ui segment"> 
+                        <table class="ui small two celled table">
+                            <thead>
+                            <tr>
+                                <th>Problem</th>
+                                <th>Treatment</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in health %}
+                                    <tr>
+                                        <td>{{data.problem}}</td>
+                                        <td>{{data.treatment}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% for data in remarks%}
+                    <div class="field">
+                        {% if data.stage == 'Stage 0'%}
+                        <label>Stage 1.1</label>
+                        {% elif data.stage == 'Stage 1.1' %}
+                        <label>Stage 1.2</label>
+                        {% elif data.stage == 'Stage 1.2' %}
+                        <label>Stage 1.3</label>
+                        {% elif data.stage == 'Stage 1.3' %}
+                        <label>Stage 2.1</label>
+                        {% elif data.stage == 'Stage 2.1' %}
+                        <label>Stage 2.2</label>
+                        {% elif data.stage == 'Stage 2.2' %}
+                        <label>Stage 2.3</label>
+                        {% elif data.stage == 'Stage 2.3' %}
+                        <label>Stage 3.1</label>
+                        {% elif data.stage == 'Stage 3.1' %}
+                        <label>Stage 3.2</label>
+                        {% elif data.stage == 'Stage 3.2' %}
+                        <label>Stage 3.3</label>
+                        {% endif %}
+                        <textarea name="" id="" rows="2" readonly>{{data.remarks}}</textarea>
+                    </div>
+                    {% endfor %}
+            
+                    <div class="ui basic center aligned segment">
+                        <button type="submit" class="tiny ui blue button" name="deploy">For-Deployment</button>
+                        <button type="submit" class="tiny ui green button" name="breed">For-Breeding</button>    
+                    </div>
+                </form>
+        </div>
+    </div>
+   
+
+
+
+    <script>   
+        $(document).ready(function() {
+            $("#sick").hide();
+
+            $("#btn2").click(function(){
+                $("#sick").slideToggle();
+            });
+           
+        });
+        // $(".weight").change(function(){
+        //     w = $(this).val();
+        //     h = $(".height").val();
+        //     $(".deploy").attr("href", "{% url 'training:assign_k9_duty' k9.id %}?duty=deployment weight=" +w+" height="+h);
+        //     $(".breed").attr("href", "{% url 'training:assign_k9_duty' k9.id %}?duty=breeding weight=" +w+" height="+h);
+        //     alert($(".deploy").attr('href'), $(".breed").attr('href'))
+        // });
+
+        // $(".height").change(function(){
+        //     h = $(this).val();
+        //     w = $(".weight").val();
+        //     $(".deploy").attr("href", "{% url 'training:assign_k9_duty' k9.id %}?duty=deployment weight=" +w+" height="+h);
+        //     $(".breed").attr("href", "{% url 'training:assign_k9_duty' k9.id %}?duty=breeding weight=" +w+" height="+h);
+        //     alert($(".deploy").attr('href'), $(".breed").attr('href'))
+        // });
+    </script>
+{%endif%}
+{% endblock %}
+

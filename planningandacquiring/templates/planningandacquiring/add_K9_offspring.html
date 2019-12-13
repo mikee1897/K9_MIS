@@ -1,0 +1,123 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+<h2 class="ui header">
+  K9's Born
+  <div class="sub header">Input breeded K9 data here</div>
+</h2>
+<div class="ui horizontal segments">
+ 
+    <div class="ui segment">
+        {% if data.mother.image.url %}
+        <center>
+            <img src="{{data.mother.image.url}}" alt="" width="200">
+          </center>
+        {% endif %}
+    </div>
+
+    <div class="ui segment">
+        {% if data.mother.image.url %}
+        <center>
+            <img src="{{data.father.image.url}}" alt="" width="200">
+          </center>
+        {% endif %}
+    </div>
+
+</div>
+<table class="ui celled table">
+    <thead>
+      <tr>
+        <th class="center aligned three wide">Mother</th>
+        <td class="center aligned five wide">{{data.mother}}</td>
+        
+        <th class="center aligned three wide">Father</th>
+        <td class="center aligned five wide">{{data.father}}</td>
+      </tr>
+    </thead>
+</table>
+ {% if messages %}
+        {% for message in messages %}
+            <div class="{{ style }} row"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+<div class="ui inverted segment">
+<form class = "ui inverted form" id="myForm" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <div>
+        <div class="three fields">
+            <div class="field">
+                <label>Birth Date</label>
+                {{form.birth_date}}
+            </div>
+            <div class="two wide field">
+                <label>Litter No:</label>
+                <input type="number" name='litter_number'>
+            </div>
+            <div class="two wide field">
+                <label>Puppies that Died:</label>
+               <input type="number" name='litter_died'>
+            </div>
+        </div>
+    </div>
+    
+    <div id="id_form_data"></div>
+
+    <div class="ui inverted center aligned segment" style="padding: 0px;">
+        <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+    </div>
+
+    
+    {{formset.management_form}}
+</form>
+
+</div>
+
+<script>
+  $(document).ready(function() {
+
+    $("input[name='litter_died']").change(function () {
+        var url = 'ajax_load_form';  
+        var litter_died = $("input[name='litter_died']").val();
+        var litter_number = $("input[name='litter_number']").val();
+        
+        if (litter_died == null){
+            litter_died=0
+        }
+        
+        var num =  litter_number - litter_died
+        
+        $.ajax({                       
+        url: url,                    
+        data: {
+            'num': num      
+        },
+        success: function (data) {   
+            $("#id_form_data").html(data);  
+        }
+        });
+    });
+
+    $("input[name='litter_number']").change(function () {
+        var url = 'ajax_load_form';  
+        var litter_died = $("input[name='litter_died']").val();
+        var litter_number = $("input[name='litter_number']").val();
+        
+        if (litter_died == null){
+            litter_died=0
+        }
+        
+        var num =  litter_number - litter_died
+        
+        $.ajax({                       
+        url: url,                    
+        data: {
+            'num': num      
+        },
+        success: function (data) {   
+            $("#id_form_data").html(data);  
+        }
+        });
+    });
+
+  });
+</script>
+{% endblock %}

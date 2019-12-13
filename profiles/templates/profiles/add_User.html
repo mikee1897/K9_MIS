@@ -1,0 +1,165 @@
+{% extends "profiles/sidebar_um.html" %} {% block content %}
+
+<div class="ui basic segment" style="margin-bottom:0px;">
+    <h2 class="ui header">
+        {{title}}
+        <div class="sub header">Input data of User Here</div>
+    </h2>
+</div>
+
+<div class="ui small steps">
+  <div class="active step">
+    <div class="content">
+      <div class="title">User Information</div>
+      <div class="description">Provide basic information of user</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <div class="content">
+      <div class="title">Personal Information</div>
+      <div class="description">Add personal information about the user </div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <div class="content">
+      <div class="title">Education</div>
+      <div class="description">Add education information of the user</div>
+    </div>
+  </div>
+    <div class="disabled step">
+    <div class="content">
+      <div class="title">Account</div>
+      <div class="description">Add account of the user</div>
+    </div>
+  </div>
+</div>
+
+<div class="ui fluid container">
+    <div class="ui inverted segment">
+    <form enctype="multipart/form-data" class="ui inverted equal width form" action="{% url 'profiles:add_User_form' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="field">
+            {{form.image}}
+        </div>
+        <div class="fields">
+            <div class="field">
+                <label>Position</label>
+                {{form.position}}
+            </div>
+            <div class="field">
+                <label>Rank</label>
+                {{form.rank}}
+            </div>
+        </div>
+    
+        <div class="fields">
+            <div class="field">
+                <label>First Name</label>
+                {{form.firstname}}
+            </div>
+            <div class="field">
+                <label>Last Name</label>
+                {{form.lastname}}
+            </div>
+            <div class="field">
+                <label>Extension Name</label>
+                {{form.extensionname}}
+            </div>
+        </div>
+    
+        <div class="fields">
+            <div class="field">
+                <label>Middle Name</label>
+                {{form.middlename}}
+            </div>
+            <div class="field">
+                <label>Nickname</label>
+                {{form.nickname}}
+            </div>
+            <div class="field">
+                <label>Birthdate</label>
+                {{form.birthdate}}
+            </div>
+        </div>
+    
+        <div class="fields">
+            <div class="field">
+                <label>Birth Place</label>
+                {{form.birthplace}}
+            </div>
+            <div class="field">
+                <label>Gender</label>
+                {{form.gender}}
+            </div>
+            <div class="field">
+                <label>Civil Status</label>
+                {{form.civilstatus}}
+            </div>
+            <div class="field">
+                <label>Citizenship</label>
+                {{form.citizenship}}
+            </div>
+        </div>
+    
+        <div class="fields">
+            <div class="field">
+                <label>Religion</label>
+                {{form.religion}}
+            </div>
+            <div class="field">
+                <label>Blood Type</label>
+                {{form.bloodtype}}
+            </div>
+            <div class="field">
+                <label>Distinct Feature</label>
+                {{form.distinct_feature}}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                <label>Hair Color</label>
+                {{form.haircolor}}
+            </div>
+            <div class="field">
+                <label>Eye Color</label>
+                {{form.eyecolor}}
+            </div>
+            <div class="field">
+                <label>Skin Color</label>
+                {{form.skincolor}}
+            </div>
+        </div>
+        <div class="fields">
+             <div class="field">
+                <label>Height (in cm)</label>
+                {{form.height}}
+            </div>
+            <div class="field">
+                <label>Weight (in kg)</label>
+                {{form.weight}}
+            </div>
+            <div class="field">
+                <label>Head Size</label>
+                {{form.headsize}}
+            </div>
+            <div class="field">
+                <label>Foot Size</label>
+                {{form.footsize}}
+            </div>
+            <div class="field">
+                <label>Body Build</label>
+                {{form.bodybuild}}
+            </div>
+            
+        </div>
+
+        <div class="ui inverted right aligned segment" style="padding: 0px;" style="border-width: 0px;">
+            <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+
+{% endblock %}

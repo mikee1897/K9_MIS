@@ -1,0 +1,207 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %} 
+<!-- <p>k9 performance</p>
+  <p>Request = on leave, medicine, phyx, vaccine, equipment</p>
+  <p>refresher</p> -->
+{% block dashboard %}
+<div class="container fluid">
+    <div class="ui two column grid">
+      <div class="streched row">
+        <div class="nine wide column"  style="padding-right: 0%;">
+          <div class="ui basic segment">
+            <div class="ui stackable grid">
+                <div class="sixteen wide column">
+                    <div class="ui equal width height two column grid center aligned">
+                        <div class="column">
+                            <div class="ui raised segment">
+                                <div class="ui blue statistic">
+                                    <div class="value">
+                                        <i class="calendar check blue icon"></i>
+                                        {{pending_sched}}
+                                    </div>
+                                    <div class="label">
+                                        <a href="{% url 'deployment:request_dog_list'%}">Pending Event Request</a>
+                                    </div>
+                                  </div>
+                            </div>
+                          </div>
+                          <div class="column">
+                              <div class="ui raised segment" style='padding:19px;'>
+                                  <h2>AOR</h2>
+                                  <strong style="color: orangered;font-size: 20px;">{{areas}}</strong>
+                              </div>
+                            </div>
+                      </div>
+                </div>
+                <div class="sixteen wide column">
+                  <div class="ui raised segment">
+                      <div class="chart-container" style="position: relative;">
+                          <canvas id="myChart" height="150" ></canvas>
+                      </div>
+                  </div>
+                </div>
+           
+            </div>
+        </div>
+        </div>
+        <div class="seven wide column" style="padding: 0%;padding-right: 1%;">
+            <div class="ui basic segment"> 
+              <div class="ui inverted segment">
+                <h4>Calendar</h4>
+              </div>
+                <div class="ui right aligned basic segment"
+                style="padding:0%;margin:0%;margin-bottom:5px">
+                    <div class="ui buttons">
+                        <button class="ui button"  id = "prev" >Previous Year</button>
+                        <div class="or"></div>
+                        <button class="ui button"  id = "next" >Next Year</button>
+                      </div>
+                
+                </div>
+        
+                <div id = "calendar" style="margin-top:0%;"></div>
+             </div> 
+          </div>
+        </div>
+    </div>    
+</div>
+
+
+  <div id = "id_event_load"></div>
+
+<style>
+    #prev, #next{
+      background-color:orangered;
+      color: white;
+    }
+    </style>
+<script>
+$(document).ready(function() {
+  $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+
+          defaultView: 'month',
+          weekNumbers: 'true',
+          editable: true,
+          selectable: true,
+          eventLimit: 3,
+          nowIndicator: true,
+
+          eventTextColor: "white",
+
+
+          events: [
+                {% for i in events %}
+                {
+                    id: '{{ i.id }}',
+                    title: '{{i.event_name}}',
+                    start: '{{ i.start_date|date:"Y-m-d" }}',
+                    end: '{{ i.end_date|date:"Y-m-d" }}',
+                    allDay: 'true',
+                },
+                {% endfor %}
+            ],
+            dayClick: function(date) {
+                new_date = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                var view = $('#calendar').fullCalendar('getView');
+
+                    $('#calendar').fullCalendar('gotoDate',date);
+                    $('#calendar').fullCalendar('changeView', 'agendaDay');
+
+                },
+
+             eventClick: function(event, element) {
+                var url = 'ajax_load_event';
+
+                 $.ajax({
+                        url: url,
+                        data: {
+                        'event_id': event.id,},
+                        success: function (data) {
+
+                          $("#id_event_load").html(data);
+                          $('#event_modal').modal('show');
+                          },
+                        error:
+                            function(xhr){
+                            alert(xhr.statusText)
+                            return false;}
+                    });
+
+                 }
+
+          });
+
+
+
+      $('#prev').click(function() {
+      $('#calendar').fullCalendar('prevYear');
+      });
+
+      $('#next').click(function() {
+      $('#calendar').fullCalendar('nextYear');
+      });
+
+    var endpoint = '../../unitmanagement/commander/api'
+    var city = []
+    var count = []
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function(data){
+          city = data.list_city
+          count = data.list_count
+          defaultData = data.default
+          setChart()         
+        },
+        error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+        }
+    })
+
+    function setChart(){
+        var ctx = document.getElementById('myChart');
+        //Chart1
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: city,
+              datasets: [{
+                    label: 'Event Request ',
+                    data: count,
+                    backgroundColor:  ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)', 'rgba(153, 102, 255, 0.5)', 'rgba(255, 159, 64, 0.5)', 'rgba(255, 162, 192, 0.5)', 'rgba(54, 162, 99, 0.5)', 'rgba(153, 162, 235, 0.5)', 'rgba(54, 64, 86, 0.5)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+            animation: {
+                animateScale: true,
+            },
+            title: {
+                display: true,
+                text: "Area of Responsibility"
+            },
+            scales: {
+                xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                }
+                }],
+                yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    step:1,
+                }
+                }]
+            },
+          }
+        });
+      }
+    
+});
+</script>
+{% endblock%}

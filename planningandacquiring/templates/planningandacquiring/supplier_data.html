@@ -1,0 +1,28 @@
+{% if supplier %}
+
+{% load static %}
+{% block content %}
+<table class="ui inverted black basic table">
+    <thead>
+    <tr>
+        <th class="two wide">Name</th>
+        <td>{{supplier.name}}</td>
+        
+        <th class="two wide">Organization</th>
+        <td>{{supplier.organization}}</td>
+
+        <th class="two wide">Contact No.</th>
+        <td>{{supplier.contact_no}}</td>
+
+    </tr>
+    <tr>
+        <th rowspan="6">Address</th>
+        <td>{{supplier.address}}</td>
+        
+    </tr>
+    </thead>
+</table>
+
+ {% endblock %}
+
+{% endif %}

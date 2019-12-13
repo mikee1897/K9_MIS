@@ -1,0 +1,130 @@
+{% extends "profiles/sidebar_inventory.html" %}  
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+</div>
+
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">{{ title }}</a>
+    <a class="item" data-tab="second">Physical Count</a>
+    <a class="item" data-tab="third">Received Miscellaneous Quantity</a>
+    <a class="item" data-tab="fourth">Sent Miscellaneous Quantity</a>
+</div>
+<div class="ui tab segment active" data-tab="first">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ style }} row"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form class="ui form" method="POST">
+        <h4 class="ui dividing header">Details</h4>
+            {% csrf_token %}
+            <div class="three fields">
+                <div class="six wide field">
+                    <label>Miscellaneous</label>
+                    {{form.miscellaneous}}
+                </div>
+                <div class="five wide field">
+                        <label>Type</label>
+                        {{form.misc_type}}
+                    </div>
+                <div class="three wide field">
+                    <label>Unit of Measurement</label>
+                    {{form.uom}}
+                </div>
+                <div class="three wide field">
+                    <label>Price</label>
+                    {{form.price}}
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Description</label>
+                {{form.description}}
+            </div>
+        <div class="ui basic right aligned segment" style="padding: 0px;">
+            <button class = "ui button green" type="submit" >{{ actiontype }}</button>
+        </div>
+    </form>
+</div>
+<div class="ui tab segment" data-tab="second">
+    <table id="tabledata1" class="ui three column celled table responsive nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Quantity Counted</th>
+                <th>Date Counted</th>
+                <th>Counted By</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data %}
+            <tr>
+                <td>{{ data.quantity }}</td>
+                <td>{{ data.date_counted }}</td>    
+                <td>{{data.user}}</td>    
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="third">
+    <table id="tabledata2" class="ui three column celled table responsive nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Quantity Received</th>
+                <th>Date Received</th>
+                <th>Received By</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data2 %}
+            <tr>
+                <td>{{ data.quantity }}</td>
+                <td>{{ data.date_received }}</td>
+                <td>{{data.user}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="fourth">
+    <table id="tabledata3" class="ui three column celled table responsive nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Quantity Sent</th>
+                <th>Date Sent</th>
+                <th>Sent By</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data3 in data3 %}
+            <tr>
+                <td>{{ data3.quantity }}</td>
+                <td>{{ data3.date_subtracted }}</td>    
+                <td>{{  data3.user}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui basic segment">
+    <a href="{% url 'inventory:miscellaneous_inventory_list'%}" class="ui blue button">Back</a>
+</div>
+
+    
+    <script type="text/javascript">
+               
+        $(document).ready(function() {
+	        $('#tabledata1').DataTable();
+            $('#tabledata2').DataTable();
+            $('#tabledata3').DataTable();
+            $('.menu .item').tab();
+            // $(function() {
+            //     $( ".message" ).slideUp( 4000, function() {
+                   
+            //     });
+            // });
+        } );
+    </script>
+ {% endblock %}

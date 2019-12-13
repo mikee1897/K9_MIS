@@ -1,0 +1,89 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="{{style}}" > {{ message }}</div>
+    {% endfor %}
+    {% endif %}
+</div>
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">Pending</a>
+    <a class="item" data-tab="second">Approved</a>
+</div>
+<div class="ui tab segment active" data-tab="first">
+    <table id="tabledata1" class="ui five column celled table">
+        <thead>
+            <tr>
+                <th>Date Requested</th>
+                <th>Handler</th>
+                <th>Leave Dates</th>
+                <th>Duration</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data1 %}
+            <tr data-variation="wide" data-content="{{data.description}}" class="pop">
+                <td>{{data.date|date:'Y-m-d'}}</td>
+                <td>{{data.handler}}</td>
+                <td>{{data.date_from}} - {{data.date_to}}</td>
+                <td>{{data.duration}} days</td>
+                <td>
+                    <a href="{% url 'unitmanagement:on_leave_decision' data.id %}?leave=approve" class="ui tiny green button">Approve<a>
+                    <a href="{% url 'unitmanagement:on_leave_decision' data.id %}?leave=deny" class="ui tiny red button">Deny</a>
+                </td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="second">
+        <table id="tabledata2" class="ui five column celled table">
+            <thead>
+                <tr>
+                    <th>Dates</th>
+                    <th>Handler</th>
+                    <th>Duration</th>
+                    <th>Approved By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in data2 %}
+                <tr data-variation="wide" data-content="{{data.description}}" class="pop">
+                    <td>{{data.date_from|date:'Y-m-d'}} - {{data.date_to|date:'Y-m-d'}}</td>
+                    <td>{{data.handler}}</td>
+                    <td>{{data.duration}}</td>
+                    <td>{{data.approved_by}}</td>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+<script type="text/javascript">
+
+
+    $('#tabledata1').DataTable({
+        "order": [[ 0, "desc" ],[ 1, "asc" ]]
+    });
+
+    $('#tabledata2').DataTable({
+        "order": [[ 0, "desc" ],[ 1, "asc" ]]
+    });
+
+    $('.menu .item').tab();
+
+    $('.pop').popup({
+        inline     : true,
+        hoverable  : true,
+    });
+  
+
+</script>
+ {% endblock %}

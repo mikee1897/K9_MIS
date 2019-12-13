@@ -1,0 +1,68 @@
+{% extends "profiles/sidebar_um.html" %} {% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ Title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+		<table id="tabledata" class="ui celled table">
+        	<thead>
+          	<tr>
+              <th>Name</th>
+              <th>Position</th>
+			  <th>Rank</th>
+			  <th></th>
+          	</tr>
+    		</thead>
+    		<tbody>
+				{% for User in user_s %}
+    				<tr>
+    					<td><a  href="{% url 'profiles:user_detail' User.id %}">{{User}}</a></td>
+    					<td>{{ User.position }}</td>
+						<td>{{ User.rank}}</td>
+						<td class="four wide column center aligned">
+							<button class="ui tiny red button show_modal" id = '{{User.id}}'>Quit</button>
+							<button class="ui tiny red button show_modal" id = '{{User.id}}'>Retired</button>
+							<button class="ui tiny red button show_modal" id = '{{User.id}}'>Died</button>
+						</td>
+    				</tr>
+				{% endfor %}
+        </tbody>
+	</table>
+	
+	<div class="ui tiny modal">
+		<div class="header">Date</div>
+		<div class="content">
+			<form action="" method="POST" class="ui form">
+				{% csrf_token %}
+				<input type="date" class="field" name = 'date_input'>
+				<input type="hidden" class="field" name = 'status_input' id = 'status_input'>
+				<input type="hidden" class="field" name = 'id_input' id = 'id_input'>
+			</div>
+				<div class="actions">
+						<button type='submit' class="ui green button">Submit</button>
+					  </div>
+			</form>
+		
+	  </div>
+
+<script type="text/javascript">
+
+	
+	$('#tabledata').DataTable( {
+        "order": [[ 0, "asc" ]]
+    });
+	$('.menu .item').tab();
+
+	$( ".show_modal" ).bind('click', function() {
+		txt = $(this).text()
+		id = $(this).attr('id')
+		$('#status_input').val(txt)
+		$('#id_input').val(id)
+		$('.ui.tiny.modal').modal('show');	
+	});	
+
+</script>
+{% endblock %}

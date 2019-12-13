@@ -1,0 +1,178 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+{% load um_tags %}
+
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+</div>
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">Medicine</a>
+    <a class="item" data-tab="second">Vaccine</a>
+    <a class="item" data-tab="third">Dog Food</a>
+    <a class="item" data-tab="fourth">Equipment</a>
+    <a class="item" data-tab="fourth">Vet Supply</a>
+</div>
+
+<div class="ui tab segment active" data-tab="first">
+    <table id="tabledata1" class="ui four column celled table">
+<tr>
+            <thead>
+            <th>Medicine</th>
+            <th>Quantity</th>
+            <th>Price per Item</th>
+            <th>Total Price</th>
+            </thead>
+        </tr>
+     <tbody>
+
+
+
+      <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Subtotal:</strong> ₱	</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Grandtotal:</strong> ₱</td>
+        </tr>
+     </tbody>
+        </table>
+</div>
+
+<div class="ui tab segment" data-tab="second">
+      <table id="tabledata2" class="ui four column celled table">
+<tr>
+            <thead>
+            <th>Vaccine</th>
+            <th>Quantity</th>
+            <th>Price per Item</th>
+            <th>Total Price</th>
+            </thead>
+        </tr>
+     <tbody>
+
+
+
+      <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Subtotal:</strong> ₱	</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Grandtotal:</strong> ₱</td>
+        </tr>
+     </tbody>
+        </table>
+</div>
+
+<div class="ui tab segment" data-tab="third">
+      <table id="tabledata3" class="ui four column celled table">
+<tr>
+            <thead>
+            <th>Dog Food</th>
+            <th>Quantity</th>
+            <th>Price per Item</th>
+            <th>Total Price</th>
+            </thead>
+        </tr>
+     <tbody>
+
+
+
+      <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Subtotal:</strong> ₱	</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Grandtotal:</strong> ₱</td>
+        </tr>
+     </tbody>
+        </table>
+</div>
+
+<div class="ui tab segment" data-tab="fourth">
+      <table id="tabledata4" class="ui four column celled table">
+<tr>
+            <thead>
+            <th>Equipment</th>
+            <th>Quantity</th>
+            <th>Price per Item</th>
+            <th>Total Price</th>
+            </thead>
+        </tr>
+     <tbody>
+
+
+
+      <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Subtotal:</strong> ₱	</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Grandtotal:</strong> ₱</td>
+        </tr>
+     </tbody>
+        </table>
+</div>
+
+<div class="ui tab segment" data-tab="fifth">
+      <table id="tabledata5" class="ui four column celled table">
+<tr>
+            <thead>
+            <th>Vet Supply</th>
+            <th>Quantity</th>
+            <th>Price per Item</th>
+            <th>Total Price</th>
+            </thead>
+        </tr>
+     <tbody>
+
+
+
+      <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Subtotal:</strong> ₱	</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Grandtotal:</strong> ₱</td>
+        </tr>
+     </tbody>
+        </table>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('#tabledata2').DataTable();
+        $('#tabledata3').DataTable();
+        $('#tabledata4').DataTable();
+        $('.menu .item').tab();
+    });
+
+</script>
+
+{% endblock %}

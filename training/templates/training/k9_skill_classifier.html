@@ -1,0 +1,19 @@
+{% extends "profiles/sidebar_training.html" %}  {% block content %}
+
+ {% if bar_gender_count %}
+ {{ bar_gender_count|safe }}
+{% endif %}
+
+ {% if pie_skill_ratio %}
+ {{ pie_skill_ratio|safe }}
+{% endif %}
+
+ {% if bar_skill_count_from_breed %}
+ {{ bar_skill_count_from_breed|safe }}
+{% endif %}
+
+{% if pie_skill_percentage_from_sexes %}
+ {{ pie_skill_percentage_from_sexes|safe }}
+{% endif %}
+
+ {% endblock %}

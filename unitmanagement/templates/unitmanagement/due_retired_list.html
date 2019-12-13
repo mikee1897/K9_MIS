@@ -1,0 +1,119 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load humanize %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">Call Back K9 from Port <span class="ui orange circular label">{{data_count}}</span></a>
+    <a class="item" data-tab="second">Returning K9 <span class="ui orange circular label">{{cb_conf_count}}</span></a>
+     <a class="item" data-tab="third">Pending Confirmation to Return <span class="ui orange circular label">{{cb_pend_count}}</span></a>
+</div>
+<div class="ui tab segment active" data-tab="first">
+    <table id="tabledata1" class="ui celled table">
+        <thead class="center aligned">
+            <tr>
+                <th class="two wide">Retired Date</th>
+                <th class="three wide">Handler</th>
+                <th class="three wide">K9</th>
+                <th>Port</th>
+                <th class="two wide">Age (yrs & mons)</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data %}
+            </tr>
+                <td>{{data.year_retired|date:'Y-m-d'}}</td>
+                <td>{{data.handler}}</td>
+                <td>{{data}}</td>
+                <td >{{data.assignment}}</td>
+                <td>{{data.age}} years and {{data.month_remainder}} months</td>
+                <td style="text-align:center;" class="two wide">
+                    <a href="{% url 'unitmanagement:due_retired_call' data.id %}" class="ui tiny basic red button">Call Back</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="second">
+    <table id="tabledata2" class="ui celled table">
+        <thead class="center aligned">
+            <tr>
+                <th class="two wide">Date Confirmed</th>
+                <th class="two wide">Handler</th>
+                <th class="two wide">K9</th>
+                <th class="two wide">Age (yrs & mons)</th>
+                <th>Port</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in cb_conf %}
+            <tr>
+                <td class="two wide">{{data.date_confirmed|date:'Y-m-d'}}</td>
+                <td class="two wide">{{data.handler}}</td>
+                <td class="two wide">{{data.k9}}</td>
+                <td class="two wide">{{data.k9.age}} years and {{data.k9.month_remainder}} months</td>
+                <td>{{data.k9.assignment}}</td>
+                <td style="text-align:center;" class="four wide">
+                    <a href="{% url 'unitmanagement:confirm_arrive' data.id %}"
+                    class="ui tiny green button">Return Confirmed</a>
+                    
+                    <a href="{% url 'unitmanagement:mia_fou' data.id %}" class="ui tiny red button">MIA</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui tab segment" data-tab="third">
+    <h3>Awaiting Confirmation to Return</h3>
+    <table id="tabledata3" class="ui celled table">
+        <thead class="center aligned">
+            <tr>
+                <th class="two wide">Date Called Back</th>
+                <th class="three wide">Handler</th>
+                <th class="three wide">K9</th>
+                <th class="three wide">Age (yrs & mons)</th>
+                <th>Port</th>
+                <th class="two wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in cb_pend  %}
+            <tr>
+                <td class="two wide">{{data.date_created|date:'Y-m-d'}}</td>
+                <td class="two wide">{{data.handler}}</td>
+                <td class="two wide">{{data.k9}}</td>
+                <td class="two wide">{{data.k9.age}} years and {{data.k9.month_remainder}} months</td>
+                <td>{{data.k9.assignment}}</td>
+                <td class="center aligned">
+                    <a href="{% url 'unitmanagement:mia_fou' data.id %}" class="ui tiny red button">MIA</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="ui large modal" id = 'id_data'></div>
+
+<script type="text/javascript">
+
+  
+    $('#tabledata1').DataTable({ "order": [[ 0, "desc" ],[ 4, "desc" ],[ 1, "asc" ]]  });
+    $('#tabledata2').DataTable({ "order": [[ 0, "desc" ],[ 3, "desc" ],[ 1, "asc" ]]  });
+    $('#tabledata3').DataTable({ "order": [[ 0, "desc" ],[ 3, "desc" ],[ 1, "asc" ]]  });
+    $('.menu .item').tab();
+  
+
+</script>
+ {% endblock %}

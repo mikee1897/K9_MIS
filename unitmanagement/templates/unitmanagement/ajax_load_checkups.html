@@ -1,0 +1,166 @@
+{% load um_tags %}
+
+<h1 class="ui header">Units Scheduled for Checkup</h1>
+
+		<table id="tabledata2" class="ui celled table">
+        	<thead>
+          	<tr>
+                <th></th>
+				<th>K9</th>
+                <th>Handler</th>
+                <th>Checkup Date</th>
+                <th>Deployment Date</th>
+
+          	</tr>
+
+    		</thead>
+    		<tbody>
+
+            {% for item in checkups %}
+            <tr data-group="checkups">
+                <td>{{item.k9|render_k9_checkbox:selected_list}}</td>
+                <td>{{item.k9}}</td>
+                <td>{{item.k9.handler}}</td>
+                 <td>{{item.date}}</td>
+                <td>{{item.deployment_date}}</td>
+
+            </tr>
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+
+<form method="POST" action="{% url 'unitmanagement:k9_checkup_pending' %}">
+     {% csrf_token %}
+ <div class="ui right aligned basic segment" style="padding: 0px;">
+                                    <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >Schedule Units</button>
+                                </div>
+</form>
+
+<script type="text/javascript">
+
+	 $('#tabledata2').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+
+		$('.menu .item').tab();
+</script>
+
+
+<script>
+         function getCheckboxesValues(){
+            return [].slice.apply(document.querySelectorAll("input[type=checkbox]"))
+           .filter(function(c){ return c.checked; })
+           .map(function(c){ return c.value; });
+            }
+
+        function toObject(arr) {
+         var rv = {};
+        for (var i = 0; i < arr.length; ++i)
+        rv[i] = arr[i];
+        return rv;
+        }
+
+
+         $("input[name='k9']").change(function() {
+         var stringified = "";
+         var date = $("input[name='date']").val();
+
+         try {
+            var k9 = getCheckboxesValues();
+            var json = toObject(k9);
+            var stringified = JSON.stringify(json);
+            }
+            catch(err) {
+            alert(err);
+            }
+
+         $.ajax({
+        url: 'ajax_load_checkups',
+        data: {
+          'fullstring': stringified,
+          'date': date
+        },
+        success: function (data) {
+         $("#id_scheduled_data").html(data);
+
+        },
+        error:function(msg)
+                {
+                alert(msg);
+                }
+
+
+
+      });
+
+
+      });
+
+
+</script>
+
+<script>
+
+$("input[name='k9']").change(function(){
+
+try{
+    var attr = $(this).closest("tr").attr("data-group");
+
+
+
+     if( attr=="pending" && (!$(this).is(':checked')) ){
+        $(this).closest("tr").show();}
+
+  }
+catch(err){alert(err);}
+
+
+});
+</script>
+
+
+
+<script>
+
+$("input[name='k9']").change(function(){
+
+try{
+    var attr = $(this).closest("tr").attr("data-group");
+
+
+    if(attr == "checkups" && (! $(this).is(':checked')) ){
+         // The checkbox that was clicked
+        var actor = $(this);
+
+        // The status of that checkbox
+        var checked = actor.prop('checked');
+
+        // The value of the checkbox
+        var group = actor.val();
+
+        // All checkboxes of the same value
+        var checkboxes = $('input[type="checkbox"][value="' + group + '"]');
+
+
+        // All checkboxes excluding the one that was clicked
+        var otherCheckboxes = checkboxes.not(actor);
+
+
+        checkboxes.each(function( ) {
+                if($(this).closest("tr").attr("data-group") == "pending"){
+                    $(this).closest("tr").show();}
+
+        });
+
+     }
+
+
+  }
+catch(err){alert(err);}
+
+
+});
+</script>
+

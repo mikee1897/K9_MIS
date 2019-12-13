@@ -1,0 +1,12 @@
+{% if image %}
+
+{% load static %}
+{% block content %}
+    <center>
+        <img src="{{image.image.url}}" alt="" style="position:
+        relative; width: 600px;height: 400px;" >
+    </center>
+
+   {% endblock %}
+
+{% endif %}

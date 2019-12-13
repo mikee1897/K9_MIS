@@ -1,0 +1,91 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load static %}
+{% load um_tags %}
+
+{% block content %}
+<div class="ui basic segment"  style="margin-bottom:0px;">
+    <h2 class="ui header">
+        K9 Checkup List
+        <div class="sub header">Select a K9 for Physical Examination</div>
+    </h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui small info message">
+  <i class="close icon"></i>
+  <div class="header">
+    Highlighted rows are schedule for today!
+  </div>
+
+</div>
+
+<div class = "ui segment">
+
+    <table id="tabledata" class="ui celled table">
+        <thead>
+            <tr>
+                <th>K9</th>
+                <th>Handler</th>
+                <th>Checkup Date</th>
+                <th>Deployment Date</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for data in checkups %}
+            {% if data.1 == True %}
+            <tr class="active">
+                {% else %}
+                <tr>
+                {%endif%}
+                <td>{{data.0.k9}}</td>
+                <td >{{data.0.k9.handler}}</td>
+                {% if data.1 == True %}
+                <td>{{data.0.date_start|date:'Y-m-d'}} (Today)</td>
+                {% else %}
+                 <td>{{data.0.date_start|date:'Y-m-d'}}</td>
+                 {%endif%}
+
+                {% if data.0.status == "Checkup"%}
+                <td>{{deployment_list|list_item:forloop.counter0|date:'Y-m-d'}}</td>
+                {% else %}
+                <td>On port</td>
+                {% endif %}
+
+                <td style="text-align:center;" class="two wide">
+                    <a href="{% url 'unitmanagement:physical_exam_form' data.0.k9.id %}" class="ui tiny basic blue button">Select</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+<script type="text/javascript">
+
+
+    $('#tabledata').DataTable( {
+    "order": [[ 2, "asc" ],[ 3, "asc" ]]
+    });
+    
+	$('.menu .item').tab();
+
+	$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+
+</script>
+
+{% endblock %}

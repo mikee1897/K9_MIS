@@ -1,0 +1,310 @@
+{% load humanize %}
+{% block content %}
+
+    {% if food_arr %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Dog Food & Milk</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in food_arr %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.unit}}</td>
+                <td class="right aligned">{{data.0.price|intcomma}}</td>
+                <td class="right aligned">{{data.1|intcomma}}</td>
+                <td class="right aligned">{{data.2|intcomma}}</td>
+            </tr>
+            {% endfor %}            
+
+            <tr style="font-weight: bold;"  class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{total_food|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+                    
+    {% if vac_arr %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr class="center aligned">
+                <th colspan="5">Prevention & Vaccination</th>
+            </tr>
+            <tr>
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+            {% for data in vac_arr %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.uom}}</td>
+                <td class="right aligned">{{data.0.price|intcomma}}</td>
+                <td class="right aligned">{{data.1|intcomma}}</td>
+                <td class="right aligned">{{data.2|intcomma}}</td>
+            </tr>
+            {% endfor %}
+
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{vac_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+                    
+    {% if b_ny_med %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Medicine</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in b_ny_med %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>pc</td>
+                <td class="right aligned">{{data.0.medicine.price|intcomma}}</td>
+                <td class="right aligned">{{data.1|intcomma}}</td>
+                <td class="right aligned">{{data.2|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{total_medicine|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+                    
+    {% if vet_total %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Veterinarian Supplies</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in vet_arr %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.uom}}</td>
+                <td class="right aligned">{{data.0.price|intcomma}}</td>
+                <td class="right aligned">{{data.1|intcomma}}</td>
+                <td class="right aligned">{{data.2|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{vet_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+                    
+    {% if ken_arr %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Kennel Supplies</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in ken_arr %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.uom}}</td>
+                <td class="right aligned">{{data.0.price|intcomma}}</td>
+                <td class="right aligned">{{data.1|intcomma}}</td>
+                <td class="right aligned">{{data.2|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{ken_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+                    
+    {% if other_arr %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Others</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in other_arr %}
+            <tr>
+                <td>{{data.0}}</td>
+                <td>{{data.0.uom}}</td>
+                <td class="right aligned">{{data.0.price|intcomma}}</td>
+                <td class="right aligned">{{data.1|intcomma}}</td>
+                <td class="right aligned">{{data.2|intcomma}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{other_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+                    
+    {% if train_total != 0 %}
+    <table class="ui five column celled table">
+        <thead>
+            <tr>
+                <th colspan="5">Training</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>K9</td>
+                <td>unit</td>
+                <td class="right aligned">18,000.00</td>
+                <td class="right aligned">{{train_k9}}</td>
+                <td class="right aligned">{{training_total|intcomma}}</td>
+            </tr>
+            <tr style="font-weight: bold;" class="right aligned">
+                <td colspan="4">Total Amount</td>
+                <td colspan="1">{{training_total|intcomma}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+                    
+    <table class="ui two column celled table">
+        <thead>
+            {% if total_food != 0 %}
+            <tr>
+                <th class="thirteen wide">Dog Food & Milk</th>
+                <td class="right aligned">{{total_food|intcomma}}</td>
+            </tr>
+            {% endif %}
+    
+            {% if vac_total != 0 %}
+            <tr>
+                <th class="twelve wide">Vaccination & Prevention</th>
+                <td class="right aligned">{{vac_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+    
+            {% if total_medicine != 0 %}
+            <tr>
+                <th class="twelve wide">Medicines</th>
+                <td class="right aligned">{{total_medicine|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if vet_total != 0 %}
+            <tr>
+                <th class="twelve wide">Veterinarian Supplies</th>
+                <td class="right aligned">{{vet_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if ken_total != 0 %}
+            <tr>
+                <th class="twelve wide">Kennel Supplies</th>
+                <td class="right aligned">{{ken_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if other_total != 0 %}
+            <tr>
+                <th class="twelve wide">Others</th>
+                <td class="right aligned">{{other_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if training_total != 0 %}
+            <tr>
+                <th class="twelve wide">K9 Training</th>
+                <td class="right aligned">{{training_total|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if procured_total != 0 %}
+            <tr>
+                <th class="twelve wide">K9 Procurement</th>
+                <td class="right aligned">{{procured_total|intcomma}}</td>
+            </tr >
+            {% endif %}
+            <tr class="ui right aligned">
+                <th class="twelve wide">Grand Total</th>
+                <th id = 'gt_show'>{{total_amount|intcomma}}</th>
+            </tr>
+        </thead>
+    </table>
+ 
+    <center>
+        <button class="ui green button" type="submit">Save Budget Proposal</button>
+    </center>
+
+<script>
+
+$(document).ready(function() {
+$("gt_show").change(function() {
+    alert("Something happened!");
+});
+});
+
+function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
+ 
+{% endblock%}

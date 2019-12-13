@@ -1,0 +1,54 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load index %}
+{% block content %}
+<div class="ui fluid container">
+        <div class="ui grid">
+            <div class="three column row">
+                <div class="three wide column"></div>
+                <div class="ten wide column">
+                    <h1 class="ui header">Location Incident Form
+                        <div class="sub header">{{ texthelp }}</div>
+                    </h1>
+                    <div class="ui inverted segment">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="{{style}}"> {{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        <form class = "ui inverted form" method="POST">
+                           {% csrf_token %}
+                            <div class="field">
+                                <label>Location</label>
+                                    {{form.location}}
+                            </div>
+                            <div class="field">
+                                    <label>Date</label>
+                                        {{form.date}}
+                                </div>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Incident</label>
+                                            {{form.incident}}
+                                    </div>
+                                    
+                                    <div class="field">
+                                        <label>Type</label>
+                                            {{form.type}}
+                                    </div>
+                                </div>
+                            <div class="field">
+                                <label>Remarks</label>
+                                    {{form.remarks}}
+                            </div>
+
+                            <div class="ui inverted right aligned segment" style="padding: 0px;">
+                                <button class = "ui button green" type="submit" >{{actiontype}}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="three wide column"></div>
+            </div>
+        </div>
+    </div>
+{% endblock%}

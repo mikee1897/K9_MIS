@@ -1,0 +1,190 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">Yearly Vaccination & Prevention</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="ui top attached tabular menu">
+    <a class="active item" data-tab="first">Deworming <span class="ui orange circular label">{{count_dw}}</span></a>
+    <a class="item" data-tab="second">DHPP <span class="ui orange circular label">{{count_dh}}</span></a>
+    <a class="item" data-tab="third">Anti-Rabies <span class="ui orange circular label">{{count_ar}}</span></a>
+    <a class="item" data-tab="fourth">Bordertella <span class="ui orange circular label">{{count_br}}</span></a>
+</div>
+
+<div class="ui bottom attached active tab segment" data-tab="first">
+    <table id="tabledata1" class="ui three column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>Date Due</th>
+                <th>K9</th>
+                <th>Breed</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_dw %}
+            {% if data.1 == today%}
+            <tr class="positive">
+                <td class="center aligned">{{data.1|date:'Y-m-d'}}</td>
+                <td>{{data.0}}</td>
+                <td>{{data.0.breed}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-type='Deworming'>Select</a></td>
+            </tr>
+            {% elif today > data.1%}
+            <tr class="negative">
+                <td class="center aligned">{{data.1|date:'Y-m-d'}}</td>
+                <td>{{data.0}}</td>
+                <td>{{data.0.breed}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-type='Deworming'>Select</a></td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="second">
+    <table id="tabledata2" class="ui three column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>Date Due</th>
+                <th>K9</th>
+                <th>Breed</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_dh %}
+            {% if data.1 == today%}
+            <tr class="positive">
+                <td class="center aligned">{{data.1|date:'Y-m-d'}}</td>
+                <td>{{data.0}}</td>
+                <td>{{data.0.breed}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-type='Deworming'>Select</a></td>
+            </tr>
+            {% elif today > data.1%}
+            <tr class="negative">
+                <td class="center aligned">{{data.1|date:'Y-m-d'}}</td>
+                <td>{{data.0}}</td>
+                <td>{{data.0.breed}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-type='Deworming'>Select</a></td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="third">
+    <table id="tabledata3" class="ui three column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>Date Due</th>
+                <th>K9</th>
+                <th>Breed</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_ar %}
+            {% if data.1 == today%}
+            <tr class="positive">
+                <td class="center aligned">{{data.1|date:'Y-m-d'}}</td>
+                <td>{{data.0}}</td>
+                <td>{{data.0.breed}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-type='Deworming'>Select</a></td>
+            </tr>
+            {% elif today > data.1%}
+            <tr class="negative">
+                <td class="center aligned">{{data.1|date:'Y-m-d'}}</td>
+                <td>{{data.0}}</td>
+                <td>{{data.0.breed}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-type='Deworming'>Select</a></td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="fourth">
+    <table id="tabledata4" class="ui three column celled table">
+        <thead class="ui center aligned">
+            <tr>
+                <th>Date Due</th>
+                <th>K9</th>
+                <th>Breed</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in k9_br %}
+            {% if data.1 == today%}
+            <tr class="positive">
+                <td class="center aligned">{{data.1|date:'Y-m-d'}}</td>
+                <td>{{data.0}}</td>
+                <td>{{data.0.breed}}</td>
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-type='Deworming'>Select</a></td>
+            </tr>
+            {% elif today > data.1%}
+            <tr class="negative">
+                <td class="center aligned">{{data.1|date:'Y-m-d'}}</td>
+                <td>{{data.0}}</td>
+                <td>{{data.0.breed}}</td>                
+                <td class="three wide column center aligned"><a href="#"
+                class="ui tiny basic blue button btn_modal" id='{{data.0.id}}' data-type='Deworming'>Select</a></td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="ui modal" id='id_modal_data'></div>
+<script>
+
+    $( ".btn_modal" ).bind( "click", function() {
+        var url = 'vaccination-list/ajax_load_yearly_vac';  
+        id = $(this).attr('id');
+        type = $(this).data('type');
+       
+        $.ajax({                      
+            url: url,                    
+            data: {
+            'id': id,   
+            'type': type      
+            },
+            success: function (data) {   
+            $("#id_modal_data").html(data); 
+            }
+        });
+        $('#id_modal_data').modal('show');
+    });
+
+    $('#tabledata1').DataTable({
+        "order": [[ 0, "asc" ]]
+    });
+    $('#tabledata2').DataTable({
+        "order": [[ 0, "asc" ]]
+    });
+    $('#tabledata3').DataTable({
+        "order": [[ 0, "asc" ]]
+    });
+    $('#tabledata4').DataTable({
+        "order": [[ 0, "asc" ]]
+    });
+    $('.menu .item').tab();
+
+</script>
+
+{% endblock%}

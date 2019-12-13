@@ -1,0 +1,384 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %} 
+
+{% block dashboard %}
+<div class="container fluid">
+    <div class="ui two column grid">
+      <div class="streched row">
+        <div class="ten wide column"  style="padding-right: 0%;">
+          <div class="ui basic segment">
+            <div class="ui stackable grid">
+
+                <div class="sixteen wide column">
+                    <div class="ui equal width grid">
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui two column grid">
+                                    <div class="four wide column">
+                                        <div class="ui statistic">
+                                            <div class="value" style="color:#0E6EB8">
+                                                <i class="syringe blue icon"></i>
+                                                {{vac_count}}
+                                            </div>
+
+                                            <div class="label">
+                                        <a href="{% url 'unitmanagement:vaccination_list'%}">PREVENTIVE
+                                        HEALTH PROGRAM VACCINATION </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="twelve wide column left aligned">
+                                            <div class="ui grid">
+
+                                                    {% for a,b in vac_list%}
+                                                    <div class="five wide column" style="margin: 2px;padding:2px;">
+
+                                                        <strong>{{a}} - </strong>
+                                                        <span style="color:orangered;">{{b}}</span>
+
+                                                    </div>
+                                                    {% endfor %}
+                                            </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="sixteen wide column">
+                        <div class="ui two column equal width grid">
+                            <div class="seven wide column">
+                                <div class="ui raised center aligned segment">
+                                        <div class="ui two column grid">
+                                            <div class="eight wide column">
+                                                    <div class="ui statistic">
+                                                            <div class="value">
+                                                                <i class="syringe purple icon">{{yearly_count}}</i>
+                                                            </div>
+                                                            <div class="label">
+                                                              <br>
+                                    <a href="{% url 'unitmanagement:yearly_vaccine_list'%}">YEARLY VACCINATIONS</a>
+
+                                                            </div>
+                                                        </div>
+                                            </div>
+                                            <div class="eight wide column left aligned">
+                                                    <div class="ui grid">
+                                                        {% for a,b in yearly_list%}
+                                                        <div class="sixteen wide column" style="padding:0px;">
+                                                            <strong>{{a}} - </strong>
+                                                            <span style="color:orangered;">{{b}}</span>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui raised center aligned segment">
+                                        <div class="ui statistic">
+                                                <div class="value">
+                                                    <i class="paw alternate olive icon">{{ab_k9}}</i>
+                                                </div>
+                                                <div class="label">
+                                                    <br>
+                                                        <a href="{% url 'planningandacquiring:add_procured_k9'%}">K9 ACQUISITION COUNTDOWN</a>
+
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                            <div class="five wide column">
+                                <div class="ui raised center aligned segment">
+                                    <div style="margin-left: 25%;">
+                                            <span style="color: #016936;">Today </span> |
+                                            <span style="color: #0E6EB8;">Upcoming</span>
+                                    </div>
+
+                                    <div class="ui statistic">
+                                                <div class="value">
+                                                    <i class="red heartbeat icon"></i>
+                                                    <i class="green icon">{{checkup_now}}</i>
+                                                    <i class="blue icon">{{checkup_upcoming}}</i>
+                                                </div>
+                                                <div class="label">
+
+                                        <a href="{% url 'unitmanagement:k9_checkup_list_today'%}">K9 PHYSICAL EXAM</a>
+
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="sixteen wide column">
+                    <div class="ui equal width grid">
+                        <div class="column">
+                                <div class="ui raised center aligned segment">
+                                        <div class="ui statistic">
+                                            <div class="value">
+                                                <i class="certificate violet icon">{{classify_count}}</i>
+                                            </div>
+                                            <div class="label">
+
+                                                    <a href="{% url 'unitmanagement:trained_list'%}">CLASSIFY K9's</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui statistic">
+                                    <div class="value">
+                                        <i class="first aid green icon">{{health_pending}}</i>
+                                    </div>
+                                    <div class="label">
+
+                                            <a href="{% url 'unitmanagement:k9_sick_list'%}">HEALTH CONCERNS</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui statistic">
+                                    <div class="value">
+                                        <i class="exclamation venus mars teal icon">{{mated_count}}</i>
+                                    </div>
+                                    <div class="label">
+
+                                            <a href="{% url 'planningandacquiring:breeding_list'%}?type=mated">MATED K9's</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui statistic">
+                                    <div class="value">
+                                        <i class="heart red icon">{{pregnant_count}}</i>
+                                    </div>
+                                    <div class="label">
+
+                                            <a href="{% url 'planningandacquiring:breeding_list'%}?type=pregnant">PREGNANT K9's</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sixteen wide column">
+                    <div class="ui equal width grid">
+                        <div class="column">
+                                <div class="ui raised center aligned segment">
+                                    <div class="ui statistic">
+                                        <div class="value">
+                                            <i class="band aid yellow icon">{{unfit_count}}</i>
+                                        </div>
+                                        <div class="label">
+
+                                                <a href="{% url 'unitmanagement:unfit_list'%}">UNFIT K9's</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui statistic">
+                                    <div class="value">
+                                        <i class="exclamation black icon">{{incident}}</i>
+                                    </div>
+                                    <div class="label">
+                                        <a href="{% url 'unitmanagement:k9_incident_list'%}">K9 INCIDENTS</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column">
+                            <div class="ui raised center aligned segment">
+                                <div class="ui statistic">
+                                    <div class="value">
+                                        <i class="handshake brown icon">{{for_adopt_count}}</i>
+                                    </div>
+                                    <div class="label">
+
+                                            <a href="{% url 'training:adoption_list'%}">K9 FOR-ADOPTION</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                                <div class="ui raised center aligned segment">
+                                <div class="ui statistic">
+                                        <div class="value">
+                                            <i class="calendar alternate orange icon">{{pending_schedule}}</i>
+                                        </div>
+                                        <div class="label">
+                                        <a href="{% url 'unitmanagement:k9_checkup_pending'%}">PHEX TO BE SCHEDULED</a>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sixteen wide column">
+                    <!-- <div class="ui raised segment">
+                        <canvas id="myChart4"></canvas>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="six wide column" style="padding: 0%;padding-right: 1%;">
+                <div class="ui basic segment">
+                <div class="ui info message">
+                    <div class="header">
+                        Dont forget to keep the K9's Reproductive Cycle updated!
+                        <a href="{% url 'unitmanagement:reproductive_list'%}">Go</a>
+                    </div>
+                </div>
+                <div class="ui inverted segment">
+                    <h4>Calendar</h4>
+                </div>
+                    <div class="ui right aligned basic segment"
+                    style="padding:0%;margin:0%;margin-bottom:5px">
+                        <div class="ui buttons">
+                            <button class="ui button"  id = "prev" >Previous Year</button>
+                            <div class="or"></div>
+                            <button class="ui button"  id = "next" >Next Year</button>
+                        </div>
+
+                    </div>
+
+                    <div id = "calendar" style="margin-top:0%;"></div>
+                </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<style>
+#prev, #next{
+    background-color:orangered;
+    color: white;
+}
+</style>
+    <script>
+        $(document).ready(function() {
+
+            var endpoint = '../../unitmanagement/vet/api'
+            var in_heat = [];
+
+            $.ajax({
+                method: "GET",
+                url: endpoint,
+                success: function(data){
+                    in_heat = data.in_heat
+                    console.log(in_heat)
+                    setChart()
+                },
+                error: function(error_data){
+                    console.log("error")
+                    console.log(error_data)
+                }
+            })
+
+            function setChart(){
+                var ctx = document.getElementById('myChart');
+                var ctx2 = document.getElementById('myChart2');
+                var ctx3 = document.getElementById('myChart3');
+                var ctx4 = document.getElementById('myChart4');
+
+                var myChart4 = new Chart(ctx4, {
+                    type: 'line',
+                    data: {
+                        labels:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        datasets: [{
+                            label: "In Heat K9's",
+                            data: in_heat,
+                            backgroundColor: ['rgba(255, 99, 132, 0.5)','rgba(54, 162, 235, 0.5)','rgba(255, 206, 86, 0.5)','rgba(75, 192, 192, 0.5)'],
+                            borderColor: ['rgba(255, 99, 132, 1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)',],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                    animation: {
+                        animateScale: true,
+                    },
+                    title: {
+                        display: true,
+                        text: "K9's In Heat"
+                    },
+                        scales: {
+                        xAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                        }],
+                        yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            step:1,
+                            suggestedMax:10,
+                        }
+                        }]
+                    },
+                    }
+                });
+            }
+
+
+        });
+        </script>
+<script>
+
+     $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+
+          defaultView: 'month',
+          weekNumbers: 'true',
+          editable: true,
+          selectable: true,
+          eventLimit: true,
+          showNonCurrentDates: true,
+          nowIndicator: true,
+
+          eventTextColor: "white",
+
+
+          events: [
+                {% for i in events %}
+                {
+                     id: '{{ i.id }}',
+                    title: '{{i.k9}}',
+                    start: '{{ i.date_start|date:"Y-m-d" }}',
+                    end: '{{ i.date_end|date:"Y-m-d" }}',
+                    allDay: 'true',
+                },
+                {% endfor %}
+
+            ],
+
+
+          }); // end #calendar
+
+
+</script>
+
+{% endblock%}

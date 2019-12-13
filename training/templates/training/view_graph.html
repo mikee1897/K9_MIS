@@ -1,0 +1,26 @@
+{% extends "profiles/sidebar_training.html" %}
+
+{% block content %}
+
+<div class="ui huge header">{{title}}</div>
+
+<table class="ui inverted celled table">
+     <tr>
+    <th>
+        Summary:
+    </th>
+         </tr>
+{% for description in descriptions %}
+
+    <tr>
+        <td>{{ description }}</td>
+        </tr>
+{% endfor %}
+    </table>
+
+{% for graph in graphs %}
+{{ graph|safe }}
+{% endfor %}
+
+
+{% endblock %}

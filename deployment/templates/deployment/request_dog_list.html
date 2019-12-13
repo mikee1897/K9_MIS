@@ -1,0 +1,146 @@
+{% extends "profiles/sidebar_deployment.html" %}
+
+{% block content %}
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<div class="ui inverted segment" style="padding:20px;">
+    <h2 class="ui inverted header">
+        K9 Request List
+        <div class="sub header">Select a request to start scheduling k9 units.</div>
+    </h2>
+</div>
+
+{%if user.position == 'Operations' or user.position == 'Administrator'%}
+<table class="ui small celled table" id="tabledata1">
+        <thead>
+            <th class="two wide">Start date</th>
+            <th class="two wide">End date</th>
+            <th>Duration</th>
+            <th>Requester</th>
+            <th>Event Name</th>
+            <th>Place</th>
+            <th class="one wide">K9s Requested</th>
+            <th class="one wide">K9s Scheduled</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for Data in data2 %}
+            <tr >
+                <td>{{Data.start_date | date:'Y-m-d'}}</td>
+                <td>{{Data.end_date| date:'Y-m-d'}}</td>
+                    <td>{{Data.duration}} days</td>
+                <td>{{Data.requester}}</td>
+                <td>{{Data.event_name}}</td>
+                <td>{{Data.location}}</td>
+                <td>{{Data.k9s_needed}}</td>
+                <td>{{Data.k9s_deployed}}</td>
+                <td style="text-align:center;">
+                    <a href="{% url 'deployment:request_dog_details' Data.id %}" class = "tiny ui blue basic button">Select</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%else%}
+
+<div class="ui top attached tabular menu">
+    <a class="item active" data-tab="first">Pending</a>
+    <a class="item" data-tab="second">Approved</a>
+</div>
+<div class = "ui tab segment active" data-tab="first">
+    <table class="ui small celled table" id="tabledata1">
+        <thead>
+            <th class="two wide">Start date</th>
+            <th class="two wide">End date</th>
+            <th>Duration</th>
+            <th>Requester</th>
+            <th>Event Name</th>
+            <th>Place</th>
+            <th class="one wide">K9s Requested</th>
+            <th class="one wide">K9s Scheduled</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for Data in data1 %}
+            <tr>
+                <td>{{Data.start_date | date:'Y-m-d'}}</td>
+                <td>{{Data.end_date| date:'Y-m-d'}}</td>
+                    <td>{{Data.duration}} days</td>
+                <td>{{Data.requester}}</td>
+                <td>{{Data.event_name}}</td>
+                <td>{{Data.location}}</td>
+                <td>{{Data.k9s_needed}}</td>
+                <td>{{Data.k9s_deployed}}</td>
+                <td style="text-align:center;">
+                    <a href="{% url 'deployment:request_dog_details' Data.id %}" class = "tiny ui blue basic button">Select</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class = "ui tab segment" data-tab="second">
+    <table class="ui small celled table" id="tabledata2">
+        <thead>
+            <th class="two wide">Start date</th>
+            <th class="two wide">End date</th>
+            <th>Duration</th>
+            <th>Requester</th>
+            <th>Event Name</th>
+            <th>Place</th>
+            <th class="one wide">K9s Requested</th>
+            <th class="one wide">K9s Scheduled</th>
+            <th></th>
+        </thead>
+        <tbody>
+        {% for Data in data2 %}
+            <tr >
+                <td>{{Data.start_date | date:'Y-m-d'}}</td>
+                <td>{{Data.end_date| date:'Y-m-d'}}</td>
+                    <td>{{Data.duration}} days</td>
+                <td>{{Data.requester}}</td>
+                <td>{{Data.event_name}}</td>
+                <td>{{Data.location}}</td>
+                <td>{{Data.k9s_needed}}</td>
+                <td>{{Data.k9s_deployed}}</td>
+                <td style="text-align:center;">
+                    <a href="{% url 'deployment:request_dog_details' Data.id %}" class = "tiny ui blue basic button">Select</a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% for Data in data3 %}
+                <tr class = "error">
+                <td>{{Data.start_date | date:'Y-m-d'}}</td>
+                <td>{{Data.end_date| date:'Y-m-d'}}</td>
+                    <td>{{Data.duration}} days</td>
+                <td>{{Data.requester}}</td>
+                <td>{{Data.event_name}}</td>
+                <td>{{Data.location}}</td>
+                <td>{{Data.k9s_needed}}</td>
+                <td>{{Data.k9s_deployed}}</td>
+                <td style="text-align:center;">
+                    <a href="{% url 'deployment:request_dog_details' Data.id %}" class = "tiny ui blue basic button">Select</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%endif%}
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#tabledata1').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+        $('#tabledata2').DataTable( {
+        "order": [[ 0, "desc" ]]
+        });
+		$('.menu .item').tab();
+	});
+</script>
+
+
+ {% endblock %}

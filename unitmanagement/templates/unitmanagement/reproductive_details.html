@@ -1,0 +1,61 @@
+{% extends "profiles/sidebar_um.html" %}
+{% load static %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{data.name}} {{ title }}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui raised segment">
+    <table class="ui five column celled raised table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <td>{{data.name}}</td>
+                <th>Serial Number</th>
+                <td>{{data.serial_number}}</td>
+                <th>Capability</th>
+                <td>{{data.capability}}</td>
+            </tr>
+            <tr>
+                <th>Breed</th>
+                <td>{{data.breed}}</td>
+                <th>Age</th>
+                <td>{{data.age}}</td>
+                <th>Next Proestrus Date</th>
+                {% if data.next_proestrus_date == None %} </td>
+                <td>No Date Yet</td>
+                {% else %}
+                <td>{{ data.next_proestrus_date }}</td>
+                {% endif %}
+            </tr>
+        </thead>
+    </table>
+    <div class="ui inverted segment">
+        <form class="ui inverted form" method="POST">  
+            {% csrf_token %}
+            <div class="three fields">
+                <div class="field">
+                    <label>Reproductive Stage</label>
+                    {{form.reproductive_stage}}
+                </div>
+                <div class="field">
+                    <label>Last Proestrus Date</label>
+                    {{form.last_proestrus_date}}
+                </div>
+                <div class="field">
+                    <label>Gap between Heat Season(Months)</label>
+                    {{form.in_heat_months}}
+                </div>
+            </div>
+            <div class="ui inverted right aligned segment" style="padding: 0px;">
+                <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

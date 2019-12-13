@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>K9 Coast Guard</title>
+
+    <link rel="stylesheet" href="{% static 'Semantic-UI/semantic.min.css' %}">
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'Semantic-UI/semantic.min.js' %}"></script>
+    <!-- <script src="{% static 'custome/custom_jquery.js' %}"></script> -->
+    <!-- <link rel="stylesheet" href="{% static 'custom/custom_style.css' %}"> -->
+</head>
+<body style="background-color: orangered;">
+    <!--START OF TOP MENU-->
+        <div class="ui inverted top attached menu" style="padding:5px;">
+            <div class="right menu">
+                <a class="ui item" href="{% url 'profiles:register'%}" style="font-weight: bold;color: orangered;">SIGN-UP</a>
+                <a class="ui item" href="{% url 'profiles:login'%}" style="font-weight: bold;color: orangered;">LOGIN</a>
+            </div>
+        </div>
+    <!--END OF TOP MENU-->
+
+    <div class="ui bottom attached segment" id = 'bg' style="height:89%;">
+        <div class="ui three column centered grid">
+            <div class="column center aligned" style="background:transparent;border-radius:20px;margin-top: 3%;" class ='screen_centered'>
+                <img src="{% static 'images/k9_logo.png' %}">
+                <div class="ui inverted segment">
+                    <form class="ui inverted equal width form" method="POST">
+                        {% csrf_token %}
+                        <div class="field">
+                            <label>SERIAL NUMBER</label>
+                            <input placeholder="" name='serial_number' type="text">
+                        </div>
+                        <div class="field">
+                            <label>PASSWORD</label>
+                            <input placeholder="" name='password' type="password">
+                        </div>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div style="color: red;margin-bottom: 2px;"> {{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="center aligned">
+                        <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    /* #bg{
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: relative;
+        background-image: url('{% static "images/qwe2.jpg"%}');
+        background-size: 100% 100%;
+    } */
+
+    .screen_centered {
+        position: fixed;
+        margin-top: 10%;
+        left: 50%;
+        /* bring your own prefixes */
+        transform: translate(-50%, -50%);
+    }
+
+</style>
+
+    {% block script%}
+    {% endblock%}
+
+</html>

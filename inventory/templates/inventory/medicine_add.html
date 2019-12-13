@@ -1,0 +1,96 @@
+{% extends "profiles/sidebar_inventory.html" %}
+
+{% block content %}
+<div class="ui fluid container">
+    <div class="ui grid">
+        <div class="three column row">
+            <div class="three wide column"></div>
+            <div class="ten wide column">
+                    <h1 class="ui header">{{ title }}
+                            <div class="sub header">{{ texthelp }}</div>
+                        </h1>
+
+                        <div class="ui inverted segment">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="{{ style }} row"> {{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <form class = "ui inverted form" method="POST">
+                                {% csrf_token %}
+                                <div class = "three fields">
+                                    <div class="seven wide field">
+                                        <label>Medicine</label>
+                                        {{form.medicine}}
+                                    </div>
+                                    <div class="four wide field">
+                                        <label>Type</label>
+                                        {{form.med_type}}
+                                    </div>
+                                    <div class="five wide field">
+                                        <label>Imminization/Prevention</label>
+                                        {{form.immunization}}
+                                    </div>
+                                </div>
+
+
+                                <div class="three fields">
+                                    <div class="field">
+                                        <label>Dose</label>
+                                        {{form.dose}}
+                                    </div>
+                                    <div class="field">
+                                        <label>Unit of Measurement</label>
+                                        {{form.uom}}
+                                    </div>
+                                    <div class="field">
+                                        <label>Price</label>
+                                        {{form.price}}
+                                    </div>
+                                </div>
+                                    
+                                <div class="field">
+                                    <label>Description</label>
+                                        {{form.description}}
+                                </div>
+
+                                <div class="ui inverted right aligned segment" style="padding: 0px;">
+                                    <button onclick="return confirm('Are you sure?')" class = "ui button green" type="submit" >{{ actiontype }}</button>
+                                </div>
+                            </form>
+                        </div>
+            </div>
+            <div class="three wide column"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+
+        $("select[name='immunization']").prop('disabled', true);
+
+        $("select[name='med_type']").change(function() {
+            if ($("select[name='med_type']").val() == 'Vaccine'){
+                $("select[name='immunization']").prop('disabled', false);
+                $("input[name='dose']").val('').prop('disabled', true);
+                $("select[name='uom']").prop('disabled', true);
+            }
+            else if ($("select[name='med_type']").val() == 'Preventive'){
+                $("select[name='immunization']").prop('disabled', false);
+                $("input[name='dose']").val('').prop('disabled', false);
+                $("select[name='uom']").prop('disabled', false);
+            }
+            else{
+                $("select[name='immunization']").prop('disabled', true);
+                $("input[name='dose']").prop('disabled', false);
+                $("select[name='uom']").prop('disabled', false);
+            }
+        });
+    });
+
+</script>
+
+{% endblock%}

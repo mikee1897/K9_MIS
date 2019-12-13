@@ -1,0 +1,184 @@
+{% extends "profiles/sidebar_um.html" %}
+
+{% block content %}
+
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{title}} Daily Record</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui green message" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<form class="ui form" action="" method="POST">
+    {% csrf_token %}
+
+<div class="ui fluid container">
+    <div class="ui segment">
+        <div class="fields">
+            <div class="field">
+                <label><b>Training/Utilization (with Dog)</b></label>
+            </div>
+        </div>
+        <div class="four fields">
+            <div class="field">
+                On Leash Obedience: {{form2.on_leash}}
+            </div>
+            <div class="field">
+                Off Leash Obedience: {{form2.off_leash}}
+            </div>
+            <div class="field">
+                Obstacle Course: {{form2.obstacle_course}}
+            </div>
+            <div class="field">
+                Panelling: {{form2.panelling}}
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field">
+                <b>Port Facility</b>
+            </div>
+        </div>
+        <div class="three fields">
+            Plant:
+            <div class="one wide field">
+                 {{form2.port_plant}}
+            </div>
+            Find:
+            <div class="one wide field">
+                 {{form2.port_find}}
+            </div>
+            Search Time (seconds):
+            <div class="one wide field">
+                 {{form2.port_time}}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                <b>Building Facility</b>
+            </div>
+        </div>
+        <div class="three fields">
+                Plant:
+                <div class="one wide field">
+                    {{form2.building_plant}}
+                </div>
+                Find:
+                <div class="one wide field">
+                    {{form2.building_find}}
+                </div>
+                Search Time (seconds):
+                <div class="one wide field">
+                    {{form2.building_time}}
+                </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                <b>Vehicle</b>
+            </div>
+        </div>
+        <div class="three fields">
+                Plant:
+                <div class="one wide field">
+                    {{form2.vehicle_plant}}
+                </div>
+                Find:
+                <div class="one wide field">
+                    {{form2.vehicle_find}}
+                </div>
+                Search Time (seconds):
+                <div class="one wide field">
+                    {{form2.vehicle_time}}
+                </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                <b>Baggage</b>
+            </div>
+        </div>
+        <div class="three fields">
+                Plant:
+                <div class="one wide field">
+                    {{form2.baggage_plant}}
+                </div>
+                Find:
+                <div class="one wide field">
+                    {{form2.baggage_find}}
+                </div>
+                Search Time (seconds):
+                <div class="one wide field">
+                    {{form2.baggage_time}}
+                </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                <b>Others</b>
+            </div>
+        </div>
+        <div class="three fields">
+                Plant:
+                <div class="one wide field">
+                    {{form2.others_plant}}
+                </div>
+                Find:
+                <div class="one wide field">
+                    {{form2.others_find}}
+                </div>
+                Search Time (seconds):
+                <div class="one wide field">
+                    {{form2.others_time}}
+                </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                Daily Training Record (Satisfactory/Unsatisfactory): {{form2.rating}}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                <label><b>Utilization (without Dog)</b></label>
+            </div>
+        </div>
+        <div class="four fields">
+            <div class="field">
+                MARSEC: {{form2.MARSEC}}
+            </div>
+            <div class="field">
+                MARLEN: {{form2.MARLEN}}
+            </div>
+            <div class="field">
+                MARSAR: {{form2.MARSAR}}
+            </div>
+            <div class="field">
+                MAREP: {{form2.MAREP}}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                <b>Daily Feeding</b>
+            </div>
+        </div>
+        <div class="fields">
+            <div class="field">
+                Morning Feed (Per cup): {{form2.morning_feed_cups}}
+            </div>
+            <div class="field">
+                Evening Feed (Per cup): {{form2.evening_feed_cups}}
+            </div>
+        </div>
+    </div>
+    </div>
+
+        <div class="ui basic center aligned segment">
+            <button onclick="return confirm('Are you sure?')" id = "btn" class = "ui button green" type="submit" >Submit</button>
+        </div>
+    </form>
+
+
+<script type="text/javascript">
+
+
+</script>
+ {% endblock %}

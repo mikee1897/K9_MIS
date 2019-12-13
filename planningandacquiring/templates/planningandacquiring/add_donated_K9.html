@@ -1,0 +1,80 @@
+{% extends "profiles/sidebar_pa.html" %} {% block content %}
+
+<h2 class="ui header">
+ {{Title}}
+  <div class="sub header">Input K9 data here</div>
+</h2>
+
+<div class="ui ordered steps">
+  <div class="active step">
+    <div class="content">
+      <div class="title">K9 Form</div>
+      <div class="description">Provide your received K9 Data</div>
+    </div>
+  </div>
+
+  <div class="disabled step">
+    <div class="content">
+      <div class="title">Confirm Details</div>
+      <div class="description">Verify details</div>
+    </div>
+  </div>
+</div>
+
+<div class="ui inverted segment">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ style }} row"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+<form class = "ui inverted form" action="{% url 'planningandacquiring:add_donated_K9_form' %}" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    <div class="field">
+        <label>K9 Image</label>
+        {{form.image}}
+    </div>
+    <div class="fields">
+        <div class="sixteen wide field">
+            <label>Name</label>
+            {{form.name}}
+        </div>
+    </div>
+
+    <div class="fields">
+        <div class="eight wide field">
+            <label>Breed</label>
+            {{form.breed}}
+        </div>
+        <div class="four wide field">
+            <label>Sex</label>
+            {{form.sex}}
+        </div>
+        <div class="four wide field">
+            <label>Color</label>
+            {{form.color}}
+        </div>
+    </div>
+
+    <div class="fields">
+        <div class="five wide field">
+            <label>Birthdate</label>
+            {{form.birth_date}}
+        </div>
+
+        <div class="five wide field">
+            <label>Date Procured</label>
+            {{form.date_created}}
+        </div>
+
+    </div>
+
+
+
+    <div class="ui inverted right aligned segment" style="padding: 0px;">
+        <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Next Step</button>
+    </div>
+</form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% load static %}
+<a href="{% url 'profiles:notif_list'%}">
+    <div style="background-color: transparent;" class="ui icon top left pointing dropdown button" >
+        <i class="blue bell icon"></i>
+        <span style="color:red;font-size: 12px;">{{count}}</span>
+        <div class="ui menu" style="max-height:300px;overflow:scroll;width:330px;">
+                {% for notif_data in notif_data%}
+                {%if notif_data.viewed == True %}
+
+                <a class="ui feed item" style='color: black;opacity: 0.6;' href="{% url 'unitmanagement:redirect_notif' notif_data.id %}">
+                      
+                    <div class="event">
+                        <div class="content">
+                            <div class="summary">
+                                {{notif_data.message|linebreaksbr }} 
+                              
+                            </div>
+                            <div class="meta">
+                                <div class="date">
+                                        {{notif_data.datetime}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {%else%}
+                <a class="ui feed item" style='color: black;' href="{% url 'unitmanagement:redirect_notif' notif_data.id %}">
+                        <div class="event">
+                            <div class="content">
+                                <div class="summary">
+                                        {{notif_data.message}} 
+                                </div>
+                                <div class="meta">
+                                    <div class="date">
+                                            {{notif_data.datetime}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endif%}
+                {% endfor%}
+               
+        </div>
+    </div>
+</a>
+
+<style>
+    .dim{
+        opacity: 0.6;
+        color:black;
+    }
+    .notdim{
+        color:black;
+    }
+
+</style>

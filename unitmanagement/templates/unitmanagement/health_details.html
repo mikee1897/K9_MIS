@@ -1,0 +1,144 @@
+{% extends "profiles/sidebar_um.html" %}  
+
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+    <h3 class="ui header">{{ title }}{{ name }} as of {{date}}</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{style}}" > {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div class="ui segment">
+    <div class="ui raised segment">
+        <table class="ui collapse green celled table">
+            <thead>
+                <tr>
+                    <th class="two wide">K9</th>
+                    <td>{{data.dog}}</td>
+                    <th class="two wide">Reported by:</th>
+                    <td>{{data.incident_id.reported_by}}</td>
+                    <th class="two wide">Reported on:</th>
+                    <td>{{data.incident_id.date}}</td>
+                </tr>
+                <tr>
+                    <th>Veterinarian:</th>
+                    <td>{{data.veterinary}}</td>
+                    <th>Prescribed on:</th>
+                    <td>{{data.date}}</td>
+                    <th>Duration:</th>
+                    <td>{{data.duration}}</td>
+                </tr>
+            </thead>
+        </table>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th class="two wide">Problem:</th>
+                    <td class="fourteen wide">{{data.problem}}</td>
+                </tr>
+                <tr>
+                    <th>Treatment:</th>
+                    <td>{{data.treatment}}</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <table class="ui inverted green celled table" id = 'tabledata'>
+        <thead>
+          <th>Medicine</th>
+          <th>Quantity</th>
+          <th>Time of Day</th>
+          <th>Duration (Days)</th>  
+        </thead>
+        <tbody>
+            {% for data in medicine%}
+            <tr>
+                <td>{{data.medicine}}</td>
+                <td>{{data.quantity}}</td>
+                <td>{{data.time_of_day}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if request.session.session_user_position == "Veterinarian" %}
+    {% if th %}
+        {% for th in th %}
+        <div class="ui raised segment">
+                    <h2>Follow-Up</h2>
+            <table class="ui collapse table">
+                <thead>
+                    <tr>
+                        <th>K9</th>
+                        <td>{{th.follow_up.k9}}</td>
+                        <th>Date</th>
+                        <td>{{th.follow_up.date}}</td>
+                    </tr>
+                    <tr>
+                        <th>Remarks</th>
+                        <td class="nine wide">{{th.follow_up.description}}</td>
+                        <th>Reported by:</th>
+                        <td>{{th.follow_up.reported_by}}</td>
+                    </tr>
+                </thead>
+            </table>
+            <br>
+            <div class="ui grid">
+                {% for image in image%}
+                    <div class="five wide column center aligned">
+                        <img src="{{image.image.url}}" alt="" style="position:relative;max-width: 300px;">
+                    </div>
+                {%endfor%}
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endif %}
+    <br>
+    
+    <center>
+        {% if data.follow_up == True %}
+            {% if th%}
+               {% for th in th %}
+                    {% if th.health.follow_up == True and th.health.follow_up_date == None%}
+                    <h3>You already requested a follow-up last {{th.incident.date}}.</h3>
+                    {%else%}
+                    <h3>You have a Follow Up Check-up on {{th.health.follow_up_date}}</h3>
+                    {% endif %}
+                {% endfor %}
+            {%else%}
+            <div class="ui info message">
+                <div class="content">
+                    <div class="header">
+                        The Vet had already prescribed you for this particular follow-up. Please
+                        check your most recent Concern. This is just a reminder that you
+                        still have an on-going medication.
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+        <a href="{% url 'unitmanagement:follow_up' data.id %}" class="ui blue button">Follow Up</a>
+        {% endif %}
+    </center>
+    
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata').DataTable();
+
+        $(function() {
+            var res = $('#status').text();
+            if($('#status').text()=='Approved'){
+               $('#approve_btn').prop('disabled', true);
+            }
+        });
+
+    } );
+    
+</script>
+ {% endblock %}

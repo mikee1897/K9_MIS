@@ -1,0 +1,22 @@
+{% extends "profiles/sidebar_pa.html" %}
+{% block content %}
+{% load static %}
+{% load um_tags %}
+
+{% if messages %}
+        {% for message in messages %}
+            <div class="ui red message"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+ <form enctype="multipart/form-data" class="ui inverted equal width form" action="{% url 'planningandacquiring:choose_date' %}" method="POST">
+        {% csrf_token %}
+
+        {{form.hist_date}}
+
+        <div class="ui center aligned segment" style="padding: 0px;" style="border-width: 0px;">
+            <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+        </div>
+ </form>
+
+{% endblock %}

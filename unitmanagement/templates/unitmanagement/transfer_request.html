@@ -1,0 +1,84 @@
+{% extends "profiles/sidebar_um.html" %}
+{% block content %}
+<div class="ui inverted segment" style="padding:20px;">
+        <h3 class="ui header">{{ title }}</h3>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="ui green message" > {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+</div>
+
+<div class="ui info message">
+  <i class="close icon"></i>
+  <div class="header">
+    Trasnfer Requests
+  </div>
+  <ol class="ui ordered list">
+    <li>Every Handler is allowed to request for a location transfer as long as the handler has rendered atleast 2 years of service.</li>
+    <li>More so, a handler may only transfer if the team have enough members to operate (atleast 2).</li>
+      <li>In case the handler's original team does not have enough members to operate by the time of transfer, you are required
+          to reschedule another handler within a 1 week difference of current handler.</li>
+      <li>Handler to be rescheduled must be planning to transfer to the same location.</li>
+  </ol>
+</div>
+
+    <table id="tabledata1" class="ui celled small table">
+        <thead class="center aligned">
+                <th class="three wide">Handler</th>
+                <th>From Location</th>
+                <th>To Location</th>
+                <th class="two wide">Date of Transfer Requested</th>
+                <th class="one wide">Matches</th>
+                <th class="two wide"></th>
+        </thead>
+        <tbody>
+            {% for data in data %}
+                <tr>
+                    <td>{{data.0.handler}}</td>
+                    <td>{{data.0.location_from}}</td>
+                    <td>{{data.0.location_to}}</td>
+                    <td>{{data.0.date_of_transfer}}</td>
+                    <td>{{data.1}}</td>
+                    <td class="center aligned">
+                        <a href="#" class="ui small basic blue button btn_modal"
+                        id={{data.0.id}} data-date = "{{data.0.date_of_transfer}}">Select</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<div class="ui large longer modal" id='id_data'>
+  
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#tabledata1').DataTable();
+        $('.menu .item').tab();
+        
+        $('.btn_modal').bind('click', function(){
+            var url = 'transfer-request-list/ajax_load_transfer'; 
+            var id = $(this).attr('id');
+            var date = $(this).attr('data-date');
+
+            $.ajax({   
+            url: url,
+            data: {
+                'id': id,
+                'date' : date
+            },
+            success: function (data) {
+                $("#id_data").html(data);
+            }
+        });
+
+            $('#id_data').modal('show');
+        });
+
+    });
+
+</script>
+ {% endblock %}

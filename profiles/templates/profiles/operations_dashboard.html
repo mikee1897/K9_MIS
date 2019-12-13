@@ -1,0 +1,320 @@
+{% extends "profiles/global-base-ui/sidebar_menu.html" %} 
+
+{% load um_tags %}
+{% load widget_tweaks %}
+{% block dashboard %}
+{{geoform.media}}
+<div class="container fluid">
+    <div class="ui two column grid">
+      <div class="streched row">
+        <div class="ten wide column"  style="padding-right: 0%;">
+          <div class="ui basic segment">
+            <div class="ui stackable grid">
+                <div class="sixteen wide column">
+                    <div class="ui equal width height grid">
+                        <div class="column">
+                            <div class="ui raised inverted segment">
+                                <form class="ui equal width inverted small form" id="request_form" action="" method="POST">
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="{{ style }}">{{message}}</div>
+                                    {% endfor %}
+                                    {% endif %}
+                            
+                                    {% csrf_token %}
+                                    <div class="fields">
+                                        <div class="field">
+                                            <label>Requester</label>
+                                            {{form.requester}}
+                                        </div>
+                            
+                                        <div class="field">
+                                            <label>Event Name</label>
+                                            {{form.event_name}}
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Phone Number</label>
+                                            {{form.phone_number}}
+                                        </div>
+                                    </div>
+                                    <div class="fields">
+                                        <div class="field">
+                                            <label>Area</label>
+                                            {{form.area}}
+                                        </div>
+                                        <div class="field">
+                                            <label>City</label>
+                                            {{form.city}}
+                                        </div>
+                                        <div class="field">
+                                            <label>Email Address</label>
+                                            {{form.email_address}}
+                                        </div>
+                            
+                                        <div class="field">
+                                            <label>Number of K9s needed</label>
+                                            {{form.k9s_needed}}
+                                        </div>
+                                    </div>
+                                    <div class="fields">
+                                        <div class="field">
+                                            <label>Start of Event</label>
+                                            {{form.start_date}}
+                                        </div>
+                                        <div class="field">
+                                            <label>End of Event</label>
+                                            {{form.end_date}}
+                                        </div>
+                                    </div>
+                                    <div class="fields">
+                                        <div class="ten wide field">
+                                                <label>Remarks</label>
+                                                {{form.remarks}}
+                                            </div>
+                                    </div>
+                                    <div class="fields">
+                                        <div class="ten wide field">
+                                                <label>Address</label>
+                                                {{form.location}}
+                                            </div>
+                                    </div>
+                                    <div class="ui inverted right aligned segment" style="padding: 0px;">
+                                        <button class = "ui button green" type="submit" >Submit</button>
+                                    </div>
+                                    <div class="ui inverted placeholder segment">
+                                        <div class="ui two column stackable center aligned grid">
+                                            <!-- <div class="ui vertical divider"></div> -->
+                                          <div class="top aligned row">
+                                            <div class="four wide column">
+                                          
+                                                <label>Search Location</label>
+                                                <div class="ui fluid category search">
+                                                  <div class="ui icon input">
+                                                    {{geosearch.search}}
+                                                    <i class="search icon"></i>
+                                                  </div>
+                                                  <div class="results"></div>
+                                                </div>
+                                                <br>
+                                                <button id = "btn_search" class="ui blue button" type="button">Search</button>
+                    
+                                                <div  id ="id_location_cards"></div>
+                    
+                    
+                                            </div>
+                                            <div class="column">
+                    
+                                                <label>Geotag Location</label>
+                                              <div id = "id_geomap">
+                                                  {{geoform.point}}
+                                              </div>
+                    
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                      </div>
+                </div>
+
+           
+            </div>
+        </div>
+        </div>
+        <div class="six wide column" style="padding: 0%;padding-right: 1%;">
+            <div class="ui basic segment" style="padding-left:0%;"> 
+                <div class="ui raised segment center aligned">
+                        <div class="ui statistic">
+                            <div class="value">
+                                <i class="bus blue icon">{{rq}}</i>
+                            </div>
+                            <div class="label">
+                        <a href="{% url 'deployment:request_dog_list'%}">UPCOMING EVENTS</a>
+                            </div>
+                        </div>
+                </div>
+              <div class="ui inverted segment">
+                <h4>Calendar</h4>
+              </div>
+                <div class="ui right aligned basic segment"
+                style="padding:0%;margin:0%;margin-bottom:5px">
+                    <div class="ui buttons">
+                        <button class="ui button"  id = "prev" >Previous Year</button>
+                        <div class="or"></div>
+                        <button class="ui button"  id = "next" >Next Year</button>
+                      </div>
+                
+                </div>
+        
+                <div id = "calendar" style="margin-top:0%;"></div>
+             </div> 
+          </div>
+        </div>
+    </div>    
+</div>
+
+ <div id = "id_event_load"></div>
+
+
+<style>
+    #prev, #next{
+      background-color:orangered;
+      color: white;
+    }
+    </style>
+<script>
+$(document).ready(function() {
+  $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+
+          defaultView: 'month',
+          weekNumbers: 'true',
+          editable: true,
+          selectable: true,
+          eventLimit: 3,
+          nowIndicator: true,
+
+          eventTextColor: "white",
+
+
+          events: [
+                {% for i in events %}
+                {
+                    id: '{{ i.id }}',
+                    title: '{{i.event_name}}',
+                    start: '{{ i.start_date|date:"Y-m-d" }}',
+                    end: '{{ i.end_date|date:"Y-m-d" }}',
+                    allDay: 'true',
+                },
+                {% endfor %}
+            ],
+            dayClick: function(date) {
+                new_date = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                var view = $('#calendar').fullCalendar('getView');
+
+                    $('#calendar').fullCalendar('gotoDate',date);
+                    $('#calendar').fullCalendar('changeView', 'agendaDay');
+
+                },
+
+            eventClick: function(event, element) {
+                var url = 'ajax_load_event';
+
+                 $.ajax({
+                        url: url,
+                        data: {
+                        'event_id': event.id,},
+                        success: function (data) {
+
+                          $("#id_event_load").html(data);
+                          $('#event_modal').modal('show');
+                          },
+                        error:
+                            function(xhr){
+                            alert(xhr.statusText)
+                            return false;}
+                    });
+
+                 }
+
+          });
+
+
+
+      $('#prev').click(function() {
+      $('#calendar').fullCalendar('prevYear');
+      });
+
+      $('#next').click(function() {
+      $('#calendar').fullCalendar('nextYear');
+      });
+    var endpoint = '../../unitmanagement/commander/api'
+    var performance = []
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function(data){
+          team = data.team_items
+          setChart()         
+        },
+        error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+        }
+    })
+
+    function setChart(){
+        var ctx = document.getElementById('myChart');
+        //Chart1
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: ['Something'],
+              datasets: [{
+                    label: "AOR",
+                    data: team_items,
+                    backgroundColor: ['rgba(75, 192, 192, 0.5)'],
+                    borderColor: ['rgba(75, 192, 192, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+            animation: {
+                animateScale: true,
+            },
+            title: {
+                display: true,
+                text: "AOR"
+            },
+            scales: {
+                xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                }
+                }],
+                yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    step:1,
+                    suggestedMax:100,
+                }
+                }]
+            },
+          }
+        });
+      }
+
+      $("#btn_search").click(function () {
+      var url = 'ajax_load_locations';  // get the url of the `load_locations` view
+      var search_query = $("#id_search").val();  // get the search query from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request
+        data: {
+          'search_query': search_query, // add the search query to the GET parameters
+           'width' : {{width}},
+        },
+        success: function (data) {   // `data` is the return of the `load_locations` view function
+          $("#id_location_cards").html(data);  // replace the contents of the #id_location_cards input with the data that came from the server
+        },
+            error:
+         function(xhr){
+             alert("Error: " + xhr.statusText);
+             //alert(xhr.responseText) --> to get the full details of error
+             return false;
+             }
+      });
+
+    });
+    
+});
+</script>
+{% endblock%}

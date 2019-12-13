@@ -1,0 +1,60 @@
+
+{% load static %}
+{% block content %}
+
+{% if type_text == 'transfer' %}
+<center>
+    <img src="{% static 'images/default.png' %}" alt="" style="position:
+    relative; width: 200px;height: 200px;" >
+</center>
+<input type="hidden" name="requester" value="{{requester}}">
+<table class="ui celled small table"> 
+    <thead>
+        <tr>
+            <th>Handler</th>
+            <td>{{handler}}</td>
+            <th>K9</th>
+            <td>{{k9}}</td>
+        </tr>
+        <tr>
+            <th>City</th>
+            <td>{{pi.city}}</td>
+            <th>K9 Age</th>
+            <td>{{k9.age}}</td>
+        </tr>
+        <tr>
+            <th>Mobile</th>
+            <td>{{pi.mobile_number}}</td>
+            <th>Capability</th>
+            <td>{{k9.capability}}</td>
+        </tr>
+        <tr>
+            <th>Achievement</th>
+            <td>{{cc_ac}}</td>
+            <th>Infractions</th>
+            <td>{{cc_in}}</td>
+        </tr>
+    </thead>
+</table>
+
+{% else %}
+<div class="image">
+    <center>
+        <img src="{{handler.image.url}}" style="max-width: 250px;">
+    </center>
+            
+    </div>
+    <div class="content">
+    <a class="header">{{handler.fullname}}</a>
+    <div class="meta">
+        <strong>Rank: {{handler.rank}}</strong><br>
+        <strong>Age: {{handler.age}}</strong><br>
+        <strong>Sex: {{handler.gender}}</strong><br>
+        <strong>City: {{pi.city}}</strong><br>
+        <strong>Mobile: {{pi.mobile_number}}</strong>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

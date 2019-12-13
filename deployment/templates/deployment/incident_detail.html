@@ -1,0 +1,33 @@
+{% extends "profiles/sidebar_deployment.html" %}
+{% load index %}
+
+{% block content %}
+<div class = "ui inverted segment">
+<h1>{{title}}</h1>
+</div>
+
+<div class = "ui segment">
+
+		<table class="ui two column celled table">
+            <thead>
+        	<tr>
+            <th>Reported by</th>
+                <td>{{incident.user}}</td>
+            </tr>
+            <th>Date</th>
+                <td>{{incident.date}}</td>
+            </tr>
+            <th>Location</th>
+                <td>{{incident.location}}</td>
+            </tr>
+            <th>Type</th>
+                <td>{{incident.type}}</td>
+            </tr>
+            <th>Report</th>
+            <td><textarea rows="4" cols="50">{{incident.remarks}}</textarea></td>
+            </tr>
+            </thead>
+    </table>
+</div>
+
+{% endblock %}

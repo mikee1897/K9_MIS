@@ -1,0 +1,76 @@
+{% extends "profiles/sidebar_deployment.html" %}
+
+{% block content %}
+<h2 class="ui header">
+    {{title}}
+    <div class="sub header">Input location details Here</div>
+</h2>
+       
+<div class="ui fluid container">
+    <div class="ui inverted segment">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="{{ style }}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+    <form class="ui inverted equal width form" id="area_team_form" action="{% url 'deployment:assign_team' %}" data-teams-url="{% url 'deployment:ajax_load_teams' %}" method="POST" novalidate>
+        {% csrf_token %}
+        <div class="fields">
+            <div class="field">
+                <label>Area</label>
+                {{form.area}}
+            </div>
+            <div class="field">
+                <label>Team</label>
+                {{form.team}}
+            </div>
+        </div>
+
+       <div class="fields">
+            <div class="field">
+                <label>Number of Handlers needed</label>
+                {{form.handlers}}
+            </div>
+            <div class="field">
+                <label>Number of Explosives needed</label>
+                {{form.EDD}}
+            </div>
+       </div>
+
+        <div class="fields">
+            <div class="field">
+                <label>Number of Narcotics needed</label>
+                {{form.NDD}}
+            </div>
+            <div class="field">
+                <label>Number of Search and Rescue needed</label>
+                {{form.SAR}}
+            </div>
+        </div>
+
+        <div class="ui inverted right aligned segment" style="padding: 0px;" style="border-width: 0px;">
+            <button class = "ui button green" type="submit" onclick="return confirm('Are you sure?')">Submit</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+  <script>
+    $("#id_area").change(function () {
+      var url = $("#area_team_form").attr("data-teams-url");  // get the url of the `load_teams` view
+      var areaId = $(this).val();  // get the selected area ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'area': areaId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_teams` view function
+          $("#id_team").html(data);  // replace the contents of the teams input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+{% endblock %}
