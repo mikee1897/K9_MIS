@@ -48,6 +48,8 @@ urlpatterns = [
     path('add_K9_offspring/ajax_load_form', views.load_form, name='ajax_load_form'),
     path('add_procured_k9/ajax_load_form_procured', views.load_form_procured, name='ajax_load_form_procured'),
     
+    path('not_in_heat/<int:id>', views.not_in_heat, name='not_in_heat'),
+    
     path('budgeting/ajax_load_budget_data', views.load_budget_data, name='ajax_load_budget_data'),
     path('budgeting/ajax_load_budget', views.load_budget, name='ajax_load_budget'),
     

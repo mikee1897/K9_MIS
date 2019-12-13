@@ -512,27 +512,6 @@ def add_K9_parents(request):
     sickh = []
     b_arrh = []
 
-    # heat_list = []
-    # for heat in heat:
-    #     heat_list.append(heat.id)
-
-    #     h = Health.objects.filter(dog=heat).count()
-    #     momh.append(heat)
-    #     sickh.append(h)
-
-    #     birth = K9_Litter.objects.filter(mother=heat).aggregate(sum=Sum('litter_no'))['sum']
-    #     death = K9_Litter.objects.filter(mother=heat).aggregate(sum=Sum('litter_died'))['sum']
-
-    #     if birth != None or death != None:
-    #         total = (birth / (birth+death)) * 100
-    #     else:
-    #         total=100
-        
-    #     b_arrh.append(int(total))
-
-    # hlist = zip(momh,sickh,b_arrh)
-    # for a,b,c in hlist:
-    #     print(a,b,c)
         
     mother  = K9.objects.filter(sex="Female").filter(training_status = "For-Breeding").filter(age__gte = 1).filter(age__lte = 6).filter(Q(reproductive_stage = "Estrus") | Q(reproductive_stage = "Proestrus"))
     
@@ -802,6 +781,7 @@ def in_heat_change(request):
         date = parse_date(request.POST.get('date_change'))
         
         k9 = K9.objects.get(id=id)
+        k9.last_last_proestrus_date = k9.last_proestrus_date
         k9.last_proestrus_date = date
         k9.save()
         
@@ -2920,7 +2900,8 @@ def ajax_supplier_report(request):
             g_on_training = K9.objects.filter(supplier=supplier).filter(date_created__range=[from_date, to_date]).filter(trained=None).count()
 
             grand_total = g_trained + g_failed + g_on_training
-            y = [supplier,g_trained,g_failed,g_on_training,grand_total]
+            perc = g_trained/(g_trained + g_failed)*100
+            y = [supplier,g_trained,g_failed,g_on_training,grand_total, int(perc)]
             grand_arr.append(y)
 
             first = arr2[0]
@@ -3230,7 +3211,7 @@ def budgeting(request):
     adult_quantity_total = 0
     #SHOW BUDGET FORM
     if generate == True:
-        all_k9 = K9.objects.exclude(status="Adopted").exclude(status="Dead").exclude(status="Stolen").exclude(status="Lost")
+        all_k9 = K9.objects.exclude(Q(status="Adopted")|Q(status="Dead")|Q(status="Stolen")|Q(status="Lost"))
         
         #K9 to be born and die
         k9_breeded = K9_Mated.objects.filter(status='Pregnant')
@@ -3285,7 +3266,7 @@ def budgeting(request):
 
         all_ku = np.unique(all_k)
 
-        all_dogs = K9.objects.exclude(status="Adopted").exclude(status="Dead").exclude(status="Stolen").exclude(status="Lost").count()
+        all_dogs = K9.objects.exclude(Q(status="Adopted")|Q(status="Dead")|Q(status="Stolen")|Q(status="Lost")).count()
 
         all_kk = []
         for a in all_ku:
@@ -3298,11 +3279,8 @@ def budgeting(request):
         k9_t_ny = k9_cy+50
 
         difference_k9 = k9_cy - k9_ny
-        born_ny=0
-        for b in k9_breeded:
-            d = Dog_Breed.objects.filter(sex='Female').get(breed=b.mother.breed)
-            born_ny = born_ny + d.litter_number
-
+        born_ny=K9.objects.filter(source='Breeding').filter(birth_date__year=current_year).exclude(Q(status="Adopted")|Q(status="Dead")|Q(status="Stolen")|Q(status="Lost")).count()
+        
         
         NDD_count = K9.objects.filter(capability='NDD').exclude(status="Adopted").exclude(status="Dead").exclude(status="Stolen").exclude(status="Lost").count()
         EDD_count = K9.objects.filter(capability='EDD').exclude(status="Adopted").exclude(status="Dead").exclude(status="Stolen").exclude(status="Lost").count()
@@ -3977,21 +3955,15 @@ def load_budget(request):
     k9_ny =  int(request.GET.get('k9_ny'))
     born_ny =  int(request.GET.get('born_ny'))
     total_k9_next_year = need_procure_ny + k9_ny + born_ny
-    all_k9 = K9.objects.exclude(status="Adopted").exclude(status="Dead").exclude(status="Stolen").exclude(status="Lost")
+    all_k9 = K9.objects.exclude(Q(status="Adopted")|Q(status="Dead")|Q(status="Stolen")|Q(status="Lost"))
     
     k9_cy = all_k9.count()
     next_year = dt.now().year + 1
     current_year = dt.now().year
 
-    #get k9 born next year
-    k9_born_next_year = K9_Mated.objects.filter(status='Pregnant')
-    born_ny = 0 #BORN K9 VARIABLE COUNT
-    for data in k9_born_next_year:
-        m = data.date_mated  + timedelta(days=63)
-        if m.year == next_year:
-            breed = Dog_Breed.objects.filter(breed=data.mother.breed).get(sex='Female')
-            born_ny += int(breed.litter_number)
-
+  
+    born_ny = K9.objects.filter(source='Breeding').filter(birth_date__year=current_year).exclude(Q(status="Adopted")|Q(status="Dead")|Q(status="Stolen")|Q(status="Lost")).count()
+   
     #get k9 died next year
     dead_breed_ny = [] 
     for data in all_k9:
@@ -4505,3 +4477,9 @@ def load_budget(request):
     }
 
     return render(request, 'planningandacquiring/budget_data.html', context)
+
+def not_in_heat(request,id):
+    k9 = K9.objects.get(id=id)
+    k9.last_proestrus_date = k9.last_last_proestrus_date
+    k9.save()
+    return redirect('planningandacquiring:add_K9_parents_form')

@@ -196,6 +196,7 @@ class K9(models.Model):
     age_days = models.IntegerField('age_days', default = 0)
     age_month = models.IntegerField('age_month', default = 0)
     in_heat_months = models.IntegerField('in_heat_months', default = 6)
+    last_last_proestrus_date = models.DateField(blank=True, null=True)
     last_proestrus_date = models.DateField(blank=True, null=True)
     next_proestrus_date = models.DateField(blank=True, null=True)
     last_estrus_date = models.DateField(blank=True, null=True)
@@ -325,6 +326,7 @@ class K9(models.Model):
         if self.sex == 'Female':
             if self.last_proestrus_date == None:
                 self.last_proestrus_date = d.today() + relativedelta(months=+self.in_heat_months)
+                self.last_last_proestrus_date = self.last_proestrus_date
             
             self.last_estrus_date = self.last_proestrus_date + relativedelta(days=9)
             self.metestrus_date = self.last_estrus_date + relativedelta(month=2)

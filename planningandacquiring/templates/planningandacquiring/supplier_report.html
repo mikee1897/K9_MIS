@@ -16,7 +16,7 @@
         <table class="ui small celled six column structured table">
         <thead class="center aligned">
             <tr class='center aligned'>
-                <th colspan="5">SUMMARY</th>
+                <th colspan="6">SUMMARY</th>
             </tr>
             <tr>
                 <th>Supplier</th>
@@ -24,16 +24,18 @@
                 <th>Failed</th>
                 <th>On-Training</th>
                 <th>Total</th>
+                <th>Percentage(minus on-training)</th>
             </tr>
         </thead>
         <tbody>
             {% for data1 in grand_arr %}
             <tr class="right aligned">
                 <td class="left aligned">{{data1.0}}</td>
-                <td>{{data1.1}}</td>
-                <td>{{data1.2}}</td>
-                <td>{{data1.3}}</td>
-                <td>{{data1.4}}</td>
+                <td>{{data1.1|intcomma}}</td>
+                <td>{{data1.2|intcomma}}</td>
+                <td>{{data1.3|intcomma}}</td>
+                <td>{{data1.4|intcomma}}</td>
+                <td>{{data1.5}}%</td>
             </tr>
             {%endfor%}            
         </tbody>

@@ -298,32 +298,32 @@ def check_handlers_with_multiple_k9s():
 
 def mass_populate_revisited():
     # GENERAL & DEPLOYMENT
-    # create_supplier()
-    # generate_dogbreed()
-    #
-    # generate_user()
-    # create_teams()
-    # generate_maritime()
-    # generate_k9()
-    #
-    # create_predeployment_inventory()
-    # generate_inventory_trail()
-    #
-    # generate_k9_parents()
-    # generate_requests()
-    #
-    # generate_sick_breeding()
-    # generate_adoption()
-    # generate_health_record()
-    # generate_grading()
-    # generate_k9_incident()
-    # generate_handler_leave()
-    # generate_handler_incident()
-    # generate_location_incident()
-    # generate_daily_refresher()
-    #
-    # fix_dog_duplicates()
-    # generate_k9_due_retire()
+    create_supplier()
+    generate_dogbreed()
+    
+    generate_user()
+    create_teams()
+    generate_maritime()
+    generate_k9()
+    
+    create_predeployment_inventory()
+    generate_inventory_trail()
+    
+    generate_k9_parents()
+    generate_requests()
+    
+    generate_sick_breeding()
+    generate_adoption()
+    generate_health_record()
+    generate_grading()
+    generate_k9_incident()
+    generate_handler_leave()
+    generate_handler_incident()
+    generate_location_incident()
+    generate_daily_refresher()
+    
+    fix_dog_duplicates()
+    generate_k9_due_retire()
 
     #PRINT
     '''

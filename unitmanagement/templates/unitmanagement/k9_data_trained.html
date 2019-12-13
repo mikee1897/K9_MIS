@@ -12,19 +12,19 @@
                 <div class="ui tiny info message">
                     <header>Priority</header>
                     <ol>
-                        <li>Check For-Breeding Count and Number of K9s per Skill.</li>
+                        <li>Check For Breeding Count and Number of K9s per Skill.</li>
                         <li>Check Sick Record of K9</li>
                         <li>Check Training Record of K9</li>
                     </ol>
                     <header>Note</header>
                     <ul>
-                        <li>Less Sickly K9 would be prefered For-Breeding</li>
-                        <li>Training Score 85 and above would be ideal for For-Deployment.</li>
+                        <li>Less Sickly K9 would be prefered For Breeding</li>
+                        <li>Training Score 85 and above would be ideal for For Deployment.</li>
                         <li>Dont forget to check the remarks!</li>
                         <li>If sick record needs validation, check phsique of k9.</li>
                     </ul>
                 </div>
-                <div class="four fields">
+                <div class="five fields">
                     <div class="field">
                         <label>Name</label>
                         <input type="text" value="{{k9.name}}" readonly>
@@ -38,8 +38,12 @@
                         <input type="text" value="{{k9.sex}}" readonly>
                     </div>
                     <div class="field">
-                        <label>Age</label>
-                        <input type="number" value="{{k9.age}}" readonly>
+                        <label>Age (yrs & mos)</label>
+                        <input type="text" value="{{k9.age}}yrs & {{k9.month_remainder}}mos" readonly>
+                    </div>
+                    <div class="field">
+                        <label>Age (days)</label>
+                        <input type="number" value="{{k9.age_days}}" readonly>
                     </div>
                 </div>
                 <div class="two fields">
@@ -125,8 +129,8 @@
                     {% endfor %}
             
                     <div class="ui basic center aligned segment">
-                        <button type="submit" class="tiny ui blue button" name="deploy">For-Deployment</button>
-                        <button type="submit" class="tiny ui green button" name="breed">For-Breeding</button>    
+                        <button type="submit" class="tiny ui blue button" name="deploy">For Deployment</button>
+                        <button type="submit" class="tiny ui green button" name="breed">For Breeding</button>    
                     </div>
                 </form>
         </div>

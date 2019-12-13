@@ -43,9 +43,13 @@
                 <td>{{data.birth_date}}</td>
                 </tr>
             <tr>
-              <th>Age</th>
-                <td>{{data.age}}</td>
+              <th>Age (yrs & mos)</th>
+                <td>{{data.age}} years and {{data.month_remainder}} months</td>
                 </tr>
+              <tr>
+                <th>Age (days)</th>
+                  <td>{{data.age_days}}</td>
+                  </tr>
 
     		</thead>
         </table>

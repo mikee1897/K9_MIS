@@ -16,7 +16,7 @@
             <th>Last Physical Check-up</th>
             <th>K9</th>
             <th>Breed</th>
-            <th>Age (yrs & mons)</th>
+            <th>Age (yrs & mos)</th>
             <th>Age (days)</th>
             <th></th>
         </tr>
@@ -29,8 +29,8 @@
                     <a href="#" class="btn_details" id ="{{data.0.id}}">{{data.0}}</a>
                 </td>
                 <td>{{data.0.breed}}</td>
-                <td>{{data.age}} years and {{data.month_remainder}} months</td>
-                <td>{{data.age_days}}</td>
+                <td>{{data.0.age}} years and {{data.0.month_remainder}} months</td>
+                <td class="right aligned">{{data.0.age_days}}</td>
                 <td class="center aligned">
                     <a href="#" class="ui tiny basic blue button btn_form" id ="{{data.0.id}}">Select</a>
                 </td>

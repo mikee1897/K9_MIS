@@ -24,13 +24,11 @@
             <div class="content">
                     <a class="header">{{k9}}</a>
                     <div class="meta">
-                        <strong>Age: {{k9.age}}</strong><br>
+                        <strong>Age (yrs & mos): {{k9.age}}yrs and {{k9.month_remainder}}mos</strong><br>
+                        <strong>Age (days): {{k9.age_days}}</strong><br>
                         <strong>Breed: {{k9.breed}}</strong><br>
                         <strong>Sex: {{k9.sex}}</strong>
                     </div>
-                </div>
-                <div class="extra content">
-                    <h3>{{k9.capability}}</h3>
                 </div>
             </div>
             <div class='column center aligned' id='id_handler_data'> 

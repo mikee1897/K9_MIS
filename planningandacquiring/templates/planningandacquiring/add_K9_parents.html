@@ -164,28 +164,6 @@
                          </thead>
                  
                          <tbody>
-                             <!-- {% for m, s, b in hlist %}
-                             <tr class="positive">
-                                 <td class="center aligned"> 
-                                     <input type="radio" id="radiom" name="radiom" value="{{m.id}}">
-                                 </td>
-                                 <td>
-                                     <a href="#" class="show_modal" id='{{m.id}}'
-                                     style="color:green;">{{m.name}}</a>
-                                 </td>
-                                 <td>{{m.age}}</td>
-                                 <td>{{m.breed}}</td>
-                                 <td>{{m.capability}}</td>
-                                 <td>{{b}}%</td>
-                                 <td>{{m.litter_no}}</td>
-                                 <td>{{s}}</td>
-                                 <td>
-                                    <a href="#" class="btn_modal" data-name='{{f}}' id='{{m.id}}'>
-                                        {{m.last_proestrus_date|date:'Y/m/d'}} -
-                                        Mate Today!</a> 
-                                </td>
-                             </tr>
-                             {% endfor %} -->
                              {% for m, s, b in mlist %}
                              {% if today.date == m.last_estrus_date  %}
                              <tr class="positive">
@@ -202,10 +180,13 @@
                                     <td>{{b}}%</td>
                                     <td>{{m.litter_no}}</td>
                                     <td>{{s}}</td>
-                                    <td>
+                                    <td class="center aligned">
                                        <a href="#" class="btn_modal" data-name='{{f}}' id='{{m.id}}'>
                                            {{m.last_estrus_date|date:'Y/m/d'}} -
                                            Mate Today!</a> 
+                                        <a class="ui icon red small button" href="{% url 'planningandacquiring:not_in_heat' m.id %}">
+                                            <i class="icon ban"></i>
+                                        </a>
                                    </td>
                                 </tr>
                              {% elif today.date > m.last_estrus_date  %}
@@ -223,8 +204,11 @@
                                  <td>{{b}}%</td>
                                  <td>{{m.litter_no}}</td>
                                  <td>{{s}}</td>
-                                 <td>
+                                 <td class="center aligned">
                                     <a href="#" class="btn_modal" data-name='{{f}}' id='{{m.id}}'>{{m.last_estrus_date|date:'Y/m/d'}}</a> 
+                                    <a class="ui icon red small button" href="#">
+                                        <i class="icon ban"></i>
+                                    </a>
                                 </td>
                              </tr>
                              {% else %}
@@ -242,8 +226,11 @@
                                  <td>{{b}}%</td>
                                  <td>{{m.litter_no}}</td>
                                  <td>{{s}}</td>
-                                 <td>
+                                 <td class="center aligned">
                                     <a href="#" id='{{m.id}}' data-name='{{m}}' class="btn_modal" style="color:powderblue;">{{m.last_estrus_date|date:'Y/m/d'}}</a> 
+                                    <a class="ui icon red small button" href="#">
+                                        <i class="icon ban"></i>
+                                    </a>
                                   </td>
                              </tr>
                              {% endif %}

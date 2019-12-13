@@ -17,7 +17,7 @@
             <tr>
                 <th class="three wide">K9</th>
                 <th>Port</th>
-                <th class="two wide"> Age</th>
+                <th class="two wide">Age (yrs & mons)</th>
                 <th class="two wide">Retired Date</th>
                 <th class="two wide"></th>
             </tr>
@@ -27,7 +27,7 @@
             <tr>
                 <td>{{data}}</td>
                 <td >{{data.assignment}}</td>
-                <td>{{data.age}} yrs and {{data.month_remainder}} mon</td>
+                <td>{{data.age}} yrs and {{data.month_remainder}} mos</td>
                 <td>{{data.year_retired}}</td>
                 <td style="text-align:center;" class="two wide">
                     <a href="{% url 'unitmanagement:due_retired_call' data.id %}" class="ui tiny basic red button">Call Back</a>

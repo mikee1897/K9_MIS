@@ -16,10 +16,10 @@
         <tbody>
             {% for data_unclassified in data_unclassified %}
             <tr>
-                <td>{{data_ontraining.name}}</td>
-                <td>{{data_ontraining.capability}}</td>
+                <td>{{data_unclassified.name}}</td>
+                <td>{{data_unclassified.capability}}</td>
                 <td style="text-align:center;">
-                    <a href="{% url 'training:classify_k9_select' data_ontraining.id %}" class = "tiny ui blue basic button">Select</a>
+                    <a href="{% url 'training:classify_k9_select' data_unclassified.id %}" class = "tiny ui blue basic button">Select</a>
                 </td>
             </tr>
             {% endfor %}

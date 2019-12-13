@@ -35,6 +35,7 @@ def update_in_heat():
     # updating the dates
     p = K9.objects.filter(next_proestrus_date=date.today())
     for p in p:
+        p.last_last_proestrus_date = last_proestrus_date 
         p.last_proestrus_date = p.next_proestrus_date
         p.save()
 
@@ -51,11 +52,11 @@ def in_heat_notifs():
         # print(k9_breed.last_estrus_date)
         if k9_breed.training_status == 'For-Breeding':
             if k9_breed.last_proestrus_date == date.today():
-                string_p = str(k9_breed) + ' is in heat! Please prepare her for mating.'
+                string_p = str(k9_breed) + ' is possibly in heat! Please prepare her for mating.'
                 notif = Notification.objects.filter(message=string_p).filter(datetime__contains=date.today())
             
                 if not notif:
-                    Notification.objects.create(k9=k9_breed, position='Veterinarian', message=str(k9_breed) + ' is in heat! Please prepare her for mating.', notif_type='heat_cycle')
+                    Notification.objects.create(k9=k9_breed, position='Veterinarian', message=str(k9_breed) + ' is possibly in heat! Please prepare her for mating.', notif_type='heat_cycle')
 
         if k9_breed.training_status == 'For-Breeding':
             if k9_breed.last_estrus_date == date.today():

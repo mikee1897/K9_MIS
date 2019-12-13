@@ -2514,7 +2514,7 @@ def generate_k9_parents():
         print(data, 'CREATE/UPDATE')
 
 def generate_k9_due_retire():
-    k9_c = K9.objects.filter(training_status="Deployed").filter(status='Working Dog').exclude(handler=None).exclude(assignment="None")
+    k9_c = K9.objects.filter(training_status="Deployed").filter(status='Working Dog').exclude(handler=None).exclude(Q(assignment="None") | Q(assignment=None))
     
     print('CAN RETIRE: ', k9_c.count())
 
