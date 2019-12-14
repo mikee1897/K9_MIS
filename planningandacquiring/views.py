@@ -1931,6 +1931,11 @@ def ajax_aor_summary_report(request):
     data_arr = []
     to_date = None
     from_date = None
+    big_ = 0
+    small_ = 0
+    edd_ = 0
+    ndd_ = 0
+    sar_ = 0
     
     try:
         to_date = request.GET.get('date_to')
@@ -1951,13 +1956,6 @@ def ajax_aor_summary_report(request):
                 if key == 'location__area':
                     area_val.append(value)
 
-        # mar = Maritime.objects.filter(datetime__range=[from_date, to_date]).values('location__area').distinct().order_by('location__area__name')
-
-        # for data in mar:
-        #     for key, value in data.items():
-        #         if key == 'location__area':
-        #             area_val.append(value)
-
         area_val= pd.unique(area_val)
         print(area_val)
         for id_area in area_val:
@@ -1975,6 +1973,12 @@ def ajax_aor_summary_report(request):
             x = [a,big,small,edd,ndd,sar]
             data_arr.append(x)
 
+            big_ = big_ + big
+            small_ = small_ + small
+            edd_ = edd_ + edd
+            ndd_ = ndd_ + ndd
+            sar_ = sar_ + sar
+
         print(data_arr)
     
     except:
@@ -1985,6 +1989,11 @@ def ajax_aor_summary_report(request):
         'from_date':from_date,
         'to_date':to_date,
         'user': user,
+        'big_': big_,
+        'small_': small_,
+        'edd_': edd_,
+        'ndd_': ndd_,
+        'sar_': sar_,
     }
 
     return render(request, 'planningandacquiring/aor_summary_report.html', context)

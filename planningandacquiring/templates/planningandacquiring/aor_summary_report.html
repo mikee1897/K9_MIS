@@ -13,7 +13,21 @@
     <br>#56 ML Quezon St. New Lower Bicutan, Taguig City
         <br>Area of Responsibility Summary Report
         <br><b>{{from_date}} to {{to_date}}</b></center>
-    
+    <div class="ui two column grid">
+        <div class="column">
+            <div class="ui basic segment">
+                <canvas id="myChart2" height="100"></canvas>
+                <img id="url2" />
+            </div>
+        </div>
+        <div class="column">
+            <div class="ui basic segment">
+                <canvas id="myChart" height="100"></canvas>
+                <img id="url1" />
+            </div>
+        </div>
+    </div>
+
     <table class="ui small celled structured seven column table">
         <thead class="center aligned">
           <tr> 
@@ -76,5 +90,85 @@ onclick="printDiv('printableArea')" value="Print" /></center>
 
         document.body.innerHTML = originalContents;
     }
+
+    var datachart1 = [{{big_}},{{small_}}]
+    var datachart2 = [{{edd_}},{{ndd_}},{{sar_}}]
+    //CHART
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var ctx2 = document.getElementById('myChart2').getContext('2d');
+   
+    var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Big Events', 'Small Events'],
+        datasets: [{
+            label: 'K9 Request (Event)',
+            data: datachart1,
+            backgroundColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+            ],
+            borderWidth: 1
+        }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            animation : {
+                onComplete : done,
+                duration:0,
+            }      
+        }
+    });
+
+    var myChart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: ['Big Events', 'Small Events'],
+        datasets: [{
+            label: 'K9 Request (Event)',
+            data: datachart1,
+            backgroundColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+            ],
+            borderWidth: 1
+        }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            animation : {
+                // onComplete : done,
+                duration:0,
+            }      
+        }
+    });
+
+    function done(){
+        const canvas = document.getElementById('myChart')
+        var url1=myChart.toBase64Image();
+        document.getElementById("url1").src=url1;
+        canvas.style.display = 'none'
+    }
+
 </script>
  {% endblock %}

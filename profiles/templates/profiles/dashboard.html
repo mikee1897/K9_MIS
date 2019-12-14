@@ -328,11 +328,7 @@
             tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        // var label = list_month_name[tooltipItem.datasetIndex] || '';
                         var label = ''
-                        // if (label) {
-                        //     label += ': ';
-                        // }
                         label += Math.round(tooltipItem.yLabel * 100) / 100;
                         return label.toLocaleString();
                     }
