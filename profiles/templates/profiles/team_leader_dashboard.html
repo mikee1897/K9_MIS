@@ -410,7 +410,7 @@
              {% csrf_token %}
 
             {% for field in check_arrival %}
-            {{ field }}
+            {{ field.label_tag }} {{ field }}
             {% endfor %}
 
             <button class="ui green button" type="submit" name = "confirm_arrival" value="Confirm Arrival"><i class="ship icon"></i>Confirm Arrival</button>
@@ -431,7 +431,7 @@
              {% csrf_token %}
 
             {% for field in check_arrival_dr %}
-            {{ field }}
+            {{ field.label_tag }} {{ field }}
             {% endfor %}
 
             <button class="ui green button" type="submit" name = "confirm_arrival" value="Confirm Arrival"><i class="ship icon"></i>Confirm Arrival</button>
@@ -452,7 +452,7 @@
              {% csrf_token %}
 
             {% for field in check_arrival_emrgncy_leave %}
-            {{ field }}
+            {{ field.label_tag }} {{ field }}
             {% endfor %}
 
             <button class="ui green button" type="submit" name = "confirm_arrival_emrgncy_leave" value="Confirm Return From Emergency Leave">Confirm Return from Emergency Leave</button>
