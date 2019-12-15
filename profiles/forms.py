@@ -79,7 +79,7 @@ class CheckArrivalForm(forms.Form):
         if for_arrival:
             for_arrival_list = []
             for item in for_arrival:
-                for_arrival_list.append((item.handler.id , str(item.handler)))
+                for_arrival_list.append((item.handler.id , str(item.handler) + " - " + str(item.handler.rank)))
 
             print(for_arrival_list)
 
