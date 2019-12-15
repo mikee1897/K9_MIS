@@ -88,27 +88,10 @@ class K9_Adopted_Owner(models.Model):
     middle_name = models.CharField('middle_name', max_length=200)
     last_name = models.CharField('last_name', max_length=200)
     address = models.CharField('address', max_length=200)
-    sex = models.CharField('sex', choices=SEX, max_length=200, default="Unspecified")
-    age = models.IntegerField('age', default = 0)
-    birth_date = models.DateField('birth_date')
-    email = models.EmailField('email', max_length=200)
-    contact_no = models.CharField('contact_no', max_length=200)
     date_adopted = models.DateField('date_adopted', default=timezone.now)
     date_returned = models.DateField('date_returned', blank=True, null=True)
     reason = models.TextField('remarks', max_length=500, blank=True, null=True)
     file_adopt = models.FileField(upload_to='adoption_papers', blank=True, null=True)
-    
-    def calculate_age(self):
-        today = d.today()
-        birthdate = self.birth_date
-        bday = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
-        if bday < 1:
-            bday = 0
-        return bday
-
-    def save(self, *args, **kwargs):
-        self.age = self.calculate_age()
-        super(K9_Adopted_Owner, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.first_name) + ' ' + str(self.middle_name) + ' ' + str(self.last_name)

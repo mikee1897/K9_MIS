@@ -96,15 +96,15 @@ class SerialNumberForm(forms.Form):
     #microchip = forms.CharField(max_length=200)
     dog_type = forms.CharField(max_length=200, widget = forms.Select(choices=DOG_TYPE))
 
-class AdoptionForms(forms.ModelForm):
-    address = forms.CharField(widget=forms.Textarea(attrs={'rows':'2', 'style':'resize:none;'}))
+# class AdoptionForms(forms.ModelForm):
+#     address = forms.CharField(widget=forms.Textarea(attrs={'rows':'2', 'style':'resize:none;'}))
 
-    class Meta:
-        model = K9_Adopted_Owner
-        fields = ('first_name', 'middle_name', 'last_name', 'sex', 'birth_date','email', 'contact_no', 'address','file_adopt')
-        widgets = {
-            'birth_date': DateInput(),
-        }
+#     class Meta:
+#         model = K9_Adopted_Owner
+#         fields = ('first_name', 'middle_name', 'last_name', 'sex', 'birth_date','email', 'contact_no', 'address','file_adopt')
+#         widgets = {
+#             'birth_date': DateInput(),
+#         }
 
 class RecordForm(forms.ModelForm):
 

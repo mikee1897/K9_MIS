@@ -2683,7 +2683,7 @@ def generate_adoption():
         reason = fake.paragraph(nb_sentences=1, variable_nb_sentences=True, ext_word_list=None)
         # 20 Adopted
         if i < 20:
-            K9_Adopted_Owner.objects.create(k9=k9,first_name=name,middle_name=middle_name,last_name=last_name,address=address,sex=sex,birth_date=birth_date,email=email,contact_no=contact_no,date_adopted=date_adopted)
+            K9_Adopted_Owner.objects.create(k9=k9,first_name=name,middle_name=middle_name,last_name=last_name,address=address,date_adopted=date_adopted)
             k9.training_status = 'Adopted'
             k9.status = 'Adopted'
             k9.save()
@@ -2691,7 +2691,7 @@ def generate_adoption():
 
         # 10 Returned
         if i > 20:
-            K9_Adopted_Owner.objects.create(k9=k9,first_name=name,middle_name=middle_name,last_name=last_name,address=address,sex=sex,birth_date=birth_date,email=email,contact_no=contact_no,date_adopted=date_adopted,date_returned=date_returned,reason=reason)
+            K9_Adopted_Owner.objects.create(k9=k9,first_name=name,middle_name=middle_name,last_name=last_name,address=address,date_adopted=date_adopted,date_returned=date_returned,reason=reason)
             print("Generate Returned" + str(i), k9)
 
 def generate_grading():

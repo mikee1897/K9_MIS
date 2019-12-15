@@ -19,7 +19,6 @@
             <tr>
                 <th>Date Adopted</th>
                 <th>Adopter</th>
-                <th>Contact Info</th>
                 <th>Adoptee K9</th>
                 <th>Breed</th>
                 <th>Date Returned</th>
@@ -31,7 +30,6 @@
             <tr>
                 <td>{{data.date_adopted|date:'Y-m-d'}}</td>
                 <td>{{data.last_name}}, {{data.first_name}} </td>
-                <td class="right aligned">{{data.contact_no}}</td>
                 <td>{{data.k9.name}}</td>
                 <td>{{data.k9.breed}}</td>
                 {% if data.date_returned %}

@@ -3293,7 +3293,7 @@ def budgeting(request):
         k9_t_ny = k9_cy+50
 
         difference_k9 = k9_cy - k9_ny
-        born_ny=K9.objects.filter(source='Breeding').filter(birth_date__year=current_year).exclude(Q(status="Adopted")|Q(status="Dead")|Q(status="Stolen")|Q(status="Lost")).count()
+        born_ny=K9.objects.filter(source='Breeding').filter(birth_date__year=current_year)
         
         
         NDD_count = K9.objects.filter(capability='NDD').exclude(status="Adopted").exclude(status="Dead").exclude(status="Stolen").exclude(status="Lost").count()
@@ -3975,9 +3975,6 @@ def load_budget(request):
     next_year = dt.now().year + 1
     current_year = dt.now().year
 
-  
-    born_ny = K9.objects.filter(source='Breeding').filter(birth_date__year=current_year).exclude(Q(status="Adopted")|Q(status="Dead")|Q(status="Stolen")|Q(status="Lost")).count()
-   
     #get k9 died next year
     dead_breed_ny = [] 
     for data in all_k9:
