@@ -3293,7 +3293,7 @@ def budgeting(request):
         k9_t_ny = k9_cy+50
 
         difference_k9 = k9_cy - k9_ny
-        born_ny=K9.objects.filter(source='Breeding').filter(birth_date__year=current_year)
+        born_ny=K9.objects.filter(source='Breeding').filter(birth_date__year=current_year).count()
         
         
         NDD_count = K9.objects.filter(capability='NDD').exclude(status="Adopted").exclude(status="Dead").exclude(status="Stolen").exclude(status="Lost").count()
