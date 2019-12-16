@@ -368,7 +368,7 @@
     
   </div>
   <div class="ui bottom attached tab segment" data-tab="second">
-    <div id="printableArea1">
+    <div id="printableArea2">
 
     <center>
             <br><img src="{% static 'images/k9_logo.png' %}" width="150">
@@ -1099,16 +1099,15 @@
 
   <br>
   <center><input type="button" class="ui primary button"
-  onclick="printDiv('printableArea3')" value="Print Actual Budget" /></center>
+  onclick="printDiv('printableArea3')" value="Print Proposed Budget" /></center>
 
 {% endif %}
 
 </div>
 
 <script>
-    $(document).ready(function() {
-        $('.menu .item').tab();
-    });
+ 
+    $('.menu .item').tab();
 
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;

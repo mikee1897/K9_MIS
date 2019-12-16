@@ -1,9 +1,17 @@
 {% extends "profiles/sidebar_adoption.html" %} {% block content %}
 
-<h2 class="ui header">
- {{title}}
-  <div class="sub header">Input K9 Adoption data here</div>
-</h2>
+<div class="ui inverted segment">
+    <h2 class="ui header">
+        Adoption Form
+       </h2>
+       {% if messages %}
+       {% for message in messages %}
+       <div class="{{ style }} row"> {{ message }}</div>
+     {% endfor %}
+     {% endif %}
+</div>
+
+
 
 <div class="ui ordered steps">
   <div class="active step">
@@ -12,65 +20,35 @@
       <div class="description">Provide owner adoption data</div>
     </div>
   </div>
-  <div class="disabled step">
+  <!-- <div class="disabled step">
     <div class="content">
       <div class="title">Confirm Adoption</div>
       <div class="description">Verify adoption details</div>
     </div>
-  </div>
+  </div> -->
 </div>
-{% if messages %}
-<div class="ui inverted segment">
-    {% for message in messages %}
-        <div class="{{ style }} row"> {{ message }}</div>
-    {% endfor %}
-</div>
-{% endif %}
 
 <div class="ui inverted segment">
     <form class = "ui inverted form" id="myForm" enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        <div class="field">
-            <label>Adoption Files</label>
-            {{form.file_adopt}}
-        </div>
         <div class="fields">
             <div class="six wide field">
                 <label>First Name</label>
-                {{form.first_name}}
+                <input type="text" placeholder="First Name" name="fname">
             </div>
             <div class="four wide field">
                 <label>Middle Name</label>
-                {{form.middle_name}}
+                <input type="text" placeholder="Middle Name" name="mname">
             </div>
             <div class="six wide field">
                 <label>Last Name</label>
-                {{form.last_name}}
-            </div>
-        </div>
-
-        <div class="four fields">
-            <div class="field">
-                <label>Birthday</label>
-                {{form.birth_date}}
-            </div>
-            <div class="field">
-                <label>Sex</label>
-                {{form.sex}}
-            </div>
-            <div class="field">
-                <label>Email</label>
-                {{form.email}}
-            </div>
-            <div class="field">
-                <label>Contact Number</label>
-                {{form.contact_no}}
+                <input type="text" placeholder="Last Name" name="lname">
             </div>
         </div>
 
         <div class="field">
             <label>Address</label>
-            {{form.address}}
+            <textarea rows="2" placeholder="Address" name="address"></textarea>
         </div>
 
         <div>
@@ -99,18 +77,22 @@
     $(document).ready(function() {
   
       $("input[name='adopt_number']").change(function () {
-          var url = 'adoption-form/ajax_load_form';  
-          var adopt_number = $("input[name='adopt_number']").val();
+            var url = 'adoption-form/ajax_load_form';  
+            var adopt_number = $("input[name='adopt_number']").val();
           
-          $.ajax({                       
-          url: url,                    
-          data: {
-              'num': adopt_number      
-          },
-          success: function (data) {   
-              $("#id_form_data").html(data);  
-          }
-          });
+            if (adopt_number==''){
+                adopt_number=0;
+            }
+
+            $.ajax({                       
+            url: url,                    
+            data: {
+                'num': adopt_number      
+            },
+            success: function (data) {   
+                $("#id_form_data").html(data);  
+            }
+            });
       });
   
     });

@@ -15,7 +15,7 @@ from training.models import Training, K9_Adopted_Owner, Training_Schedule
 from .forms import TestForm, add_handler_form, assign_handler_form
 from planningandacquiring.forms import add_donator_form
 from training.forms import adoption_K9_form
-from training.forms import TrainingUpdateForm, SerialNumberForm, AdoptionForms, ClassifySkillForm, RecordForm, DateForm
+from training.forms import TrainingUpdateForm, SerialNumberForm,ClassifySkillForm, RecordForm, DateForm
 import datetime
 from deployment.models import Team_Assignment, Daily_Refresher
 from django.db.models import Sum
@@ -60,17 +60,43 @@ def index(request):
 
 #TODO :: SAVE FORM and FORMSET
 def adoption_form(request):
-    form = AdoptionForms(request.POST or None)
-    form.fields['email'].initial = ''
-    form.fields['contact_no'].initial = ''
-   
-    if request.method == "POST":
-        if form.is_valid():
-            print('valid')
-            # form.save()
-    
-            return redirect('training:confirm_adoption', id = 1)
+    k9_formset = formset_factory(adoption_K9_form,can_delete=False)
+    formset = k9_formset(request.POST, request.FILES)
 
+    style = "ui green message"
+    if request.method == "POST":
+        fname = request.POST.get('fname')
+        mname = request.POST.get('mname')
+        lname = request.POST.get('lname')
+        address = request.POST.get('address')
+
+        if formset.is_valid():
+            for form in formset:
+                print(address)
+                print(form.cleaned_data['k9'])
+                k9_id=form.cleaned_data['k9']
+                k9 = K9.objects.get(id=k9_id.id)
+                file_adopt=form.cleaned_data['file_adopt']
+                K9_Adopted_Owner.objects.create(k9=k9,first_name=fname,middle_name=mname,last_name=lname,address=address,date_adopted=datetime.datetime.now(),file_adopt=file_adopt)
+                k9.training_status = "Adopted"
+                k9.status = "Adopted"
+                k9.save()
+           
+            messages.success(request, 'K9s has been adopted')
+            return redirect('training:adoption_form')
+   
+    notif_data = notif(request)
+    count = notif_data.filter(viewed=False).count()
+    user = user_session(request)
+    context = {
+        # 'title': data,
+        'style': style,
+        'notif_data':notif_data,
+        'count':count,
+        'user':user,
+    }
+    return render (request, 'training/adoption_form.html', context) 
+   
     #NOTIF SHOW
     notif_data = notif(request)
     count = notif_data.filter(viewed=False).count()
@@ -85,27 +111,27 @@ def adoption_form(request):
     return render (request, 'training/adoption_form.html', context)
 
 def confirm_adoption(request, id):
-    data = K9.objects.get(id=id) # get k9
-    no = request.session['no_id']
-    new_owner = K9_Adopted_Owner.objects.get(id=no)
-    if request.method == "POST":
-        if 'ok' in request.POST:
-            print('ok')
-            data.training_status = 'Adopted'
-            data.save()
-            return redirect('training:adoption_confirmed')
-        else:
-            print('not ok')
-            new_owner.delete()
-            return redirect('training:adoption_form', id = data.id)
+    # data = K9.objects.get(id=id) # get k9
+    # no = 0#request.session['no_id']
+    # new_owner = K9_Adopted_Owner.objects.get(id=no)
+    # if request.method == "POST":
+    #     if 'ok' in request.POST:
+    #         print('ok')
+    #         data.training_status = 'Adopted'
+    #         data.save()
+    #         return redirect('training:adoption_confirmed')
+    #     else:
+    #         print('not ok')
+    #         new_owner.delete()
+    #         return redirect('training:adoption_form', id = data.id)
     
     #NOTIF SHOW
     notif_data = notif(request)
     count = notif_data.filter(viewed=False).count()
     user = user_session(request)
     context = {
-        'title': data,
-        'data': data,
+        # 'title': data,
+        # 'data': data,
         'notif_data':notif_data,
         'count':count,
         'user':user,
