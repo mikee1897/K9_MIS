@@ -488,6 +488,7 @@ class Proposal_Budget(models.Model):
     train_count = models.IntegerField('train_count', default=0)
     date_created = models.DateField('date_created')
     year_budgeted = models.DateField('year_budgeted')
+    prepared_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.year_budgeted = self.date_created  + relativedelta(years=+1)
@@ -580,6 +581,7 @@ class Actual_Budget(models.Model):
     train_count = models.IntegerField('train_count', default=0)
     date_created = models.DateField('date_created', auto_now_add=True)
     year_budgeted = models.DateField('year_budgeted', blank=True, null=True)
+    prepared_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     
 class Actual_K9(models.Model):
     item = models.ForeignKey(Dog_Breed, on_delete=models.CASCADE, blank=True, null=True)

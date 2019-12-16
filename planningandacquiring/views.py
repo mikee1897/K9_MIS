@@ -1357,7 +1357,8 @@ def budgeting_detail(request, id):
             total_new = ab2.k9_current+ab2.k9_needed+ab2.k9_breeded
             print('K9 Total', k9_total)
         else:
-            ab2 = Actual_Budget.objects.create(k9_current=pb.k9_current,k9_breeded=pb.k9_breeded,date_created=dt.today(),year_budgeted=pb.year_budgeted)
+            user = user_session(request)
+            ab2 = Actual_Budget.objects.create(k9_current=pb.k9_current,k9_breeded=pb.k9_breeded,date_created=dt.today(),year_budgeted=pb.year_budgeted, prepared_by = user)
 
             print('No Actual Budger this year Exist')
 
@@ -3867,7 +3868,8 @@ def budgeting(request):
                 return redirect('planningandacquiring:budgeting_detail', pb.id)
 
             except:
-                pb = Proposal_Budget.objects.create(k9_current=k9_ny,k9_needed=need_procure_ny,k9_breeded=born_ny,k9_total=procured_total,food_milk_total=total_food,vac_prev_total=vac_total,medicine_total=total_medicine,vet_supply_total=vet_total,kennel_total=ken_total,others_total=other_total,training_total=training_total,grand_total=total_amount,train_count=train_k9,date_created=dt.today(),year_budgeted=dt.today().year)
+                user = user_session(request)
+                pb = Proposal_Budget.objects.create(k9_current=k9_ny,k9_needed=need_procure_ny,k9_breeded=born_ny,k9_total=procured_total,food_milk_total=total_food,vac_prev_total=vac_total,medicine_total=total_medicine,vet_supply_total=vet_total,kennel_total=ken_total,others_total=other_total,training_total=training_total,grand_total=total_amount,train_count=train_k9,date_created=dt.today(),year_budgeted=dt.today().year, prepared_by = user)
 
                 #K9 Acquisition
                 if formset.is_valid():
