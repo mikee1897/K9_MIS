@@ -79,7 +79,8 @@ class CheckArrivalForm(forms.Form):
         if for_arrival:
             for_arrival_list = []
             for item in for_arrival:
-                for_arrival_list.append((item.handler.id , str(item.handler) + " - " + str(item.handler.rank)))
+                account = Account.objects.get(UserID = item.handler.id)
+                for_arrival_list.append((item.handler.id , str(item.handler) + " - " + str(item.handler.rank) + " - " + str(account.serial_number)))
 
             print(for_arrival_list)
 

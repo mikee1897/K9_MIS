@@ -13,20 +13,20 @@
     <br>#56 ML Quezon St. New Lower Bicutan, Taguig City
         <br>Area of Responsibility Summary Report
         <br><b>{{from_date}} to {{to_date}}</b></center>
-    <div class="ui two column grid">
-        <div class="column">
-            <div class="ui basic segment">
-                <canvas id="myChart2" height="100"></canvas>
-                <img id="url2" />
-            </div>
-        </div>
-        <div class="column">
-            <div class="ui basic segment">
-                <canvas id="myChart" height="100"></canvas>
-                <img id="url1" />
-            </div>
-        </div>
-    </div>
+    <!--<div class="ui two column grid">-->
+        <!--<div class="column">-->
+            <!--<div class="ui basic segment">-->
+                <!--<canvas id="myChart2" height="100"></canvas>-->
+                <!--<img id="url2" />-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="column">-->
+            <!--<div class="ui basic segment">-->
+                <!--<canvas id="myChart" height="100"></canvas>-->
+                <!--<img id="url1" />-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 
     <table class="ui small celled structured seven column table">
         <thead class="center aligned">
@@ -58,6 +58,15 @@
             {%endfor%}
         </tbody>
     </table>
+    <p style="page-break-before: always">
+    {% if event_graph %}
+{{ event_graph|safe }}
+{% endif %}
+
+        {% if incident_graph %}
+{{ incident_graph|safe }}
+{% endif %}
+
 
     <br>
     <br>

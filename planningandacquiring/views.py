@@ -64,10 +64,10 @@ import math
 # from sklearn.metrics import mean_squared_error
 #
 # #graphing imports
-# from igraph import *
-# import plotly.offline as opy
-# import plotly.graph_objs as go
-# import plotly.graph_objs.layout as lout
+from igraph import *
+import plotly.offline as opy
+import plotly.graph_objs as go
+import plotly.graph_objs.layout as lout
 #
 # #forecasting imports
 # from statsmodels.tsa.ar_model import AR
@@ -79,6 +79,8 @@ import math
 # from random import random, randint
 # from statsmodels.tsa.stattools import adfuller, kpss
 # import statsmodels.api as sm
+
+
 
 import math
 # Create your views here.
@@ -1937,6 +1939,8 @@ def ajax_aor_summary_report(request):
     edd_ = 0
     ndd_ = 0
     sar_ = 0
+    event_graph = None
+    incident_graph = None
     
     try:
         to_date = request.GET.get('date_to')
@@ -1959,6 +1963,13 @@ def ajax_aor_summary_report(request):
 
         area_val= pd.unique(area_val)
         print(area_val)
+        big_arr = []
+        small_arr = []
+        sar_arr = []
+        ndd_arr = []
+        edd_arr = []
+        area_arr = []
+
         for id_area in area_val:
             a = Area.objects.get(id=id_area)
             # b = Maritime.objects.filter(location__area=a).filter(datetime__range=[from_date, to_date]).aggregate(avg=Avg('passenger_count'))['avg']
@@ -1974,6 +1985,13 @@ def ajax_aor_summary_report(request):
             x = [a,big,small,edd,ndd,sar]
             data_arr.append(x)
 
+            area_arr.append(str(a))
+            big_arr.append(big)
+            small_arr.append(small)
+            sar_arr.append(sar)
+            ndd_arr.append(ndd)
+            edd_arr.append(edd)
+
             big_ = big_ + big
             small_ = small_ + small
             edd_ = edd_ + edd
@@ -1981,9 +1999,61 @@ def ajax_aor_summary_report(request):
             sar_ = sar_ + sar
 
         print(data_arr)
+
+        big_data = go.Bar(
+            x=area_arr,
+            y=big_arr,
+            name='Big Event'
+        )
+
+        small_data = go.Bar(
+            x=area_arr,
+            y=small_arr,
+            name='Small Event'
+        )
+
+        sar_data = go.Bar(
+            x=area_arr,
+            y=sar_arr,
+            name='SAR Incident'
+        )
+
+        ndd_data = go.Bar(
+            x=area_arr,
+            y=ndd_arr,
+            name='NDD Incident'
+        )
+
+        edd_data = go.Bar(
+            x=area_arr,
+            y=edd_arr,
+            name='EDD Incident'
+        )
+
+        data = [big_data, small_data]
+
+        layout = go.Layout(
+            title="AOR Event Summary",
+            barmode='group'
+        )
+
+        fig = go.Figure(data=data, layout=layout)
+        event_graph = opy.plot(fig, auto_open=False, output_type='div')
+
+        data = [sar_data, ndd_data, edd_data]
+
+        layout = go.Layout(
+            title="AOR Incident Summary",
+            barmode='group'
+        )
+
+        fig = go.Figure(data=data, layout=layout)
+        incident_graph = opy.plot(fig, auto_open=False, output_type='div')
     
     except:
         pass
+
+
     user = user_session(request)
     context = {
         'data':data_arr,
@@ -1995,6 +2065,8 @@ def ajax_aor_summary_report(request):
         'edd_': edd_,
         'ndd_': ndd_,
         'sar_': sar_,
+        'event_graph' : event_graph,
+        'incident_graph' : incident_graph
     }
 
     return render(request, 'planningandacquiring/aor_summary_report.html', context)
