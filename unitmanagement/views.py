@@ -844,7 +844,7 @@ def physical_exam_form(request, id=None):
             new_form.user = current_user
             new_form.body_score = request.POST.get('radio_select')
 
-            bs = int(new_form.body_score)
+            # bs = int(new_form.body_score)
             k9 = K9.objects.get(id=new_form.dog.id)
 
             if new_form.cleared == True:
